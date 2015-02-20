@@ -297,12 +297,11 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\wpcontrols_calendar\WPControls\WPControls.csproj">
+    <ProjectReference Include="..\WPControls\WPControls.csproj">
       <Project>{15a9e5ab-7282-4bfd-98c6-06dd26051399}</Project>
       <Name>WPControls</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup />
   <ItemGroup>
     <Reference Include="Microsoft.Expression.Controls" />
     <Reference Include="Microsoft.Phone.Controls, Version=8.0.0.0, Culture=neutral, PublicKeyToken=24eec0d8c86cda1e, processorArchitecture=MSIL" />

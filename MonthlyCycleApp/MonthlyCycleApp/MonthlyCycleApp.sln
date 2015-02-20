@@ -4,8 +4,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 VisualStudioVersion = 12.0.31101.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MonthlyCycleApp", "MonthlyCycleApp\MonthlyCycleApp.csproj", "{A155B4FF-4B3C-4C2D-BB39-349B9F058745}"
+	ProjectSection(ProjectDependencies) = postProject
+		{15A9E5AB-7282-4BFD-98C6-06DD26051399} = {15A9E5AB-7282-4BFD-98C6-06DD26051399}
+	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WPControls", "..\wpcontrols_calendar\WPControls\WPControls.csproj", "{15A9E5AB-7282-4BFD-98C6-06DD26051399}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WPControls", "WPControls\WPControls.csproj", "{15A9E5AB-7282-4BFD-98C6-06DD26051399}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
