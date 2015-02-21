@@ -14,7 +14,7 @@ namespace MonthlyCycleApp.Converters
         public object Convert(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
         {
 
-            return (Int32)value == 0 ? Visibility.Collapsed : Visibility.Visible;
+            return (Int32)value == 0 || (Int32)value == Int32.MinValue || (Int32)value == Int32.MaxValue ? Visibility.Collapsed : Visibility.Visible;
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)

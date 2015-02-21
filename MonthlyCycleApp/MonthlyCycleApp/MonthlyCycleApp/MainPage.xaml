@@ -22,7 +22,21 @@
         <converters:BoolToVisibilityConverter x:Name="BoolToVisibilityConverter"/>
         <converters:StringToVisibilityConverter x:Name="StringToVisibilityConverter"/>
         <converters:IntToVisibilityConverter x:Name="IntToVisibilityConverter"/>
+        <Storyboard x:Name="Blink" AutoReverse="True" RepeatBehavior="Forever">
+            <DoubleAnimationUsingKeyFrames BeginTime="00:00:00"
+              Storyboard.TargetName="ellipse"
+            Storyboard.TargetProperty="Opacity">
+                <EasingDoubleKeyFrame KeyTime="00:00:01" Value="0.2">
+                    <EasingDoubleKeyFrame.EasingFunction>
+                        <QuadraticEase EasingMode="EaseInOut"/>
+                    </EasingDoubleKeyFrame.EasingFunction>
+                </EasingDoubleKeyFrame>
+               
+                <!--<EasingColorKeyFrame KeyTime="00:00:01" Value="Gray"/>-->
+            </DoubleAnimationUsingKeyFrames>
+        </Storyboard>
     </phone:PhoneApplicationPage.Resources>
+    <!--Storyboard.TargetProperty="(Shape.Fill).(SolidColorBrush.Color)"-->
 
     <!--LayoutRoot is the root grid where all page content is placed-->
     <Grid x:Name="LayoutRoot" >
@@ -55,7 +69,24 @@
                         SelectionChanged="startingPageList_SelectionChanged" >
             <!--Drop-->
             <phone:PivotItem x:Name="DropPage" >
-                <controls:LunaDropControl x:Name="dropControl" />
+                <Grid>
+                    <Ellipse x:Name="ellipse" Height="500" >
+                        <Ellipse.Fill>
+                            <RadialGradientBrush 
+                                     Opacity="1"
+                                     GradientOrigin="0.5,0.5" Center="0.5,0.5"
+                                     RadiusX="0.5" RadiusY="0.5">
+                                <GradientStop Color="Transparent" Offset="0" />
+                                <GradientStop Color="Transparent" Offset="0.25" />
+                                <GradientStop Color="#FFEFA9A1" Offset="0.5" />
+                                <GradientStop Color="#FFF5BFB9" Offset="0.75" />
+                                <GradientStop Color="Transparent" Offset="1" />
+                            </RadialGradientBrush>
+                        </Ellipse.Fill>
+                    </Ellipse>
+                   <controls:LunaDropControl x:Name="dropControl" />
+                  
+                </Grid>
             </phone:PivotItem>
 
             <!--Calendar-->
@@ -69,6 +100,7 @@
                                 x:Name="Cal"
                                 Grid.Row="0"
                                 StartingDayOfWeek="{Binding FirstDayOfWeek}"
+                                PeriodCalendarProperty="{Binding Calendar}"
                                 ColorConverter="{StaticResource ColorConverter}"
                                 EnableGestures="False"
                     />
@@ -401,7 +433,7 @@
                 x:Name="pkStartDateCycle" 
                 Margin="5,0,0,0"
                 Visibility="{Binding ShowSelectStartDay, Converter={StaticResource BoolToVisibilityConverter}}"
-                Value="{Binding SelectedStartCycle}"
+                Value="{Binding SelectedStartCycle,Mode=TwoWay}"
                  ValueChanged="pkStartDateCycle_ValueChanged"
                 ManipulationCompleted="pkEndDateCycle_ManipulationCompleted"
                 VerticalAlignment="Center"

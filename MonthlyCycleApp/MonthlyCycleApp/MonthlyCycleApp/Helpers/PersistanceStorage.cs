@@ -28,13 +28,14 @@ namespace Monthly.Helpers
             PeriodMonth december = new PeriodMonth(new DateTime(2014, 11, 24), 6, 28);
             
             PeriodMonth january = new PeriodMonth(new DateTime(2015, 1, 19), 6, 28);
-            PeriodMonth february = new PeriodMonth(new DateTime(2015, 2, 16), 6, 28);
+            PeriodMonth february = new PeriodMonth(new DateTime(2015, 2, 17), 6, 28);
 
             calendar.PastPeriods.Add(september);
             calendar.PastPeriods.Add(october);
             calendar.PastPeriods.Add(november);
             calendar.PastPeriods.Add(december);
             calendar.PastPeriods.Add(january);
+            calendar.PastPeriods.Add(february);
 
             calendar.CurrentPeriod = february;
 
@@ -101,89 +102,6 @@ namespace Monthly.Helpers
         }
         #endregion
 
-        #region CalendarObject
-
-        public static CalendarObject MockCalendarObject()
-        {
-            CalendarObject calendar = new CalendarObject(2014);
-           
-            calendar.Months[0].SetPeriod(19, 6, 28);
-            calendar.Months[1].SetPeriod(16, 6, 28);
-            /*
-            PeriodMonth september = new PeriodMonth(new DateTime(2014, 9, 1), 6, 28);
-            PeriodMonth october = new PeriodMonth(new DateTime(2014, 9, 29), 6, 28);
-            PeriodMonth november = new PeriodMonth(new DateTime(2014, 10, 27), 6, 28);
-            PeriodMonth december = new PeriodMonth(new DateTime(2014, 11, 24), 6, 28);
-            PeriodMonth january = new PeriodMonth(new DateTime(2014, 11, 19), 6, 28);
-            PeriodMonth february = new PeriodMonth(new DateTime(2014, 11, 16), 6, 28);
-
-            calendar.PastPeriods.Add(september);
-            calendar.PastPeriods.Add(october);
-            calendar.PastPeriods.Add(november);
-            calendar.PastPeriods.Add(december);
-
-
-            calendar.CurrentPeriod = january;
-            */
-            return calendar;
-        }
-
-
-        public static void WriteDataToPersistanceStorage(CalendarObject calendar)
-        {
-            // PeriodCalendar calendar = MockCalendar();
-            IsolatedStorageFile local = IsolatedStorageFile.GetUserStoreForApplication();
-
-            if (!local.DirectoryExists(FILE_DIR))
-                local.CreateDirectory(FILE_DIR);
-
-            using (var isoFileStream = new IsolatedStorageFileStream(FILE_PATH, FileMode.OpenOrCreate, local))
-            {
-
-                /* using (var memoryStream = new MemoryStream())
-                 {
-                     BinarySerializationHelper.Serialize(memoryStream, calendar);
-                     memoryStream.Position = 0;
-                     memoryStream.CopyTo(isoFileStream);
-                     memoryStream.Close();
-                 }
-                 * */
-
-                DataContractSerializer ser = new DataContractSerializer(calendar.GetType());
-                ser.WriteObject(isoFileStream, calendar);
-
-                isoFileStream.Close();
-            }
-        }
-
-        public static CalendarObject ReadCalendarFromPersistanceStorage()
-        {
-            IsolatedStorageFile local = IsolatedStorageFile.GetUserStoreForApplication();
-            if (!local.DirectoryExists(FILE_DIR))
-                return null;
-            if (!local.FileExists(FILE_PATH))
-                return null;
-
-            using (IsolatedStorageFileStream isoStream = new IsolatedStorageFileStream(FILE_PATH, FileMode.Open, local))
-            {
-                /*
-                using (StreamReader streamReader = new StreamReader(isoStream))
-                { */
-                CalendarObject calendar = new CalendarObject();
-
-                XmlDictionaryReader reader = XmlDictionaryReader.CreateTextReader(isoStream, new XmlDictionaryReaderQuotas());
-                DataContractSerializer ser = new DataContractSerializer(typeof(PeriodCalendar));
-                calendar = (CalendarObject)ser.ReadObject(reader, true);
-                reader.Close();
-                isoStream.Close();
-
-
-                //    calendar = (PeriodCalendar)BinarySerializationHelper.Deserialize(streamReader.BaseStream, typeof(PeriodCalendar));
-                return calendar;
-                // }
-            }
-        }
-
-        #endregion
+  
     }
 }

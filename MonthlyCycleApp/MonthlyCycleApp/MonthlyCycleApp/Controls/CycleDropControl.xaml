@@ -69,13 +69,13 @@
                 HorizontalAlignment="Center" VerticalAlignment="Center" 
                 Margin="164,159,164,86"
                 >
-                <TextBlock Text="{Binding DaysToPeriod}"
+                <TextBlock Text="{Binding DaysToPeriod, Mode=OneWay}"
                            Visibility="{Binding IsSetupCompleted}"
                    HorizontalAlignment="Center" 
                    FontSize="150"  Opacity="0.8"
                    Foreground="White" Height="180"
                   />
-                <TextBlock Text="{Binding Path=LocalizedResources.DaysToPeriodText, Source={StaticResource LocalizedStrings}}"
+                <TextBlock Text="{Binding Path=LocalizedResources.DaysToPeriodText, Source={StaticResource LocalizedStrings}, Mode=OneWay}"
                             Visibility="{Binding IsSetupCompleted}"
                    HorizontalAlignment="Center" 
                    FontSize="24" Opacity="0.5"

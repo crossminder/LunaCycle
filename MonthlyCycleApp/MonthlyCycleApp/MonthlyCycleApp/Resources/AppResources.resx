@@ -238,7 +238,7 @@
     <value>Statistics</value>
   </data>
   <data name="DayOfPeriodText" xml:space="preserve">
-    <value>day of period</value>
+    <value>days until end of period</value>
   </data>
   <data name="DelayedPeriodEndQuestion" xml:space="preserve">
     <value>Did it end on</value>

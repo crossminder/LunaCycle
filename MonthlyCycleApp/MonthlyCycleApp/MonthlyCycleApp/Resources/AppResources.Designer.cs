@@ -151,7 +151,7 @@ namespace MonthlyCycleApp.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to day of period.
+        ///   Looks up a localized string similar to days until end of period.
         /// </summary>
         public static string DayOfPeriodText {
             get {

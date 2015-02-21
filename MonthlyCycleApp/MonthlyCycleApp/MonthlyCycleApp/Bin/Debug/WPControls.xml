@@ -399,6 +399,11 @@
             The starting day of week.
             </value>
         </member>
+        <member name="P:WPControls.CalendarChangedEventArgs.Calendar">
+            <summary>
+            Date that is currently selected on the calendar
+            </summary>
+        </member>
         <member name="T:WPControls.CalendarItem">
             <summary>
             This class corresponds to a calendar item / cell

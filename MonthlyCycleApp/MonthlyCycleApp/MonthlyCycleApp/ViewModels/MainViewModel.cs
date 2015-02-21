@@ -39,22 +39,23 @@ namespace MonthlyCycleApp.ViewModels
             }
         }
 
-        private PeriodCalendar _calendar;
+        private PeriodCalendar calendar;
         public PeriodCalendar Calendar
         {
 
             get
             {
-                if (_calendar == null || _calendar.IsNew())
-                    _calendar = PersistanceStorage.MockCalendar();
+                if (calendar == null || calendar.IsNew())
+                    calendar = PersistanceStorage.MockCalendar();
                 //PersistanceStorage.ReadDataFromPersistanceStorage();
-                return _calendar;
+                return calendar;
             }
             set
             {
-                if (value != _calendar && !value.IsNew())
+                if (value != calendar && !value.IsNew())
                 {
-                    _calendar = value;
+                    calendar = value;
+                    NotifyPropertyChanged("Calendar");
                 }
             }
         }
@@ -410,16 +411,13 @@ namespace MonthlyCycleApp.ViewModels
         {
             get 
             {
-                var storedValue = ApplicationSettings.GetProperty<DateTime>(ApplicationSettings.START_CYCLE_DATE);
-
-                return selectedStartCycle.HasValue ? selectedStartCycle.Value : storedValue; 
+                return selectedStartCycle.HasValue ? selectedStartCycle.Value : Calendar.CurrentPeriod.CycleStartDay; 
             }
             set
             {
                 if (value != selectedStartCycle)
                 {
                     selectedStartCycle = value;
-                    ApplicationSettings.SetProperty(ApplicationSettings.START_CYCLE_DATE,selectedStartCycle);
                     NotifyPropertyChanged("SelectedStartCycle");
                 }
             }
@@ -430,16 +428,13 @@ namespace MonthlyCycleApp.ViewModels
         {
             get
             {
-                var storedValue = ApplicationSettings.GetProperty<DateTime>(ApplicationSettings.END_CYCLE_DATE);
-
-                return selectedEndCycle.HasValue ? selectedEndCycle.Value : storedValue;
+                return selectedEndCycle.HasValue ? selectedEndCycle.Value : Calendar.CurrentPeriod.CycleEndDay; 
             }
             set
             {
                 if (value != selectedEndCycle)
                 {
                     selectedEndCycle = value;
-                    ApplicationSettings.SetProperty(ApplicationSettings.END_CYCLE_DATE, selectedEndCycle);
                     NotifyPropertyChanged("SelectedEndCycle");
                 }
             }
@@ -473,6 +468,8 @@ namespace MonthlyCycleApp.ViewModels
             }
         }
 
+
+     
         #endregion
 
         public MainViewModel()
@@ -482,107 +479,56 @@ namespace MonthlyCycleApp.ViewModels
 
         #region Dialogs
 
-        public void SetupAddPeriodDialog(DateTime endDate)
+
+        public void SetupDialog()
         {
-            if (DateTime.Today < endDate)
+            var currentPeriod = Calendar.CurrentPeriod;
+          
+            if (!App.LunaViewModel.StartCycleConfirmed)
             {
-                SetupDialog(AppResources.PeriodStartedQuestion, string.Format(AppResources.PeriodLaterMessage,DelayedAdvancedStart), string.Empty, string.Empty, true, false);
+                FirstRowText = AppResources.PeriodStartedQuestion;
+                ShowSelectStartDay = true;
+
             }
-            else
+            if (!App.LunaViewModel.EndCycleConfirmed && DateTime.Now >= SelectedStartCycle.AddDays(currentPeriod.CycleDuration))
             {
-                SetupDialog(AppResources.PeriodStartedQuestion, string.Format(AppResources.PeriodLaterMessage, DelayedAdvancedStart), AppResources.DelayedPeriodEndQuestion, string.Format(AppResources.PeriodLaterMessage, DelayedAdvancedEnd), true, true);
+                ThirdRowText = AppResources.PeriodEndedQuestion;
+                ShowSelectEndDay = true;
             }
+
+            SetDelayedAdvancedCounter(currentPeriod);
         }
 
-        public  void SetupEndPeriodDialog(DateTime endDate)
+        public void SetDelayedAdvancedCounter(PeriodMonth currentPeriod)
         {
-            //early end
-            if (DateTime.Today < endDate)
-            {
-                ShowDialog = true;
-                SetupDialog(string.Empty, string.Empty, AppResources.PeriodEndedQuestion, string.Format(AppResources.PeriodEarlierMessage, DelayedAdvancedEnd), false, true);
-            }
-
-            //late end
-            if (DateTime.Today > endDate)
-            {
-                ShowDialog = true;
-                SetupDialog(string.Empty, string.Empty, AppResources.PeriodEndedQuestion, string.Format(AppResources.PeriodLaterMessage, DelayedAdvancedEnd), false, true);
-            }
-        }
-
-        public  void SetupStartPeriodDialog(DateTime startDate, DateTime endDate)
-        {
-            //early start
-            if (DateTime.Today < startDate)
-            {
-                ShowDialog = true;
-                SetupDialog(AppResources.PeriodStartedQuestion, string.Format(AppResources.PeriodEarlierMessage, DelayedAdvancedStart), string.Empty, string.Empty, true, false);
-            }
-
-            //later start
-            if (DateTime.Today > startDate && DateTime.Today < endDate)
-            {
-                ShowDialog = true;
-                SetupDialog(AppResources.PeriodStartedQuestion, string.Format(AppResources.PeriodLaterMessage, DelayedAdvancedStart), string.Empty, string.Empty, true, false);
-            }
-        }
-
-
-        public void SetupDialog(string firstRowText, string secondRowText, string thirdRowText, string forthRowText, bool showSelectStartDay, bool showSelectEndDay)
-        {
-            FirstRowText = firstRowText;
-            SecondRowText = secondRowText;
-            ThirdRowText = thirdRowText;
-            ForthRowText = forthRowText;
-            ShowSelectStartDay = showSelectStartDay;
-            ShowSelectEndDay = showSelectEndDay;
-        }
-
-        public void SetDelayedAdvancedCounter()
-        {
-            var currentPeriod = App.MainViewModel.Calendar.CurrentPeriod;
-            DelayedAdvancedStart = 0;
-            DelayedAdvancedEnd = 0;
-
-            if (DateTime.Today < currentPeriod.CycleStartDay || DateTime.Today > currentPeriod.CycleStartDay)
-               DelayedAdvancedStart =  Math.Abs((DateTime.Today - currentPeriod.CycleStartDay).Days + 1);            
-            else
-                if (DateTime.Today < currentPeriod.CycleEndDay || DateTime.Today > currentPeriod.CycleEndDay)
-                    DelayedAdvancedEnd = Math.Abs((DateTime.Today - currentPeriod.CycleEndDay).Days + 1);
-               
-        }
-
-
-        public void SetDelayedAdvancedCounter(bool setStart, bool setEnd)
-        {
-            var currentPeriod = App.MainViewModel.Calendar.CurrentPeriod;
             int counter;
             DelayedAdvancedStart = 0;
             DelayedAdvancedEnd = 0;
 
             DateTime expectedEndDate = SelectedStartCycle.AddDays(currentPeriod.CycleDuration);
 
-            if (setStart && (SelectedStartCycle < currentPeriod.CycleStartDay || SelectedStartCycle > currentPeriod.CycleStartDay))
+            if (ShowSelectStartDay && (SelectedStartCycle < currentPeriod.CycleStartDay || SelectedStartCycle > currentPeriod.CycleStartDay))
             {
-                counter = (SelectedStartCycle - currentPeriod.CycleStartDay).Days + 1;
+                 counter = (SelectedStartCycle - currentPeriod.CycleStartDay).Days;
                  DelayedAdvancedStart = Math.Abs(counter);
 
                 if (counter < 0)
                     SecondRowText = string.Format(AppResources.PeriodEarlierMessage, DelayedAdvancedStart);
                 else
+                    if (counter > 0)
                     SecondRowText = string.Format(AppResources.PeriodLaterMessage, DelayedAdvancedStart);
                    
             }
 
             if (ShowSelectEndDay && (SelectedEndCycle < expectedEndDate || SelectedEndCycle > expectedEndDate))
             {
-                counter = (SelectedEndCycle - expectedEndDate).Days + 1;
+                counter = (SelectedEndCycle - expectedEndDate).Days;
                 DelayedAdvancedEnd = Math.Abs(counter);
 
                 if (counter < 0)
                     ForthRowText = string.Format(AppResources.PeriodEarlierMessage, DelayedAdvancedEnd);
                 else
+                    if (counter > 0)
                     ForthRowText = string.Format(AppResources.PeriodLaterMessage, DelayedAdvancedEnd);
             }
 

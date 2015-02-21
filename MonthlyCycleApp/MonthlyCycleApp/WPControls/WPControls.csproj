@@ -123,6 +123,7 @@
     <Compile Include="BooleanToVisibilityConverter.cs" />
     <Compile Include="BrushType.cs" />
     <Compile Include="Calendar.cs" />
+    <Compile Include="CalendarChangedEventArgs.cs" />
     <Compile Include="CalendarItem.cs" />
     <Compile Include="CalendarWeekItem.cs" />
     <Compile Include="Helpers\ExtensionMethods.cs" />

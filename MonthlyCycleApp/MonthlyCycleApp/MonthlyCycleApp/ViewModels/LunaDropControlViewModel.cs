@@ -62,45 +62,6 @@ namespace MonthlyCycleApp.ViewModels
             }
         }
 
-        private bool? showCycleConfirmation;
-        public bool ShowCycleConfirmation
-        {
-            get
-            {
-                var persisted = ApplicationSettings.GetProperty<bool>(ApplicationSettings.SHOW_CYCLE_CONFIRMATION);
-                return showCycleConfirmation.HasValue ? showCycleConfirmation.Value : persisted;
-            }
-            set
-            {
-                if (value != showCycleConfirmation)
-                {
-                    showCycleConfirmation = value;
-                    ApplicationSettings.SetProperty(ApplicationSettings.SHOW_CYCLE_CONFIRMATION, showCycleConfirmation);
-                    NotifyPropertyChanged("ShowCycleConfirmation");
-                }
-            }
-        }
-
-        private bool? needToAddCycleMannually;
-        public bool NeedToAddCycleMannually
-        {
-            get
-            {
-                var persisted = ApplicationSettings.GetProperty<bool>(ApplicationSettings.NEED_TO_ADD_CYCLE_MANUALLY);
-                return needToAddCycleMannually.HasValue ? needToAddCycleMannually.Value : persisted;
-
-            }
-            set
-            {
-                if (value != needToAddCycleMannually)
-                {
-                    needToAddCycleMannually = value;
-                    ApplicationSettings.SetProperty(ApplicationSettings.NEED_TO_ADD_CYCLE_MANUALLY, needToAddCycleMannually);
-                    NotifyPropertyChanged("NeedToAddCycleMannually");
-                }
-            }
-        }
-
 
         #endregion
 
@@ -120,7 +81,14 @@ namespace MonthlyCycleApp.ViewModels
             {
                 return daysToPeriod;
             }
-            set { daysToPeriod = value; }
+            set
+            {
+                if (value != daysToPeriod)
+                {
+                    daysToPeriod = value;
+                    NotifyPropertyChanged("DaysToPeriod");
+                }
+            }
         }
 
         private string daysToPeriodText;
@@ -130,7 +98,10 @@ namespace MonthlyCycleApp.ViewModels
             set
             {
                 if (value != daysToPeriodText)
+                {
                     daysToPeriodText = value;
+                    NotifyPropertyChanged("DaysToPeriodText");
+                }
             }
         }
 
@@ -155,27 +126,28 @@ namespace MonthlyCycleApp.ViewModels
 
         public void SetupControlsVisibility(bool showCycleConfirmation, bool startCycleConfimed, bool endCycleConfirmed, bool needToAddCycleManually)
         {
-            ShowCycleConfirmation = showCycleConfirmation;
             StartCycleConfirmed = startCycleConfimed;
             EndCycleConfirmed = endCycleConfirmed;
-            NeedToAddCycleMannually = needToAddCycleManually;
         }
 
         public void SetDropValues()
         {
-            var currentPeriod = App.MainViewModel.Calendar.CurrentPeriod;
-            int remainingDays = ((TimeSpan)(currentPeriod.CycleStartDay - DateTime.Today)).Days;
-            if (remainingDays > 0)
+            var currentPeriod = App.MainViewModel.Calendar.NextPeriod;
+
+            if(DateTime.Today < currentPeriod.CycleStartDay)
             {
+                int remainingDays = ((TimeSpan)(currentPeriod.CycleStartDay - DateTime.Today)).Days;
+     
                 DaysToPeriodText = AppResources.DaysToPeriodText;
-                DaysToPeriod = remainingDays.ToString();
+                DaysToPeriod = Math.Abs( remainingDays).ToString();
             }
             else
-            {
-                int daysIntoCycle = ((TimeSpan)(DateTime.Today - currentPeriod.CycleStartDay)).Days + 1;
-                DaysToPeriodText = AppResources.DayOfPeriodText;
-                DaysToPeriod = daysIntoCycle.ToString();
-            }
+                if (DateTime.Today >= currentPeriod.CycleStartDay && DateTime.Today <= currentPeriod.CycleEndDay)
+                {
+                    int daysIntoCycle = ((TimeSpan)(currentPeriod.CycleEndDay - DateTime.Today)).Days + 1;
+                    DaysToPeriodText = AppResources.DayOfPeriodText;
+                    DaysToPeriod = Math.Abs(daysIntoCycle).ToString();
+                }
         }
 
 

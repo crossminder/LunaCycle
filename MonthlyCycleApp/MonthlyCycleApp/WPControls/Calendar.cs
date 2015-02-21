@@ -33,10 +33,7 @@ namespace WPControls
             var binding = new Binding();
             Loaded += CalendarLoaded;
             SetBinding(PrivateDataContextPropertyProperty, binding);
-
             SetBinding(PeriodCalendarPropertyProperty, binding);
-
-            SetBinding(CalendarObjectPropertyProperty, binding);
 
             WireUpDataSource(DataContext, DataContext);
             _dateTimeFormatInfo = !CultureInfo.CurrentCulture.IsNeutralCulture ?
@@ -107,10 +104,6 @@ namespace WPControls
 
         #endregion
 
-        #region Gestures
-
-        #endregion
-
         #region Members
 
         private Grid _itemsGrid;
@@ -124,6 +117,8 @@ namespace WPControls
         #endregion
 
         #region Events
+
+        public event EventHandler<CalendarChangedEventArgs> CalendarChanged;
 
         /// <summary>
         /// Event that occurs before month/year combination is changed
@@ -195,6 +190,12 @@ namespace WPControls
             }
         }
 
+        protected virtual void RaisePeriodCalendarChanged(PeriodCalendar calendar)
+        {
+            if (CalendarChanged != null)
+                CalendarChanged(this, new CalendarChangedEventArgs(calendar));
+        }
+
         #endregion
 
         #region Constants
@@ -206,35 +207,15 @@ namespace WPControls
 
         #region Properties
 
-        #region CalendarObject
-        public CalendarObject CalendarObjectProperty
-        {
-            get { return (CalendarObject)GetValue(CalendarObjectPropertyProperty); }
-            set { SetValue(CalendarObjectPropertyProperty, value); }
-        }
-
-        public static readonly DependencyProperty CalendarObjectPropertyProperty =
-            DependencyProperty.Register("CalendarObjectProperty", typeof(CalendarObject), typeof(Calendar),
-            new PropertyMetadata(null, OnCalendarObjectPropertyChanged));
-
-        private static void OnCalendarObjectPropertyChanged(DependencyObject sender, DependencyPropertyChangedEventArgs e)
-        {
-            var calendar = sender as Calendar;
-            if (calendar != null)
-            {
-                calendar.WireUpDataSource(e.OldValue, e.NewValue);
-                calendar.Refresh();
-            }
-
-        }
-        #endregion
-
         #region PeriodCalendar
 
         public PeriodCalendar PeriodCalendarProperty
         {
             get { return (PeriodCalendar)GetValue(PeriodCalendarPropertyProperty); }
-            set { SetValue(PeriodCalendarPropertyProperty, value); }
+            set {
+
+                SetValue(PeriodCalendarPropertyProperty, value);
+            }
         }
 
         public static readonly DependencyProperty PeriodCalendarPropertyProperty =
@@ -248,9 +229,11 @@ namespace WPControls
             {
                 calendar.WireUpDataSource(e.OldValue, e.NewValue);
                 calendar.Refresh();
+              
             }
 
         }
+
         #endregion
 
       
@@ -1138,19 +1121,10 @@ namespace WPControls
                                     item.IsSelected = false;
                                 }
                             }
+                            
                             addedDays += 1;
                             item.DayNumber = addedDays;
-
                             item.SetDayType(this.PeriodCalendarProperty);
-
-                            //item.DayType = (PeriodDayTypeEnum) Enum.Parse(typeof(PeriodDayTypeEnum),
-                            //    this.CalendarObjectProperty.Months[item.ItemDate.Month].Days[item.ItemDate.Day].ToString());
-
-                            //item.DayType = this.CalendarObjectProperty!=null ? 
-                            //    this.CalendarObjectProperty.Months.GetDayTypeById(item.ItemDate.Month, item.ItemDate.Day) : 
-                            //    PeriodDayTypeEnum.RegularDay;
-                            
-                            //  this.CalendarObjectProperty.Months[item.ItemDate.Month].Days[item.ItemDate.Day] : PeriodDayTypeEnum.RegularDay;
 
                             item.SetBackcolor();
                             item.SetForecolor();
@@ -1243,5 +1217,7 @@ namespace WPControls
 
         #endregion
 
+
+      
     }
 }

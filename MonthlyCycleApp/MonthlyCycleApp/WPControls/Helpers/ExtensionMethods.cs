@@ -43,11 +43,11 @@ namespace WPControls.Helpers
                     select item ).FirstOrDefault();
         }
 
-        public static PeriodDayTypeEnum GetDayTypeById(this List<MonthObject> months, int monthId, int dayId)
-        {
-            MonthObject month = months.GetMonthById(monthId);
-            return month != null && month.Days.Length > dayId - 1 ? month.Days[dayId - 1] : PeriodDayTypeEnum.RegularDay;
-        }
+        //public static PeriodDayTypeEnum GetDayTypeById(this List<MonthObject> months, int monthId, int dayId)
+        //{
+        //    MonthObject month = months.GetMonthById(monthId);
+        //    return month != null && month.Days.Length > dayId - 1 ? month.Days[dayId - 1] : PeriodDayTypeEnum.RegularDay;
+        //}
 
         public static PeriodDayTypeEnum GetDayType(DateTime date, PeriodMonth periodMonth)
         {
@@ -83,17 +83,17 @@ namespace WPControls.Helpers
             return periodMonth!=null ? (date >= periodMonth.CycleStartDay && date <= periodMonth.CycleStartDay.AddDays(21)): false;
         }
 
-        public static void SetPeriod(this MonthObject month, int startPeriod, int periodDuration, int cycleDuration)
-        {
-            month.Days = Enumerable.Repeat(PeriodDayTypeEnum.RegularDay, month.Days.Count()).ToArray();
+        //public static void SetPeriod(this MonthObject month, int startPeriod, int periodDuration, int cycleDuration)
+        //{
+        //    month.Days = Enumerable.Repeat(PeriodDayTypeEnum.RegularDay, month.Days.Count()).ToArray();
 
-            month.Days[startPeriod] = PeriodDayTypeEnum.CycleStartDay;
-            for (int i = startPeriod; i < startPeriod + periodDuration; i++)
-            {
-                month.Days[i] = PeriodDayTypeEnum.CycleDay;
-            }
-           month. Days[startPeriod + periodDuration] = PeriodDayTypeEnum.CycleEndDay;
-        }
+        //    month.Days[startPeriod] = PeriodDayTypeEnum.CycleStartDay;
+        //    for (int i = startPeriod; i < startPeriod + periodDuration; i++)
+        //    {
+        //        month.Days[i] = PeriodDayTypeEnum.CycleDay;
+        //    }
+        //   month.Days[startPeriod + periodDuration] = PeriodDayTypeEnum.CycleEndDay;
+        //}
     }
  
     

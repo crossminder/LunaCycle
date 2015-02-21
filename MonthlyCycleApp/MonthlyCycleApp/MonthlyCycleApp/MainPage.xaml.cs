@@ -12,6 +12,7 @@ using MonthlyCycleApp.Resources;
 using System.Windows.Media.Animation;
 using System.Windows.Media.Imaging;
 using MonthlyCycleApp.Model;
+using System.Windows.Data;
 
 
 namespace MonthlyCycleApp
@@ -32,15 +33,20 @@ namespace MonthlyCycleApp
         void MainPage_Loaded(object sender, RoutedEventArgs e)
         {
 
-            Cal.PeriodCalendarProperty = App.MainViewModel.Calendar;
+            this.Blink.Begin();
+
+            //Cal.PeriodCalendarProperty = App.MainViewModel.Calendar;
+        
             //startingWeekDayList.DataContext = daysOfWeek;
             startingWeekDayList.ItemsSource = App.MainViewModel.DaysOfWeek;
           //  startingPageList.SelectedIndex = Convert.ToInt32( App.MainViewModel.FirstDayOfWeek);
-
-            App.MainViewModel.SelectedStartCycle = DateTime.Today;
-            App.MainViewModel.SelectedEndCycle = (App.MainViewModel.ShowSelectStartDay && App.MainViewModel.ShowSelectEndDay) ?
-                DateTime.Today.AddDays(App.MainViewModel.Calendar.CurrentPeriod.CycleDuration) :
-                DateTime.Today;
+            if (!App.MainViewModel.Return)
+            {
+                App.MainViewModel.SelectedStartCycle = App.MainViewModel.Calendar.CurrentPeriod.CycleStartDay;
+                    //DateTime.Today;
+                App.MainViewModel.SelectedEndCycle = App.MainViewModel.Calendar.CurrentPeriod.CycleEndDay;
+                 //   DateTime.Today.AddDays(App.MainViewModel.Calendar.CurrentPeriod.CycleDuration);
+            }
         }
 
         #region Navigation
@@ -92,20 +98,7 @@ namespace MonthlyCycleApp
             panoramaControl.Visibility = Visibility.Visible;
         }
    
-        private void StartCycle_Click(object sender, EventArgs e)
-        {
-            App.MainViewModel.Calendar.CurrentPeriod.CycleStartDay = Cal.SelectedDate;
-          //  RestoreAppBarDefaultValues();
-          //  periodChosen = true;
-        }
-
-        private void EndCycle_Click(object sender, EventArgs e)
-        {
-            App.MainViewModel.Calendar.CurrentPeriod.CycleEndDay = Cal.SelectedDate;
-          //  RestoreAppBarDefaultValues();
-         //   periodChosen = true;
-        }
-
+      
 
         private void startingWeekDayList_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
@@ -378,14 +371,15 @@ namespace MonthlyCycleApp
 
         private void okBtn_Click(object sender, RoutedEventArgs e)
         {
+            App.MainViewModel.Return = false;
             var currentPeriod = App.MainViewModel.Calendar.CurrentPeriod;
             if (App.MainViewModel.ShowSelectStartDay && App.MainViewModel.ShowSelectEndDay)
             {
                 currentPeriod.CycleStartDay = App.MainViewModel.SelectedStartCycle;
                 currentPeriod.CycleEndDay = App.MainViewModel.SelectedEndCycle;
-                
-                //clear 
-                App.LunaViewModel.SetupControlsVisibility(false, false, false, false);
+
+                App.MainViewModel.ShowSelectStartDay = false;
+                App.MainViewModel.ShowSelectEndDay = false;
             }
 
             if (App.MainViewModel.ShowSelectStartDay)
@@ -394,7 +388,8 @@ namespace MonthlyCycleApp
                 currentPeriod.CycleEndDay = currentPeriod.CycleStartDay.AddDays(currentPeriod.CycleDuration);
                 currentPeriod.PeriodEndDay = currentPeriod.CycleStartDay.AddDays(currentPeriod.PeriodDuration);
 
-                App.LunaViewModel.SetupControlsVisibility(false, true, false, false);
+                App.MainViewModel.ShowSelectStartDay = false;
+
             }
 
             if (App.MainViewModel.ShowSelectEndDay)
@@ -408,28 +403,23 @@ namespace MonthlyCycleApp
                         currentPeriod.CycleDuration = computedCycleDuration;
                 }
 
-                //clear
-               App.LunaViewModel.SetupControlsVisibility(true, false, false, false);
+                App.MainViewModel.ShowSelectEndDay = false;
             }
             App.MainViewModel.Calendar.CurrentPeriod = currentPeriod;
 
-            //delayed
-            if (!App.MainViewModel.ShowSelectStartDay && !App.MainViewModel.ShowSelectEndDay)
-            {
-                App.LunaViewModel.SetupControlsVisibility(false, false, false, true);
-                App.LunaViewModel.DaysToPeriodText = "?";
-
-            }
+            Cal.PeriodCalendarProperty = null; 
+            Cal.PeriodCalendarProperty = App.MainViewModel.Calendar;
+            Cal.Refresh();
+        
             App.LunaViewModel.SetDropValues();
             App.MainViewModel.ShowDialog = false;
         }
 
        
-        
-
         private void cancelBtn_Click(object sender, RoutedEventArgs e)
         {
             App.MainViewModel.ShowDialog = false;
+            App.MainViewModel.Return = false;
         }
 
         
@@ -440,10 +430,10 @@ namespace MonthlyCycleApp
 
         private void pkEndDateCycle_ValueChanged(object sender, DateTimeValueChangedEventArgs e)
         {
-            if (e.NewDateTime != e.OldDateTime && e.NewDateTime.HasValue)
+            if (e.NewDateTime != DateTime.MinValue && e.NewDateTime != e.OldDateTime && e.NewDateTime.HasValue)
             {
                 App.MainViewModel.SelectedEndCycle = e.NewDateTime.Value;
-                App.MainViewModel.SetDelayedAdvancedCounter(false,true);
+                App.MainViewModel.SetupDialog();
             }
         }
 
@@ -451,12 +441,12 @@ namespace MonthlyCycleApp
 
         private void pkStartDateCycle_ValueChanged(object sender, DateTimeValueChangedEventArgs e)
         {
-            if (e.NewDateTime != e.OldDateTime && e.NewDateTime.HasValue)
+            if (e.NewDateTime !=DateTime.MinValue  && e.NewDateTime != e.OldDateTime && e.NewDateTime.HasValue)
             {
                 App.MainViewModel.SelectedStartCycle = e.NewDateTime.Value;
                 App.MainViewModel.SelectedEndCycle = e.NewDateTime.Value.AddDays(App.MainViewModel.Calendar.CurrentPeriod.CycleDuration);
-              
-                App.MainViewModel.SetDelayedAdvancedCounter(true,true);
+
+                App.MainViewModel.SetupDialog();
             }
         }
 

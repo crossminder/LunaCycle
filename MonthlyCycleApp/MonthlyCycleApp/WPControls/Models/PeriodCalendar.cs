@@ -15,13 +15,6 @@ namespace WPControls.Models
     {
 
         #region Serializable
-        //[DataMember]
-        //public int Year
-        //{
-        //    get;
-        //    set;
-        //}
-
         [DataMember]
         public List<PeriodMonth> PastPeriods
         {
@@ -42,19 +35,19 @@ namespace WPControls.Models
         #endregion
 
         #region private
-        private PeriodMonth _currentPeriod;
+        private PeriodMonth currentPeriod;
         private List<PeriodMonth> _pastPeriods = new List<PeriodMonth>();
-        private int _averagePeriodDuration;
-        private int _averageCycleDuration;
-        private List<PeriodMonth> _futurePeriods;
-        private PeriodMonth _nextPeriod;
+        private int averagePeriodDuration;
+        private int averageCycleDuration;
+        private List<PeriodMonth> futurePeriods;
+        private PeriodMonth nextPeriod;
         private PeriodDay _today;
         #endregion
 
         #region const
 
         private const int _defaultAveragePeriod = 28;
-        private const int _defaultAverageCycle = 6;
+        private const int defaultAverageCycle = 6;
 
         #endregion
 
@@ -63,29 +56,30 @@ namespace WPControls.Models
         {
             get
             {
-                if (_currentPeriod != null) return _currentPeriod;
+                if (currentPeriod != null) return currentPeriod;
 
-
-                _currentPeriod = new PeriodMonth();
+                currentPeriod = new PeriodMonth();
                 if (PastPeriods != null && PastPeriods.Count > 0)
-                    _currentPeriod = (from period in PastPeriods
+                    currentPeriod = (from period in PastPeriods
                                       where period.CycleStartDay.Month == DateTime.Today.Month
                                       select period).FirstOrDefault();
 
 
-                if (_currentPeriod.IsEmpty() && PastPeriods != null && PastPeriods.Count > 0)
+                if (currentPeriod.IsEmpty() && PastPeriods != null && PastPeriods.Count > 0)
                 {
-                    _currentPeriod.PeriodDuration = AveragePeriodDuration;
-                    _currentPeriod.CycleDuration = AverageCycleDuration;
+                    currentPeriod.PeriodDuration = AveragePeriodDuration;
+                    currentPeriod.CycleDuration = AverageCycleDuration;
                 }
 
-
-                return _currentPeriod != null ? _currentPeriod : new PeriodMonth();
+                return currentPeriod != null ? currentPeriod : new PeriodMonth();
             }
             set
             {
                 if (value != null)
-                    _currentPeriod = value;
+                {
+                    currentPeriod = value;
+                    OnPropertyChanged("CurrentPeriod");
+                }
             }
         }
    
@@ -93,20 +87,20 @@ namespace WPControls.Models
         {
             get 
             {
-                if (_averagePeriodDuration == 0)
+                if (averagePeriodDuration == 0)
                 {
                     if (PastPeriods != null && PastPeriods.Count > 0)
                     {
                         var pastPeriodsList = (from month in PastPeriods.OrderBy(x => x.CycleStartDay.Month)
                                                where month.CycleStartDay.Month <= DateTime.Today.AddMonths(-3).Month
                                                select month).ToList();
-                        _averagePeriodDuration = pastPeriodsList.Sum(x => x.PeriodDuration) / pastPeriodsList.Count();
+                        averagePeriodDuration = pastPeriodsList.Sum(x => x.PeriodDuration) / pastPeriodsList.Count();
                     }
                     else
-                        _averagePeriodDuration = _defaultAveragePeriod;
+                        averagePeriodDuration = _defaultAveragePeriod;
                 }
 
-                return _averagePeriodDuration;
+                return averagePeriodDuration;
             }
         }
        
@@ -114,19 +108,19 @@ namespace WPControls.Models
         {
             get
             {
-                if (_averagePeriodDuration == 0)
+                if (averagePeriodDuration == 0)
                 {
                     if (PastPeriods != null && PastPeriods.Count > 0)
                     {
                         var pastPeriodsList = (from month in PastPeriods.OrderBy(x => x.CycleStartDay.Month)
                                                where month.CycleStartDay.Month <= DateTime.Today.AddMonths(-3).Month
                                                select month).ToList();
-                        _averageCycleDuration = pastPeriodsList.Sum(x => x.CycleDuration) / pastPeriodsList.Count();
+                        averageCycleDuration = pastPeriodsList.Sum(x => x.CycleDuration) / pastPeriodsList.Count();
                     }
                     else
-                        _averageCycleDuration = _defaultAverageCycle;
+                        averageCycleDuration = defaultAverageCycle;
                 }
-                return _averageCycleDuration;
+                return averageCycleDuration;
             }
         }
 
@@ -134,9 +128,9 @@ namespace WPControls.Models
         {
             get
             {
-                if (_futurePeriods == null)
-                    _futurePeriods = new List<PeriodMonth>();
-                if(_futurePeriods.Count ==0)
+                if (futurePeriods == null)
+                    futurePeriods = new List<PeriodMonth>();
+                if(futurePeriods.Count ==0)
                 {
                     if (PastPeriods != null && PastPeriods.Count > 0)
                     {
@@ -163,31 +157,31 @@ namespace WPControls.Models
                             CycleStartDay = estimatedFuture2.PeriodEndDay.AddDays(1)
                         };
 
-                        _futurePeriods.Add(estimatedFuture1);
-                        _futurePeriods.Add(estimatedFuture2);
-                        _futurePeriods.Add(EstimatedFuture3);
+                        futurePeriods.Add(estimatedFuture1);
+                        futurePeriods.Add(estimatedFuture2);
+                        futurePeriods.Add(EstimatedFuture3);
                     }
                 }
-                return _futurePeriods;
+                return futurePeriods;
             }
         }
 
-        public List<PeriodMonth> _periods;
+        public List<PeriodMonth> periods;
         public List<PeriodMonth> Periods
         {
             get
             {
-                if (_periods == null)
-                    _periods = new List<PeriodMonth>();
-                if (_periods.Count == 0)
+                if (periods == null)
+                    periods = new List<PeriodMonth>();
+                if (periods.Count == 0)
                 {
                     if (PastPeriods != null && PastPeriods.Count > 0)
-                        _periods = (from item in PastPeriods
+                        periods = (from item in PastPeriods
                                     select item).ToList();
                     if (FuturePeriods != null && FuturePeriods.Count > 0)
-                        _periods = _periods.Concat(FuturePeriods).ToList();
+                        periods = periods.Concat(FuturePeriods).ToList();
                 }
-                return _periods;
+                return periods;
             }
         }
 
@@ -195,15 +189,14 @@ namespace WPControls.Models
         {
             get
             {
-                if (_nextPeriod != null)
-                    return _nextPeriod;
-                _nextPeriod = new PeriodMonth();
-                if (CurrentPeriod != null && DateTime.Today < CurrentPeriod.CycleStartDay)
-                    _nextPeriod = _currentPeriod;
-                if (CurrentPeriod != null && FuturePeriods != null && FuturePeriods.Count > 0 && DateTime.Today >= CurrentPeriod.CycleStartDay)
-                    _nextPeriod = FuturePeriods.FirstOrDefault();
 
-                return _nextPeriod;
+               var period = new PeriodMonth();
+                if (CurrentPeriod != null && DateTime.Today < CurrentPeriod.CycleEndDay)
+                    period = currentPeriod;
+                if (CurrentPeriod != null && FuturePeriods != null && FuturePeriods.Count > 0 && DateTime.Today >= CurrentPeriod.CycleEndDay)
+                    period = FuturePeriods.FirstOrDefault();
+
+                return period;
 
             }
         }
@@ -238,5 +231,7 @@ namespace WPControls.Models
             }
         }
         #endregion
+
+      
     }
 }
