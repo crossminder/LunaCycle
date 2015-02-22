@@ -12,8 +12,19 @@
     d:Height="485" d:Width="422">
     <UserControl.Resources>
         <converters:BoolToVisibilityConverter x:Name="BoolToVisibilityConverter"/>
+        <Storyboard x:Name="Blink" AutoReverse="True" RepeatBehavior="Forever">
+            <DoubleAnimationUsingKeyFrames BeginTime="00:00:00"
+                                          Storyboard.TargetName="ellipse"
+                                        Storyboard.TargetProperty="Opacity">
+                <EasingDoubleKeyFrame KeyTime="00:00:1" Value="0.2">
+                    <EasingDoubleKeyFrame.EasingFunction>
+                        <QuadraticEase EasingMode="EaseInOut"/>
+                    </EasingDoubleKeyFrame.EasingFunction>
+                </EasingDoubleKeyFrame>
+            </DoubleAnimationUsingKeyFrames>
+        </Storyboard>
     </UserControl.Resources>
-    <Grid x:Name="LayoutRoot" Width="Auto" Height="Auto"
+    <Grid x:Name="LayoutRoot2" Width="Auto" Height="Auto"
           Tap="LayoutRoot_Tap">
         <Grid.Background>
             <ImageBrush ImageSource="/Assets/Images/drop-light.png" Stretch="Uniform"/>
@@ -24,7 +35,6 @@
         </Grid.RowDefinitions>
 
         <Ellipse x:Name="ellipse" Height="500" Width="445" 
-
                  Grid.RowSpan="2"
                  VerticalAlignment="Center">
             <Ellipse.Fill>
@@ -44,7 +54,7 @@
         <Grid x:Name="drop" Height="475" Width="480"
               d:LayoutRounding="Auto"  
               Grid.Row="0"
-          HorizontalAlignment="Center" VerticalAlignment="Top"
+              HorizontalAlignment="Center" VerticalAlignment="Top"
               Margin="0,128,0,10" Grid.RowSpan="2">
 
             <Grid  Canvas.Left="20"
@@ -139,8 +149,6 @@
                    Foreground="#C5474A"  />
         <Image Source="/Assets/Images/date-shadow-highlight.png" Margin="61,10,58,-164" Grid.Row="1" />
         <Image Source="/Assets/Images/womb.png" Opacity="0" Grid.RowSpan="2" Margin="-10,0,10,0"/>
-
-
 
     </Grid>
 </UserControl>

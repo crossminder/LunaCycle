@@ -530,8 +530,6 @@ namespace MonthlyCycleApp.ViewModels
                             !App.LunaViewModel.EndCycleConfirmed &&
                             DateTime.Now >= SelectedStartCycle.AddDays(currentPeriod.CycleDuration))
                         {
-
-
                             FirstRowText = AppResources.PeriodStartedQuestion;
                             SecondRowText = string.Empty;
                             ThirdRowText = AppResources.PeriodEndedQuestion;

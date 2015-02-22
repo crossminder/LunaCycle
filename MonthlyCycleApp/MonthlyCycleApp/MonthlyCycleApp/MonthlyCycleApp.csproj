@@ -94,9 +94,6 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Controls\CycleDropControl.xaml.cs">
-      <DependentUpon>CycleDropControl.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Controls\LunaDropControl.xaml.cs">
       <DependentUpon>LunaDropControl.xaml</DependentUpon>
     </Compile>
@@ -138,10 +135,6 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </ApplicationDefinition>
-    <Page Include="Controls\CycleDropControl.xaml">
-      <Generator>MSBuild:MarkupCompilePass1</Generator>
-      <SubType>Designer</SubType>
-    </Page>
     <Page Include="Controls\LunaDropControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

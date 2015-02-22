@@ -8,6 +8,7 @@ using System.Windows.Navigation;
 using Microsoft.Phone.Controls;
 using Microsoft.Phone.Shell;
 using MonthlyCycleApp.ViewModels;
+using System.Windows.Media;
 
 namespace MonthlyCycleApp
 {
@@ -25,10 +26,8 @@ namespace MonthlyCycleApp
         {
             InitializeComponent();
             this.DataContext = this;
-
-           
-
         }
+
         #region Navigation
 
         protected override void OnNavigatedTo(NavigationEventArgs e)
@@ -56,25 +55,41 @@ namespace MonthlyCycleApp
 
             if ((sender as TextBox).Name.Contains("Period"))
 
-                (ContentPanel as Grid).RowDefinitions[1].Height = new GridLength(30);
+                (ContentPanel as Grid).RowDefinitions[1].Height = new GridLength(80);
             else
-                (ContentPanel as Grid).RowDefinitions[3].Height = new GridLength(60);
+                (ContentPanel as Grid).RowDefinitions[3].Height = new GridLength(80);
         }
 
         private void tbPeriodCycle_LostFocus(object sender, RoutedEventArgs e)
         {
             if (string.IsNullOrWhiteSpace((sender as TextBox).Text))
-                (sender as TextBox).Text = "0";
+                (sender as TextBox).Text = (sender as TextBox).Name.Contains("Period") ? "6" : "28";
 
             if ((sender as TextBox).Name.Contains("Period"))
+            {
                 (ContentPanel as Grid).RowDefinitions[1].Height = new GridLength(0);
+            }
             else
+            {
                 (ContentPanel as Grid).RowDefinitions[3].Height = new GridLength(0);
+            }
         }
 
         private void pkLastCycle_ValueChanged(object sender, DateTimeValueChangedEventArgs e)
         {
-       
+            if (e.NewDateTime != DateTime.MinValue && e.NewDateTime != e.OldDateTime && e.NewDateTime.HasValue)
+            {
+                if (e.NewDateTime.Value > DateTime.Now)
+                {
+                    (sender as DatePicker).BorderBrush = Application.Current.Resources["PinkColor"] as SolidColorBrush;
+                    (ContentPanel as Grid).RowDefinitions[5].Height = new GridLength(80);
+                }
+                else
+                {
+                    (ContentPanel as Grid).RowDefinitions[5].Height = new GridLength(0);
+                    (sender as DatePicker).BorderBrush = new SolidColorBrush(Colors.White);
+                }
+            }
         }
 
         private void pkLastCycle_ManipulationCompleted(object sender, System.Windows.Input.ManipulationCompletedEventArgs e)

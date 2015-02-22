@@ -52,7 +52,8 @@ namespace MonthlyCycleApp
         #region Navigation
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
-            App.SetupViewModel.ShowInitialSetup = !App.SetupViewModel.SetupCompleted;
+            App.SetupViewModel.ShowInitialSetup = true;
+                //!App.SetupViewModel.SetupCompleted;
 
             //remove initial setup page from history
             if (NavigationService.BackStack.Count() > 0)

@@ -25,9 +25,9 @@
             <Setter Property="FontFamily" Value="{StaticResource PhoneFontFamilySemiLight}"/>
             <Setter Property="TextAlignment" Value="Left"/>
             <Setter Property="VerticalAlignment" Value="Center"/>
-            <Setter Property="FontSize" Value="30"/>
-            <Setter Property="Height" Value="48"/>
+            <Setter Property="FontSize" Value="30"/>          
             <Setter Property="Foreground" Value="White"/>
+            <Setter Property="TextWrapping" Value="Wrap"/>
         </Style>
 
         <Style TargetType="TextBlock" x:Key="settingsTBlTitle">
@@ -58,6 +58,19 @@
             <Setter Property="Height" Value="80"/>
             <Setter Property="Foreground" Value="Black"/>
             <Setter Property="SelectionBackground" Value="#FFD96266" />
+        </Style>
+
+        <Style TargetType="TextBlock" x:Key="setupTBlExplanation">
+            <Setter Property="FontFamily" Value="{StaticResource PhoneFontFamilySemiLight}"/>
+            <Setter Property="TextAlignment" Value="Left"/>
+            <Setter Property="VerticalAlignment" Value="Center"/>
+            <Setter Property="FontSize" Value="20"/>
+            <Setter Property="Height" Value="80"/>
+            <Setter Property="Margin" Value="10,0,0,0" />
+            <Setter Property="TextWrapping" Value="Wrap"/>
+            <Setter Property="Foreground" Value="{StaticResource PinkColor}"/>
+            <Setter Property="Opacity" Value="0.8"/>
+            <Setter Property="Grid.ColumnSpan" Value="2"/>
         </Style>
         
         <Style TargetType="TextBlock" x:Key="settingsTBlExplanation">

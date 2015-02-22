@@ -274,18 +274,21 @@
     <value>Ok</value>
   </data>
   <data name="EndDateBeforeStartValidation" xml:space="preserve">
-    <value>The end date selected is before conformed start date. Pick another one.</value>
+    <value>The end of cycle you selected is before the confirmed start of cycle. Please pick another date.</value>
   </data>
   <data name="EndDateFarInFutureValidation" xml:space="preserve">
-    <value>This end date is way in the future. Is it correct?</value>
+    <value>This means your cycle lasted more than twice the average. Is this correct?</value>
   </data>
   <data name="EndDateTooCloseToStartValidation" xml:space="preserve">
-    <value>Your cycle couldn't have been ended on 2 days distance from the begining. Did it?</value>
+    <value>This means your cycle lasted less than 2 days. Is this correct?</value>
   </data>
   <data name="OverlapExistingPeriodValidation" xml:space="preserve">
     <value>This start date is overlapping another existing cycle period. Do you want to modify existing period?</value>
   </data>
   <data name="StartDateInFutureValidation" xml:space="preserve">
-    <value>This start date is way in the future. Pick another date or cancel.</value>
+    <value>The date you selected is in the future. Please select another date.</value>
+  </data>
+  <data name="SetupStartDateInFutureValidation" xml:space="preserve">
+    <value>The date you selected is in the future. Is this correct?</value>
   </data>
 </root>

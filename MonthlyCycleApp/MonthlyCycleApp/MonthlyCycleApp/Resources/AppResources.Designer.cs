@@ -205,7 +205,7 @@ namespace MonthlyCycleApp.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The end date selected is before conformed start date. Pick another one..
+        ///   Looks up a localized string similar to The end of cycle you selected is before the confirmed start of cycle. Please pick another date..
         /// </summary>
         public static string EndDateBeforeStartValidation {
             get {
@@ -214,7 +214,7 @@ namespace MonthlyCycleApp.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to This end date is way in the future. Is it correct?.
+        ///   Looks up a localized string similar to This means your cycle lasted more than twice the average. Is this correct?.
         /// </summary>
         public static string EndDateFarInFutureValidation {
             get {
@@ -223,7 +223,7 @@ namespace MonthlyCycleApp.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Your cycle couldn&apos;t have been ended on 2 days distance from the begining. Did it?.
+        ///   Looks up a localized string similar to This means your cycle lasted less than 2 days. Is this correct?.
         /// </summary>
         public static string EndDateTooCloseToStartValidation {
             get {
@@ -520,6 +520,15 @@ namespace MonthlyCycleApp.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The date you selected is in the future. Is this correct?.
+        /// </summary>
+        public static string SetupStartDateInFutureValidation {
+            get {
+                return ResourceManager.GetString("SetupStartDateInFutureValidation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Standard.
         /// </summary>
         public static string Standard {
@@ -529,7 +538,7 @@ namespace MonthlyCycleApp.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to This start date is way in the future. Pick another date or cancel..
+        ///   Looks up a localized string similar to The date you selected is in the future. Please select another date..
         /// </summary>
         public static string StartDateInFutureValidation {
             get {

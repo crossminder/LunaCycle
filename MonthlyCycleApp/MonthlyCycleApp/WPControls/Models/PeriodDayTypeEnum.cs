@@ -15,7 +15,7 @@ namespace WPControls.Models
         FertilityDay = 4,
         FertilityEndDay = 5,
         RegularDay = 6,
-
+        OvulationDay=7,
         NotAssigned = -1,
     }
 

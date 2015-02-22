@@ -58,6 +58,7 @@
                 <RowDefinition Height="120"/>
                 <RowDefinition Height="0"/>
                 <RowDefinition Height="130"/>
+                <RowDefinition Height="0"/>
                 <RowDefinition Height="100"/>
                 <RowDefinition/>
             </Grid.RowDefinitions>
@@ -69,12 +70,10 @@
             <TextBlock x:Name="tbPeriodDurationText" 
                            Grid.Column="0" Grid.Row="0"
                            Style="{StaticResource settingsTBlLarge}"
-                           Margin="18,55,0,34"                         
                            Text="{Binding Path=LocalizedResources.PeriodDurationSettingText, Source={StaticResource LocalizedStrings}}" />
             <TextBox x:Name="tbPeriodDuration" 
                            Grid.Column="1" Grid.Row="0"
                            Style="{StaticResource settingsTBoxLarge}"
-                           Margin="10,36,0,15"
                            Text="{Binding SetupViewModel.PeriodDuration,Mode=TwoWay}"
                            IsEnabled="{Binding MainViewModel.PeriodDurationEnabled}"
                            GotFocus="tbPeriodCycle_GotFocus" 
@@ -87,20 +86,17 @@
             </TextBox>
 
             <TextBlock x:Name="tbPeriodExplanation"
-                       Grid.Row="1" Grid.ColumnSpan="2"
-                       Margin="30,0,0,0"
-                       Foreground="{StaticResource PinkColor}"
-                       Opacity="0.8"
+                       Grid.Row="1"
+                       Style="{StaticResource setupTBlExplanation}"
                        Text="{Binding Path=LocalizedResources.PeriodDurationSettingExplanation, Source={StaticResource LocalizedStrings}}" />
 
             <TextBlock x:Name="tbCycleDurationText" 
                            Grid.Column="0" Grid.Row="2"
-                           Margin="18,52,0,25"
                            Style="{StaticResource settingsTBlLarge}"                          
                            Text="{Binding Path=LocalizedResources.CycleDurationSettingText, Source={StaticResource LocalizedStrings}}" />
             <TextBox x:Name="tbCycleDuration" 
                            Grid.Column="1" Grid.Row="2"                          
-                           Margin="10,29,0,10"
+
                            Style="{StaticResource settingsTBoxLarge}"                            
                            Text="{Binding SetupViewModel.CycleDuration,Mode=TwoWay}"
                            IsEnabled="{Binding MainViewModel.CycleDurationEnabled}"
@@ -114,30 +110,31 @@
             </TextBox>
 
             <TextBlock x:Name="tbCycleExplanation"
-                       Grid.Row="3" Grid.ColumnSpan="2"
-                       Margin="30,0,0,0"
-                       Foreground="{StaticResource PinkColor}"
-                       TextWrapping="Wrap"
-                       Opacity="0.8"
+                       Grid.Row="3"
+                       Style="{StaticResource setupTBlExplanation}"
                        Text="{Binding Path=LocalizedResources.CycleDurationSettingExplanation, Source={StaticResource LocalizedStrings}}" />
 
             <TextBlock x:Name="tbLastCycleText" 
                            Grid.Column="0" Grid.Row="4"                          
                            Style="{StaticResource settingsTBlLarge}"   
                            TextWrapping="Wrap"
-                           VerticalAlignment="Bottom"
                            Text="{Binding Path=LocalizedResources.LastPeriodStartedSetting, Source={StaticResource LocalizedStrings}}" Height="76" />
             <toolkit:DatePicker 
                 x:Name="pkLastCycle" 
                 Grid.Column="1" Grid.Row="4"
-                Margin="10,39,0,10" 
+                VerticalAlignment="Center"
                 RenderTransformOrigin="0.483,0.896"
                 HorizontalContentAlignment="Center"
                 Value="{Binding SetupViewModel.LastPeriodDate,Mode=TwoWay}"
                 ManipulationCompleted="pkLastCycle_ManipulationCompleted"
                 ValueChanged="pkLastCycle_ValueChanged"/>
 
-            <Button x:Name="setupBtn" Grid.Row="5" Grid.ColumnSpan="2" 
+            <TextBlock x:Name="pkLastCycleExplanation"
+                       Grid.Row="5" 
+                       Style="{StaticResource setupTBlExplanation}"
+                       Text="{Binding Path=LocalizedResources.SetupStartDateInFutureValidation, Source={StaticResource LocalizedStrings}}" />
+
+            <Button x:Name="setupBtn" Grid.Row="6" Grid.ColumnSpan="2" 
                     Content="{Binding SetupViewModel.EndSetupButtonText, Mode=TwoWay}"
                     IsEnabled="{Binding SetupViewModel.SetupCompleted, Mode=TwoWay}"
                     Click="setupBtn_Click"/>

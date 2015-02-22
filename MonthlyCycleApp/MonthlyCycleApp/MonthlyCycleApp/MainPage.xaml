@@ -23,7 +23,6 @@
         <converters:StringToVisibilityConverter x:Name="StringToVisibilityConverter"/>
         <converters:IntToVisibilityConverter x:Name="IntToVisibilityConverter"/>
     </phone:PhoneApplicationPage.Resources>
-    <!--Storyboard.TargetProperty="(Shape.Fill).(SolidColorBrush.Color)"-->
 
     <!--LayoutRoot is the root grid where all page content is placed-->
     <Grid x:Name="LayoutRoot" >
@@ -56,26 +55,7 @@
                         SelectionChanged="startingPageList_SelectionChanged" >
             <!--Drop-->
             <phone:PivotItem x:Name="DropPage" >
-                <Grid>
-                    <controls:LunaDropControl x:Name="dropControl">
-                        <controls:LunaDropControl.Resources>
-                            <Storyboard x:Name="Blink" AutoReverse="True" RepeatBehavior="Forever">
-                                <DoubleAnimationUsingKeyFrames BeginTime="00:00:00"
-                                          Storyboard.TargetName="ellipse"
-                                        Storyboard.TargetProperty="Opacity">
-                                    <EasingDoubleKeyFrame KeyTime="00:00:1" Value="0.2">
-                                        <EasingDoubleKeyFrame.EasingFunction>
-                                            <QuadraticEase EasingMode="EaseInOut"/>
-                                        </EasingDoubleKeyFrame.EasingFunction>
-                                    </EasingDoubleKeyFrame>
-
-                                    <!--<EasingColorKeyFrame KeyTime="00:00:01" Value="Gray"/>-->
-                                </DoubleAnimationUsingKeyFrames>
-                            </Storyboard>
-                        </controls:LunaDropControl.Resources>
-                    </controls:LunaDropControl>
-
-                </Grid>
+                <controls:LunaDropControl x:Name="dropControl" />
             </phone:PivotItem>
 
             <!--Calendar-->
@@ -401,24 +381,31 @@
         <Image x:Name="imgBottomGradient" Source="/Assets/Images/PivotShadow-Bottom.png" 
                Grid.Row="3" Stretch="UniformToFill"/>
 
-        <StackPanel x:Name="dialogPanel" 
-             Visibility="{Binding ShowDialog,Converter={StaticResource BoolToVisibilityConverter}}"
+
+        <StackPanel
+              x:Name="dialogPanel"
               Grid.RowSpan="4" 
               Width="Auto" Height="Auto" 
-              Background="Black" 
-              Opacity="0.5">
-            <StackPanel Margin="5,150,5,0">
-                <StackPanel  x:Name="firstRow"
+              Background="Black"
+              Opacity="0.5"
+              Visibility="{Binding ShowDialog,Converter={StaticResource BoolToVisibilityConverter}}">
+            <!--<Border
+              Margin="50,150,50,0"
+              Background="White"
+              BorderThickness="2"
+              BorderBrush="White">-->
+                <StackPanel  Margin="5,150,5,0" >
+                    <StackPanel  x:Name="firstRow"
                          Visibility="{Binding FirstRowText,Converter={StaticResource StringToVisibilityConverter}}" 
                          Orientation="Horizontal"  
                          HorizontalAlignment="Center">
-                    <TextBlock 
+                        <TextBlock 
                        Margin="5,57,0,56"
                        VerticalAlignment="Center"
                        Text="{Binding FirstRowText}"
                        TextWrapping="Wrap"
                        FontSize="28" />
-                    <toolkit:DatePicker 
+                        <toolkit:DatePicker 
                             x:Name="pkStartDateCycle" 
                             Margin="5,0,0,0"
                             Visibility="{Binding ShowSelectStartDay,
@@ -429,19 +416,19 @@
                             ManipulationCompleted="pkEndDateCycle_ManipulationCompleted"
                             VerticalAlignment="Center"
                             HorizontalContentAlignment="Center" />
-                    <TextBlock x:Name="questionMark"
+                        <TextBlock x:Name="questionMark"
                        VerticalAlignment="Center"
                        Visibility="{Binding ShowSelectStartDay, Converter={StaticResource BoolToVisibilityConverter}}"
                        Text="?"
                        Margin="5,0,0,0"
                        TextWrapping="Wrap"
                        FontSize="28" />
-                </StackPanel>
-                <StackPanel x:Name="secondRow"    
+                    </StackPanel>
+                    <StackPanel x:Name="secondRow"    
                         Visibility="{Binding SecondRowText,Converter={StaticResource StringToVisibilityConverter}}"
                         Orientation="Horizontal"
                         HorizontalAlignment="Center">
-                    <TextBlock
+                        <TextBlock
                        x:Name="secondRowText"
                        VerticalAlignment="Center"
                        HorizontalAlignment="Center"
@@ -449,17 +436,17 @@
                        Text="{Binding SecondRowText}"
                        TextWrapping="Wrap"
                        FontSize="28" />
-                </StackPanel>
-                <StackPanel x:Name="thirdRow"                        
+                    </StackPanel>
+                    <StackPanel x:Name="thirdRow"                        
                         Visibility="{Binding ThirdRowText,Converter={StaticResource StringToVisibilityConverter}}"
                         Orientation="Horizontal"  
                         HorizontalAlignment="Center">
-                    <TextBlock 
+                        <TextBlock 
                        VerticalAlignment="Center"
                        Text="{Binding ThirdRowText}"
                        TextWrapping="Wrap"
                        FontSize="28" />
-                    <toolkit:DatePicker 
+                        <toolkit:DatePicker 
                             x:Name="pkEndDateCycle" 
                             Value="{Binding SelectedEndCycle,Mode=TwoWay}"
                             Visibility="{Binding ShowSelectEndDay, Converter={StaticResource BoolToVisibilityConverter}}"            
@@ -468,19 +455,19 @@
                             ManipulationCompleted="pkEndDateCycle_ManipulationCompleted"
                             VerticalAlignment="Center"
                             HorizontalContentAlignment="Center" />
-                    <TextBlock 
+                        <TextBlock 
                        VerticalAlignment="Center"
                        Visibility="{Binding ShowSelectEndDay, Converter={StaticResource BoolToVisibilityConverter}}"
                        Text="?"
                        Margin="5,0,0,0"
                        TextWrapping="Wrap"
                        FontSize="28" />
-                </StackPanel>
-                <StackPanel x:Name="forthRow"    
+                    </StackPanel>
+                    <StackPanel x:Name="forthRow"    
                         Visibility="{Binding DelayedAdvancedEnd,Converter={StaticResource IntToVisibilityConverter}}"
                         Orientation="Horizontal"  
                         HorizontalAlignment="Center">
-                    <TextBlock
+                        <TextBlock
                        x:Name="forthRowText"
                        VerticalAlignment="Center"
                        HorizontalAlignment="Center"
@@ -488,8 +475,8 @@
                        TextWrapping="Wrap"
                        FontSize="28" 
                        Width="450"/>
-                </StackPanel>
-                <Button x:Name="okBtn" 
+                    </StackPanel>
+                    <Button x:Name="okBtn" 
                     Grid.Row="5"
                     Margin="0,35,0,0"
                     Visibility="{Binding OkButtonContent, Converter={StaticResource StringToVisibilityConverter}}"
@@ -497,7 +484,7 @@
                     HorizontalAlignment="Center"
                     Width="200"
                     Click="okBtn_Click"/>
-                <Button x:Name="cancelBtn" 
+                    <Button x:Name="cancelBtn" 
                     Grid.Row="6"
                     Margin="0,30,0,0"
                     Content="{Binding CancelButtonContent}" 
@@ -505,8 +492,10 @@
                     HorizontalAlignment="Center"
                     Width="200"
                     Click="cancelBtn_Click"/>
-            </StackPanel>
+                </StackPanel>
+            <!--</Border>-->
         </StackPanel>
+     
 
     </Grid>
 </phone:PhoneApplicationPage>
