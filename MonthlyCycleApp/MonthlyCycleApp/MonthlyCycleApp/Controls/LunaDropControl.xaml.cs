@@ -12,6 +12,7 @@ using MonthlyCycleApp.ViewModels;
 using MonthlyCycleApp.Helpers;
 using MonthlyCycleApp.Model;
 using MonthlyCycleApp.Resources;
+using System.Windows.Media.Animation;
 
 namespace MonthlyCycleApp.Controls
 {
@@ -30,20 +31,17 @@ namespace MonthlyCycleApp.Controls
         {
 
         }
-
-
         private void LayoutRoot_Tap(object sender, System.Windows.Input.GestureEventArgs e)
         {
-          //  if (App.MainViewModel.ShowSelectStartDay || App.MainViewModel.ShowSelectEndDay)
-         //   {
+            if (App.MainViewModel.ShowSelectStartDay || App.MainViewModel.ShowSelectEndDay)
+            {
+                (this.Resources["Blink"] as Storyboard).Pause();
+
                 App.MainViewModel.ShowDialog = true;
-                App.MainViewModel.SetupDialog();
-        //    }
+                App.MainViewModel.SetupDialog(ValidationEnum.NoNeedForValidation);
+            }
         }
-
-
         #endregion
 
-    
     }
 }

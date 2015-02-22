@@ -261,4 +261,31 @@
   <data name="PeriodStartedQuestion" xml:space="preserve">
     <value>Did your period start on</value>
   </data>
+  <data name="CancelButton" xml:space="preserve">
+    <value>Cancel</value>
+  </data>
+  <data name="KeepButton" xml:space="preserve">
+    <value>Keep</value>
+  </data>
+  <data name="ModifyButton" xml:space="preserve">
+    <value>Modify</value>
+  </data>
+  <data name="OkButton" xml:space="preserve">
+    <value>Ok</value>
+  </data>
+  <data name="EndDateBeforeStartValidation" xml:space="preserve">
+    <value>The end date selected is before conformed start date. Pick another one.</value>
+  </data>
+  <data name="EndDateFarInFutureValidation" xml:space="preserve">
+    <value>This end date is way in the future. Is it correct?</value>
+  </data>
+  <data name="EndDateTooCloseToStartValidation" xml:space="preserve">
+    <value>Your cycle couldn't have been ended on 2 days distance from the begining. Did it?</value>
+  </data>
+  <data name="OverlapExistingPeriodValidation" xml:space="preserve">
+    <value>This start date is overlapping another existing cycle period. Do you want to modify existing period?</value>
+  </data>
+  <data name="StartDateInFutureValidation" xml:space="preserve">
+    <value>This start date is way in the future. Pick another date or cancel.</value>
+  </data>
 </root>

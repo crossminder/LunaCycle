@@ -287,7 +287,7 @@ namespace MonthlyCycleApp.ViewModels
 
         #endregion
 
-        #region drop screens
+        #region dialog properties
 
         private string firstRowText;
         public string FirstRowText
@@ -370,8 +370,10 @@ namespace MonthlyCycleApp.ViewModels
             set
             {
                 if (showDialog != value)
+                {
                     showDialog = value;
-                NotifyPropertyChanged("ShowDialog");
+                    NotifyPropertyChanged("ShowDialog");
+                }
             } 
         }
 
@@ -385,8 +387,10 @@ namespace MonthlyCycleApp.ViewModels
             set
             {
                 if (showSelectStartDay != value)
+                {
                     showSelectStartDay = value;
-                NotifyPropertyChanged("ShowSelectStartDay");
+                    NotifyPropertyChanged("ShowSelectStartDay");
+                }
             }
         }
         public bool Return { get; set; }
@@ -419,6 +423,7 @@ namespace MonthlyCycleApp.ViewModels
                 {
                     selectedStartCycle = value;
                     NotifyPropertyChanged("SelectedStartCycle");
+
                 }
             }
         }
@@ -468,7 +473,41 @@ namespace MonthlyCycleApp.ViewModels
             }
         }
 
+        private string okButtonContent;
+        public string OkButtonContent
+        {
+            get
+            {
+                return
+                    okButtonContent;
+            }
+            set
+            {
+                if (okButtonContent != value)
+                {
+                    okButtonContent = value;
+                    NotifyPropertyChanged("OkButtonContent");
+                }
+            }
+        }
 
+        private string cancelButtonContent;
+        public string CancelButtonContent
+        {
+            get
+            {
+                return
+                    cancelButtonContent;
+            }
+            set
+            {
+                if (cancelButtonContent != value)
+                {
+                    cancelButtonContent = value;
+                    NotifyPropertyChanged("CancelButtonContent");
+                }
+            }
+        }
      
         #endregion
 
@@ -477,27 +516,98 @@ namespace MonthlyCycleApp.ViewModels
             
         }
 
-        #region Dialogs
+        #region Dialog methods
 
-
-        public void SetupDialog()
+        public void SetupDialog(ValidationEnum validationType)
         {
-            var currentPeriod = Calendar.CurrentPeriod;
-          
-            if (!App.LunaViewModel.StartCycleConfirmed)
+            switch (validationType)
             {
-                FirstRowText = AppResources.PeriodStartedQuestion;
-                ShowSelectStartDay = true;
+                case ValidationEnum.NoNeedForValidation:
+                    {
+                        var currentPeriod = Calendar.CurrentPeriod;
 
-            }
-            if (!App.LunaViewModel.EndCycleConfirmed && DateTime.Now >= SelectedStartCycle.AddDays(currentPeriod.CycleDuration))
-            {
-                ThirdRowText = AppResources.PeriodEndedQuestion;
-                ShowSelectEndDay = true;
-            }
+                        if (!App.LunaViewModel.StartCycleConfirmed &&
+                            !App.LunaViewModel.EndCycleConfirmed &&
+                            DateTime.Now >= SelectedStartCycle.AddDays(currentPeriod.CycleDuration))
+                        {
 
-            SetDelayedAdvancedCounter(currentPeriod);
+
+                            FirstRowText = AppResources.PeriodStartedQuestion;
+                            SecondRowText = string.Empty;
+                            ThirdRowText = AppResources.PeriodEndedQuestion;
+                            ForthRowText = string.Empty;
+                            ShowSelectStartDay = true;
+                            ShowSelectEndDay = true;
+                        }
+                        else
+                            if (!App.LunaViewModel.StartCycleConfirmed)
+                            {
+                                FirstRowText = AppResources.PeriodStartedQuestion;
+                                ShowSelectStartDay = true;
+
+                            }
+                            else
+                                if (!App.LunaViewModel.EndCycleConfirmed && DateTime.Now >= SelectedStartCycle.AddDays(2))
+                                {
+                                    if (SelectedEndCycle != DateTime.Today)
+                                        SelectedEndCycle = DateTime.Today;
+
+                                    ThirdRowText = AppResources.PeriodEndedQuestion;
+                                    ShowSelectEndDay = true;
+                                }
+
+                        if (ShowSelectStartDay || ShowSelectEndDay)
+                        {
+                            OkButtonContent = AppResources.OkButton;
+                            CancelButtonContent = AppResources.CancelButton;
+
+                            SetDelayedAdvancedCounter(currentPeriod);
+                        }
+                        break;
+                    }
+                case ValidationEnum.StartDateInFuture:
+                    {
+                        SecondRowText = AppResources.StartDateInFutureValidation;
+                        ShowSelectEndDay = false;
+                        ThirdRowText = string.Empty;
+
+                        break;
+                    }
+                case ValidationEnum.DateOverlappsExistingPeriod:
+                    {
+                        SecondRowText = AppResources.OverlapExistingPeriodValidation;
+                        OkButtonContent = AppResources.ModifyButton;
+                        CancelButtonContent = AppResources.KeepButton;
+                        //another page
+                        //modify, keep this too
+                        //
+                        break;
+                    }
+                case ValidationEnum.EndDateBeforeStart:
+                    {
+                        OkButtonContent = AppResources.OkButton;
+                        CancelButtonContent = AppResources.CancelButton;
+                        ForthRowText = AppResources.EndDateBeforeStartValidation;
+                        break;
+                    }
+                case ValidationEnum.EndDateTooCloseToStart:
+                    {
+                        OkButtonContent = AppResources.OkButton;
+                        CancelButtonContent = AppResources.CancelButton;
+                        ForthRowText = AppResources.EndDateTooCloseToStartValidation;
+                        break;
+                    }
+                case ValidationEnum.EndDateFarInTheFuture:
+                    {
+                        OkButtonContent = AppResources.OkButton;
+                        CancelButtonContent = AppResources.CancelButton;
+                        ForthRowText = AppResources.EndDateFarInFutureValidation;
+                        break;
+                    }
+            }
+            
         }
+
 
         public void SetDelayedAdvancedCounter(PeriodMonth currentPeriod)
         {
@@ -533,6 +643,65 @@ namespace MonthlyCycleApp.ViewModels
             }
 
         }
+
+        public void OkCommand()
+        {
+            Return = false;
+            var currentPeriod = Calendar.CurrentPeriod;
+            if (ShowSelectStartDay && ShowSelectEndDay)
+            {
+                currentPeriod.CycleStartDay = SelectedStartCycle;
+                currentPeriod.CycleEndDay = SelectedEndCycle;
+
+                App.LunaViewModel.StartCycleConfirmed = true;
+                App.LunaViewModel.EndCycleConfirmed = true;
+            }
+            else
+                if (ShowSelectStartDay)
+                {
+                    currentPeriod.CycleStartDay = SelectedStartCycle;
+                    currentPeriod.CycleEndDay = currentPeriod.CycleStartDay.AddDays(currentPeriod.CycleDuration);
+                    currentPeriod.PeriodEndDay = currentPeriod.CycleStartDay.AddDays(currentPeriod.PeriodDuration);
+
+                    App.LunaViewModel.StartCycleConfirmed = true;
+                    App.LunaViewModel.EndCycleConfirmed = false;
+                }
+                else
+                    if (ShowSelectEndDay)
+                    {
+                        if (Calendar.CurrentPeriod.CycleEndDay != SelectedEndCycle)
+                        {
+                            currentPeriod.CycleEndDay = SelectedEndCycle;
+
+                            int computedCycleDuration = (currentPeriod.CycleEndDay - currentPeriod.CycleStartDay).Days;
+                            if (computedCycleDuration != currentPeriod.CycleDuration)
+                                currentPeriod.CycleDuration = computedCycleDuration;
+                        }
+                        App.LunaViewModel.EndCycleConfirmed = true;
+                    }
+
+            //if there are confirmed, there is no need to show them
+            ShowSelectStartDay = !App.LunaViewModel.StartCycleConfirmed;
+            ShowSelectEndDay = !App.LunaViewModel.EndCycleConfirmed;
+
+            Calendar.CurrentPeriod = currentPeriod;
+
+            App.LunaViewModel.SetDropValues();
+            App.MainViewModel.ShowDialog = false;
+        }
+
+        public void CancelCommand()
+        {
+            var currentPeriod = Calendar.CurrentPeriod;
+            App.MainViewModel.SelectedStartCycle = currentPeriod.CycleStartDay;
+            App.MainViewModel.SelectedEndCycle = currentPeriod.CycleEndDay;
+            ShowDialog = false;
+            Return = false;
+        }
         #endregion
+
+     
+      
+      
     }
 }

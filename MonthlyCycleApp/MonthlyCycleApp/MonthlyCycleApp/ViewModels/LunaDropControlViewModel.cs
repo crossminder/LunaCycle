@@ -62,7 +62,6 @@ namespace MonthlyCycleApp.ViewModels
             }
         }
 
-
         #endregion
 
         #region Drop infos
@@ -148,6 +147,17 @@ namespace MonthlyCycleApp.ViewModels
                     DaysToPeriodText = AppResources.DayOfPeriodText;
                     DaysToPeriod = Math.Abs(daysIntoCycle).ToString();
                 }
+
+            ClearCache();
+        }
+
+        private void ClearCache()
+        {
+            if (StartCycleConfirmed && EndCycleConfirmed)
+            {
+                ApplicationSettings.RemoveProperty(ApplicationSettings.IS_CYCLE_START_CONFIRMED);
+                ApplicationSettings.RemoveProperty(ApplicationSettings.IS_CYCLE_END_CONFIRMED);
+            }
         }
 
 

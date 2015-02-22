@@ -113,6 +113,7 @@
         </Style>
         <local:LocalizedStrings xmlns:local="clr-namespace:MonthlyCycleApp" x:Key="LocalizedStrings"/>
 
+    
     </Application.Resources>
 
     <Application.ApplicationLifetimeObjects>

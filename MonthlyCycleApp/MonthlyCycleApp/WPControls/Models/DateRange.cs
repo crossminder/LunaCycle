@@ -34,5 +34,13 @@ namespace WPControls.Models
         {
             return (Start <= range.Start) && (range.End <= End);
         }
+
+        public bool IsOverlapping(IRange<DateTime> range)
+        {
+            return (Start <= range.Start && End >= range.End) ||
+                       (Start >= range.Start && End <= range.End) ||
+                       (Start <= range.End && End >= range.End) ||
+                       (Start >= range.End && End <= range.End);
+        }
     }
 }

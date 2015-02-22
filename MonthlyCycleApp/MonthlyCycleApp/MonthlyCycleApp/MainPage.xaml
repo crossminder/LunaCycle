@@ -22,19 +22,6 @@
         <converters:BoolToVisibilityConverter x:Name="BoolToVisibilityConverter"/>
         <converters:StringToVisibilityConverter x:Name="StringToVisibilityConverter"/>
         <converters:IntToVisibilityConverter x:Name="IntToVisibilityConverter"/>
-        <Storyboard x:Name="Blink" AutoReverse="True" RepeatBehavior="Forever">
-            <DoubleAnimationUsingKeyFrames BeginTime="00:00:00"
-              Storyboard.TargetName="ellipse"
-            Storyboard.TargetProperty="Opacity">
-                <EasingDoubleKeyFrame KeyTime="00:00:01" Value="0.2">
-                    <EasingDoubleKeyFrame.EasingFunction>
-                        <QuadraticEase EasingMode="EaseInOut"/>
-                    </EasingDoubleKeyFrame.EasingFunction>
-                </EasingDoubleKeyFrame>
-               
-                <!--<EasingColorKeyFrame KeyTime="00:00:01" Value="Gray"/>-->
-            </DoubleAnimationUsingKeyFrames>
-        </Storyboard>
     </phone:PhoneApplicationPage.Resources>
     <!--Storyboard.TargetProperty="(Shape.Fill).(SolidColorBrush.Color)"-->
 
@@ -70,22 +57,24 @@
             <!--Drop-->
             <phone:PivotItem x:Name="DropPage" >
                 <Grid>
-                    <Ellipse x:Name="ellipse" Height="500" >
-                        <Ellipse.Fill>
-                            <RadialGradientBrush 
-                                     Opacity="1"
-                                     GradientOrigin="0.5,0.5" Center="0.5,0.5"
-                                     RadiusX="0.5" RadiusY="0.5">
-                                <GradientStop Color="Transparent" Offset="0" />
-                                <GradientStop Color="Transparent" Offset="0.25" />
-                                <GradientStop Color="#FFEFA9A1" Offset="0.5" />
-                                <GradientStop Color="#FFF5BFB9" Offset="0.75" />
-                                <GradientStop Color="Transparent" Offset="1" />
-                            </RadialGradientBrush>
-                        </Ellipse.Fill>
-                    </Ellipse>
-                   <controls:LunaDropControl x:Name="dropControl" />
-                  
+                    <controls:LunaDropControl x:Name="dropControl">
+                        <controls:LunaDropControl.Resources>
+                            <Storyboard x:Name="Blink" AutoReverse="True" RepeatBehavior="Forever">
+                                <DoubleAnimationUsingKeyFrames BeginTime="00:00:00"
+                                          Storyboard.TargetName="ellipse"
+                                        Storyboard.TargetProperty="Opacity">
+                                    <EasingDoubleKeyFrame KeyTime="00:00:1" Value="0.2">
+                                        <EasingDoubleKeyFrame.EasingFunction>
+                                            <QuadraticEase EasingMode="EaseInOut"/>
+                                        </EasingDoubleKeyFrame.EasingFunction>
+                                    </EasingDoubleKeyFrame>
+
+                                    <!--<EasingColorKeyFrame KeyTime="00:00:01" Value="Gray"/>-->
+                                </DoubleAnimationUsingKeyFrames>
+                            </Storyboard>
+                        </controls:LunaDropControl.Resources>
+                    </controls:LunaDropControl>
+
                 </Grid>
             </phone:PivotItem>
 
@@ -428,16 +417,18 @@
                        VerticalAlignment="Center"
                        Text="{Binding FirstRowText}"
                        TextWrapping="Wrap"
-                       FontSize="28" Height="37" />
+                       FontSize="28" />
                     <toolkit:DatePicker 
-                x:Name="pkStartDateCycle" 
-                Margin="5,0,0,0"
-                Visibility="{Binding ShowSelectStartDay, Converter={StaticResource BoolToVisibilityConverter}}"
-                Value="{Binding SelectedStartCycle,Mode=TwoWay}"
-                 ValueChanged="pkStartDateCycle_ValueChanged"
-                ManipulationCompleted="pkEndDateCycle_ManipulationCompleted"
-                VerticalAlignment="Center"
-                HorizontalContentAlignment="Center" />
+                            x:Name="pkStartDateCycle" 
+                            Margin="5,0,0,0"
+                            Visibility="{Binding ShowSelectStartDay,
+                                                 Converter={StaticResource BoolToVisibilityConverter}}"
+                            Value="{Binding SelectedStartCycle,
+                                            Mode=TwoWay}"
+                            ValueChanged="pkStartDateCycle_ValueChanged"
+                            ManipulationCompleted="pkEndDateCycle_ManipulationCompleted"
+                            VerticalAlignment="Center"
+                            HorizontalContentAlignment="Center" />
                     <TextBlock x:Name="questionMark"
                        VerticalAlignment="Center"
                        Visibility="{Binding ShowSelectStartDay, Converter={StaticResource BoolToVisibilityConverter}}"
@@ -448,15 +439,16 @@
                 </StackPanel>
                 <StackPanel x:Name="secondRow"    
                         Visibility="{Binding SecondRowText,Converter={StaticResource StringToVisibilityConverter}}"
-                        Orientation="Horizontal"  
+                        Orientation="Horizontal"
                         HorizontalAlignment="Center">
                     <TextBlock
+                       x:Name="secondRowText"
                        VerticalAlignment="Center"
                        HorizontalAlignment="Center"
-                        
+                       Width="450"
                        Text="{Binding SecondRowText}"
                        TextWrapping="Wrap"
-                       FontSize="28" Height="37" />
+                       FontSize="28" />
                 </StackPanel>
                 <StackPanel x:Name="thirdRow"                        
                         Visibility="{Binding ThirdRowText,Converter={StaticResource StringToVisibilityConverter}}"
@@ -468,14 +460,14 @@
                        TextWrapping="Wrap"
                        FontSize="28" />
                     <toolkit:DatePicker 
-                x:Name="pkEndDateCycle" 
-                Value="{Binding SelectedEndCycle,Mode=TwoWay}"
-                Visibility="{Binding ShowSelectEndDay, Converter={StaticResource BoolToVisibilityConverter}}"            
-                Margin="5,0,0,0" 
-                 ValueChanged="pkEndDateCycle_ValueChanged"
-                ManipulationCompleted="pkEndDateCycle_ManipulationCompleted"
-                VerticalAlignment="Center"
-                HorizontalContentAlignment="Center" />
+                            x:Name="pkEndDateCycle" 
+                            Value="{Binding SelectedEndCycle,Mode=TwoWay}"
+                            Visibility="{Binding ShowSelectEndDay, Converter={StaticResource BoolToVisibilityConverter}}"            
+                            Margin="5,0,0,0" 
+                             ValueChanged="pkEndDateCycle_ValueChanged"
+                            ManipulationCompleted="pkEndDateCycle_ManipulationCompleted"
+                            VerticalAlignment="Center"
+                            HorizontalContentAlignment="Center" />
                     <TextBlock 
                        VerticalAlignment="Center"
                        Visibility="{Binding ShowSelectEndDay, Converter={StaticResource BoolToVisibilityConverter}}"
@@ -489,23 +481,27 @@
                         Orientation="Horizontal"  
                         HorizontalAlignment="Center">
                     <TextBlock
+                       x:Name="forthRowText"
                        VerticalAlignment="Center"
                        HorizontalAlignment="Center"
                        Text="{Binding ForthRowText}"
                        TextWrapping="Wrap"
-                       FontSize="28" Height="37" />
+                       FontSize="28" 
+                       Width="450"/>
                 </StackPanel>
                 <Button x:Name="okBtn" 
                     Grid.Row="5"
                     Margin="0,35,0,0"
-                    Content="Ok" 
+                    Visibility="{Binding OkButtonContent, Converter={StaticResource StringToVisibilityConverter}}"
+                    Content="{Binding OkButtonContent}" 
                     HorizontalAlignment="Center"
                     Width="200"
                     Click="okBtn_Click"/>
                 <Button x:Name="cancelBtn" 
                     Grid.Row="6"
                     Margin="0,30,0,0"
-                    Content="Cancel" 
+                    Content="{Binding CancelButtonContent}" 
+                    Visibility="{Binding CancelButtonContent, Converter={StaticResource StringToVisibilityConverter}}"
                     HorizontalAlignment="Center"
                     Width="200"
                     Click="cancelBtn_Click"/>

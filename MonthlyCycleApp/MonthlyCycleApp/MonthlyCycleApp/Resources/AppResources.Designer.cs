@@ -133,6 +133,15 @@ namespace MonthlyCycleApp.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Cancel.
+        /// </summary>
+        public static string CancelButton {
+            get {
+                return ResourceManager.GetString("CancelButton", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Cycles can range anywhere from 21 to 35 days in adults and from 21 to 45 days in young teens..
         /// </summary>
         public static string CycleDurationSettingExplanation {
@@ -196,6 +205,33 @@ namespace MonthlyCycleApp.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The end date selected is before conformed start date. Pick another one..
+        /// </summary>
+        public static string EndDateBeforeStartValidation {
+            get {
+                return ResourceManager.GetString("EndDateBeforeStartValidation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to This end date is way in the future. Is it correct?.
+        /// </summary>
+        public static string EndDateFarInFutureValidation {
+            get {
+                return ResourceManager.GetString("EndDateFarInFutureValidation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Your cycle couldn&apos;t have been ended on 2 days distance from the begining. Did it?.
+        /// </summary>
+        public static string EndDateTooCloseToStartValidation {
+            get {
+                return ResourceManager.GetString("EndDateTooCloseToStartValidation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Based on a 12 months average. Improves prediction based on input..
         /// </summary>
         public static string FertilityForecastExplanationAdvanced {
@@ -232,6 +268,15 @@ namespace MonthlyCycleApp.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Keep.
+        /// </summary>
+        public static string KeepButton {
+            get {
+                return ResourceManager.GetString("KeepButton", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to When did your last cycle start?.
         /// </summary>
         public static string LastPeriodStartedSetting {
@@ -250,6 +295,15 @@ namespace MonthlyCycleApp.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Modify.
+        /// </summary>
+        public static string ModifyButton {
+            get {
+                return ResourceManager.GetString("ModifyButton", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Off.
         /// </summary>
         public static string Off {
@@ -259,11 +313,29 @@ namespace MonthlyCycleApp.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Ok.
+        /// </summary>
+        public static string OkButton {
+            get {
+                return ResourceManager.GetString("OkButton", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to On.
         /// </summary>
         public static string On {
             get {
                 return ResourceManager.GetString("On", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to This start date is overlapping another existing cycle period. Do you want to modify existing period?.
+        /// </summary>
+        public static string OverlapExistingPeriodValidation {
+            get {
+                return ResourceManager.GetString("OverlapExistingPeriodValidation", resourceCulture);
             }
         }
         
@@ -453,6 +525,15 @@ namespace MonthlyCycleApp.Resources {
         public static string Standard {
             get {
                 return ResourceManager.GetString("Standard", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to This start date is way in the future. Pick another date or cancel..
+        /// </summary>
+        public static string StartDateInFutureValidation {
+            get {
+                return ResourceManager.GetString("StartDateInFutureValidation", resourceCulture);
             }
         }
         

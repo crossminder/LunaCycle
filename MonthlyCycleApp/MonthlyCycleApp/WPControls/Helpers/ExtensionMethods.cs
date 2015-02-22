@@ -19,6 +19,18 @@ namespace WPControls.Helpers
             return calendar.PastPeriods == null && calendar.PastPeriods.Count == 0;
         }
 
+        public static PeriodMonth FindOverlappingExistingPeriod(DateTime startDate, DateTime endDate, List<PeriodMonth> periods, PeriodMonth currentPeriod)
+        {
+            foreach (var item in periods)
+            {
+                DateRange addedPeriod = new DateRange(startDate, endDate);
+                DateRange tempPeriod = new DateRange(item.CycleStartDay, item.CycleEndDay);
+                if (addedPeriod.IsOverlapping(tempPeriod) && item != currentPeriod)
+                    return item;
+            }
+
+            return null;
+        }
 
         public static bool IsNew(this CalendarObject calendar)
         {

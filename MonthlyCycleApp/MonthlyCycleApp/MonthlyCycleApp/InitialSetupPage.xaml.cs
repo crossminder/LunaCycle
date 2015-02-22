@@ -25,6 +25,9 @@ namespace MonthlyCycleApp
         {
             InitializeComponent();
             this.DataContext = this;
+
+           
+
         }
         #region Navigation
 

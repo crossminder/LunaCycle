@@ -13,6 +13,9 @@ using System.Windows.Media.Animation;
 using System.Windows.Media.Imaging;
 using MonthlyCycleApp.Model;
 using System.Windows.Data;
+using WPControls.Models;
+using MonthlyCycleApp.Helpers;
+using WPControls.Helpers;
 
 
 namespace MonthlyCycleApp
@@ -32,21 +35,18 @@ namespace MonthlyCycleApp
 
         void MainPage_Loaded(object sender, RoutedEventArgs e)
         {
-
-            this.Blink.Begin();
+            (dropControl.Resources["Blink"] as Storyboard).Begin();
 
             //Cal.PeriodCalendarProperty = App.MainViewModel.Calendar;
-        
             //startingWeekDayList.DataContext = daysOfWeek;
             startingWeekDayList.ItemsSource = App.MainViewModel.DaysOfWeek;
           //  startingPageList.SelectedIndex = Convert.ToInt32( App.MainViewModel.FirstDayOfWeek);
-            if (!App.MainViewModel.Return)
-            {
-                App.MainViewModel.SelectedStartCycle = App.MainViewModel.Calendar.CurrentPeriod.CycleStartDay;
-                    //DateTime.Today;
-                App.MainViewModel.SelectedEndCycle = App.MainViewModel.Calendar.CurrentPeriod.CycleEndDay;
-                 //   DateTime.Today.AddDays(App.MainViewModel.Calendar.CurrentPeriod.CycleDuration);
-            }
+          
+            //if (!App.MainViewModel.Return)
+            //{
+            //    App.MainViewModel.SelectedStartCycle = App.MainViewModel.Calendar.CurrentPeriod.CycleStartDay;
+            //    App.MainViewModel.SelectedEndCycle = App.MainViewModel.Calendar.CurrentPeriod.CycleEndDay;
+            //}
         }
 
         #region Navigation
@@ -76,29 +76,24 @@ namespace MonthlyCycleApp
         }
 
         private void toggleBtnPillAllarm_CheckedUnchecked(object sender, RoutedEventArgs e)
-        {       
+        {
             ToggleSwitch toggleSwitchBtn = (sender as ToggleSwitch);
-           Grid gridContainer = (toggleSwitchBtn.Parent as Grid).Children.OfType<Grid>().SingleOrDefault(x => x.Name == toggleSwitchBtn.Name + "TimePanel") as Grid;
+            Grid gridContainer = (toggleSwitchBtn.Parent as Grid).Children.OfType<Grid>().SingleOrDefault(x => x.Name == toggleSwitchBtn.Name + "TimePanel") as Grid;
 
-           
+
             Storyboard sbUp;
             Storyboard sbDown;
             if (gridContainer != null)
             {
-                DefineAnimations(gridContainer,80, out sbUp, out sbDown);
-                SetupCheckUncheckBehaviour(toggleSwitchBtn,sbUp, sbDown, AppResources.On, AppResources.Off);
+                DefineAnimations(gridContainer, 80, out sbUp, out sbDown);
+                SetupCheckUncheckBehaviour(toggleSwitchBtn, sbUp, sbDown, AppResources.On, AppResources.Off);
             }
-            
         }
-
-      
       
         private void panoramaControl_Loaded(object sender, RoutedEventArgs e)
         {
             panoramaControl.Visibility = Visibility.Visible;
         }
-   
-      
 
         private void startingWeekDayList_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
@@ -221,140 +216,6 @@ namespace MonthlyCycleApp
         }
         #endregion
 
-        #region Orchestration
-
-        public void Refresh(Timeframe momentInPeriod, Step startCycleStage, Step endCycleStage)
-        {
-            switch (momentInPeriod)
-            {
-                case Timeframe.Before:
-                    {
-                        //invisible
-                        //if Tap Refresh
-                        break;
-                    }
-                case Timeframe.During:
-                    {
-                        switch (startCycleStage)
-                        {
-                            case Step.OnTime:
-                                {
-                                    switch (endCycleStage)
-                                    {
-                                        case Step.OnTime:
-                                            {
-                                                //Refresh(duringCycle,confirmedCycleStartOnTime,confirmedCycleEndOnTime)
-                                                break;
-                                            }
-                                        case Step.Pending:
-                                            {
-                                                //NormalStartNormalEnd(duringCycle,confirmedCycleStartOnTime,pendingEndCycleConfirmation)
-                                                break;
-                                            }
-                                        case Step.Early:
-                                            {
-                                                //  NormalStartEarlyEnd(duringCycle,confirmedCycleStartOnTime, confirmedCycleEndBeforeTime, counter=no of days(diff) )
-                                                break;
-                                            }
-                                        case Step.Late:
-                                            {
-                                                // NormalStartLateEnd(duringCycle,confirmedCycleStartOnTime, confirmedCycleEndAtferTime, counter=  a cata zi de la normal end=day0 si 7 este pentru opacitate )
-                                                break;
-                                            }
-                                    }
-                                    break;
-                                }
-                            case Step.Late:
-                                {
-                                    switch (endCycleStage)
-                                    {
-                                        case Step.Unconfirmed:
-                                            {
-                                                //LateStart(duringCycle,notConfirmedStart) = show message
-                                                break;
-                                            }
-                                        case Step.Delayed:
-                                            {
-                                                //LateStartDelayed(duringCycle,delayedStart) = shows button
-                                                break;
-                                            }
-
-
-                                    }
-                                    break;
-                                }
-                            case Step.Pending:
-                                {
-                                    switch (endCycleStage)
-                                    {
-                                        case Step.Unconfirmed:
-                                            {
-                                                //today<estimated initial end
-                                                //LateStartDelayedWithinEstimation(duringCycle, pendingCycleStartLater,notConfirmedCycleEnd) - button pressed- show message to select start
-                                                break;
-                                            }
-                                        case Step.Pending:
-                                            {
-                                                //today>estimated initial end
-                                                //LateStartDelayedOutsideEstimation(afterCycle,pendingCycleStartLater, pendingEndCycleConfirmation)- button pressed- show message to select start and end
-
-                                                break;
-                                            }
-                                    }
-                                    break;
-                                }
-                        }
-                        break;
-                    }
-                case Timeframe.After:
-                    {
-                        switch (startCycleStage)
-                        {
-                            case Step.Late:
-                                {
-                                    switch (endCycleStage)
-                                    {
-                                        case Step.Late:
-                                            {
-                                                //Refresh(afterCycle,confirmedCycleStartLater,confirmedCycleEndLater)
-                                                break;
-                                            }
-                                    }
-                                    break;
-                                }
-                            case Step.Unconfirmed:
-                                {
-                                    switch (endCycleStage)
-                                    {
-                                        case Step.Unconfirmed:
-                                            {
-                                                //Refresh(afterCycle,notConfirmedCycleStart,notConfirmedCycleEnd) - today>=28 days (cycle duration)
-                                                break;
-                                            }
-                                    }
-                                    break;
-                                }
-                        }
-                        break;
-                    }
-            }
-        }
-
-        public void AdjustUI()
-        {
-            //set visibility on buttons
-
-            //set visibility on screens
-
-            // set opacity
-
-        }
-
-
-        #endregion
-
-
-
         private void cbPeriodForecastTimeText_Checked(object sender, RoutedEventArgs e)
         {
 
@@ -369,59 +230,24 @@ namespace MonthlyCycleApp
 
         }
 
+        #region Dialog events
+
         private void okBtn_Click(object sender, RoutedEventArgs e)
         {
-            App.MainViewModel.Return = false;
-            var currentPeriod = App.MainViewModel.Calendar.CurrentPeriod;
-            if (App.MainViewModel.ShowSelectStartDay && App.MainViewModel.ShowSelectEndDay)
-            {
-                currentPeriod.CycleStartDay = App.MainViewModel.SelectedStartCycle;
-                currentPeriod.CycleEndDay = App.MainViewModel.SelectedEndCycle;
+            App.MainViewModel.OkCommand();
 
-                App.MainViewModel.ShowSelectStartDay = false;
-                App.MainViewModel.ShowSelectEndDay = false;
-            }
-
-            if (App.MainViewModel.ShowSelectStartDay)
-            {
-                currentPeriod.CycleStartDay = App.MainViewModel.SelectedStartCycle;
-                currentPeriod.CycleEndDay = currentPeriod.CycleStartDay.AddDays(currentPeriod.CycleDuration);
-                currentPeriod.PeriodEndDay = currentPeriod.CycleStartDay.AddDays(currentPeriod.PeriodDuration);
-
-                App.MainViewModel.ShowSelectStartDay = false;
-
-            }
-
-            if (App.MainViewModel.ShowSelectEndDay)
-            {
-                if (App.MainViewModel.Calendar.CurrentPeriod.CycleEndDay != App.MainViewModel.SelectedEndCycle)
-                {
-                    currentPeriod.CycleEndDay = App.MainViewModel.SelectedEndCycle;
-
-                    int computedCycleDuration = (currentPeriod.CycleEndDay - currentPeriod.CycleStartDay).Days;
-                    if (computedCycleDuration != currentPeriod.CycleDuration)
-                        currentPeriod.CycleDuration = computedCycleDuration;
-                }
-
-                App.MainViewModel.ShowSelectEndDay = false;
-            }
-            App.MainViewModel.Calendar.CurrentPeriod = currentPeriod;
-
-            Cal.PeriodCalendarProperty = null; 
+            Cal.PeriodCalendarProperty = null;
             Cal.PeriodCalendarProperty = App.MainViewModel.Calendar;
             Cal.Refresh();
-        
-            App.LunaViewModel.SetDropValues();
-            App.MainViewModel.ShowDialog = false;
+            (dropControl.Resources["Blink"] as Storyboard).Resume();
         }
 
-       
         private void cancelBtn_Click(object sender, RoutedEventArgs e)
         {
-            App.MainViewModel.ShowDialog = false;
-            App.MainViewModel.Return = false;
-        }
+            App.MainViewModel.CancelCommand();
 
+            (dropControl.Resources["Blink"] as Storyboard).Resume();
+        }
         
         private void pkEndDateCycle_ManipulationCompleted(object sender, System.Windows.Input.ManipulationCompletedEventArgs e)
         {
@@ -432,27 +258,72 @@ namespace MonthlyCycleApp
         {
             if (e.NewDateTime != DateTime.MinValue && e.NewDateTime != e.OldDateTime && e.NewDateTime.HasValue)
             {
-                App.MainViewModel.SelectedEndCycle = e.NewDateTime.Value;
-                App.MainViewModel.SetupDialog();
+                DateTime tempEnd = e.NewDateTime.Value;
+                bool validateEndDate = tempEnd < App.MainViewModel.SelectedStartCycle.AddDays(2);
+
+                ValidationEnum validationType = ValidationEnum.NoNeedForValidation;
+
+                if (tempEnd < App.MainViewModel.SelectedStartCycle)
+                    validationType = ValidationEnum.EndDateBeforeStart;
+                else
+                    if (tempEnd < App.MainViewModel.SelectedStartCycle.AddDays(2))
+                        validationType = ValidationEnum.EndDateBeforeStart;
+                    else
+                        //faaar in the future
+                        if (Math.Abs((tempEnd - App.MainViewModel.SelectedEndCycle).Days) > App.MainViewModel.Calendar.AverageCycleDuration)
+                            validationType = ValidationEnum.EndDateFarInTheFuture;
+
+                if (validationType == ValidationEnum.NoNeedForValidation)
+                {
+                    App.MainViewModel.SetupDialog(validationType);
+                   // App.MainViewModel.SelectedEndCycle = tempEnd;
+                }
+                else
+                    App.MainViewModel.SetupDialog(validationType);
+
+                (sender as DatePicker).BorderBrush = (validationType == ValidationEnum.NoNeedForValidation) ? new SolidColorBrush(Colors.White) : new SolidColorBrush(Colors.Red);
+                forthRowText.Foreground = (validationType == ValidationEnum.NoNeedForValidation) ? new SolidColorBrush(Colors.White) : new SolidColorBrush(Colors.Red);
             }
         }
-
-      
 
         private void pkStartDateCycle_ValueChanged(object sender, DateTimeValueChangedEventArgs e)
         {
-            if (e.NewDateTime !=DateTime.MinValue  && e.NewDateTime != e.OldDateTime && e.NewDateTime.HasValue)
+            if (e.NewDateTime != DateTime.MinValue && e.NewDateTime != e.OldDateTime && e.NewDateTime.HasValue)
             {
-                App.MainViewModel.SelectedStartCycle = e.NewDateTime.Value;
-                App.MainViewModel.SelectedEndCycle = e.NewDateTime.Value.AddDays(App.MainViewModel.Calendar.CurrentPeriod.CycleDuration);
+                DateTime tempStart = e.NewDateTime.Value;
+                DateTime tempEnd = e.NewDateTime.Value.AddDays(App.MainViewModel.Calendar.AverageCycleDuration);
 
-                App.MainViewModel.SetupDialog();
+                ValidationEnum validationType = ValidationEnum.NoNeedForValidation;
+
+                if (DateTime.Today < tempStart)
+                    validationType = ValidationEnum.StartDateInFuture;
+                else
+                {
+                    PeriodMonth nearbyPeriod = ExtensionMethods.FindOverlappingExistingPeriod(tempStart, tempEnd,
+                           App.MainViewModel.Calendar.PastPeriods, App.MainViewModel.Calendar.CurrentPeriod);
+                    if (nearbyPeriod != null)
+                        validationType = ValidationEnum.DateOverlappsExistingPeriod;
+                }
+
+                if (validationType == ValidationEnum.NoNeedForValidation)
+                {
+                    App.MainViewModel.SelectedStartCycle = tempStart;
+                    App.MainViewModel.SelectedEndCycle = tempEnd;
+                 
+                    App.MainViewModel.SetupDialog(validationType);
+                }
+                else
+                    App.MainViewModel.SetupDialog(validationType);
+
+                (sender as DatePicker).BorderBrush = (validationType == ValidationEnum.NoNeedForValidation) ? new SolidColorBrush(Colors.White) : new SolidColorBrush(Colors.Red);
+                secondRowText.Foreground = (validationType == ValidationEnum.NoNeedForValidation) ? new SolidColorBrush(Colors.White) : new SolidColorBrush(Colors.Red);
+                okBtn.IsEnabled = (validationType != ValidationEnum.StartDateInFuture);
             }
         }
-
-     
-
         
+    
+
+        #endregion
 
     }
 }
