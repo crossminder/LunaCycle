@@ -35,7 +35,7 @@ namespace Monthly.Helpers
             calendar.PastPeriods.Add(november);
             calendar.PastPeriods.Add(december);
             calendar.PastPeriods.Add(january);
-            calendar.PastPeriods.Add(february);
+         //   calendar.PastPeriods.Add(february);
 
             calendar.CurrentPeriod = february;
 
@@ -102,6 +102,40 @@ namespace Monthly.Helpers
         }
         #endregion
 
-  
+
+
+        public static PeriodCalendar GenerateCalendarData(string cycleDurationSetting, string periodDurationSetting, string lastPeriodDateSetting)
+        {
+            PeriodCalendar generatedCalendar = new PeriodCalendar();
+
+            int allPeriodDuration = Int32.Parse(cycleDurationSetting);
+            int menstruationDuration = Int32.Parse(periodDurationSetting);
+            DateTime lastCycleDateStart = DateTime.Parse(lastPeriodDateSetting);
+
+            DateTime startDate = lastCycleDateStart;
+            DateTime endDate = startDate.AddDays(menstruationDuration);
+
+            List<PeriodMonth> pastPeriods = new List<PeriodMonth>();
+
+
+            while (DateTime.Today > startDate && DateTime.Today > endDate)
+            {
+                PeriodMonth lastMonth = new PeriodMonth(startDate, allPeriodDuration, menstruationDuration);
+
+                pastPeriods.Add(lastMonth);
+
+                startDate = startDate.AddDays(allPeriodDuration).AddDays(1);
+                endDate = startDate.AddDays(menstruationDuration);
+            }
+         
+            var currentPeriod = new PeriodMonth(startDate, menstruationDuration, allPeriodDuration);
+           
+            pastPeriods.Add(currentPeriod);
+           
+            generatedCalendar.PastPeriods = pastPeriods;
+            generatedCalendar.CurrentPeriod = currentPeriod;
+
+            return generatedCalendar;
+        }
     }
 }

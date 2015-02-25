@@ -37,23 +37,17 @@ namespace MonthlyCycleApp
         {
             (dropControl.Resources["Blink"] as Storyboard).Begin();
 
-            //Cal.PeriodCalendarProperty = App.MainViewModel.Calendar;
-            //startingWeekDayList.DataContext = daysOfWeek;
-            startingWeekDayList.ItemsSource = App.MainViewModel.DaysOfWeek;
-          //  startingPageList.SelectedIndex = Convert.ToInt32( App.MainViewModel.FirstDayOfWeek);
+            Cal.PeriodCalendarProperty = null;
+            Cal.PeriodCalendarProperty = App.MainViewModel.Calendar;
           
-            //if (!App.MainViewModel.Return)
-            //{
-            //    App.MainViewModel.SelectedStartCycle = App.MainViewModel.Calendar.CurrentPeriod.CycleStartDay;
-            //    App.MainViewModel.SelectedEndCycle = App.MainViewModel.Calendar.CurrentPeriod.CycleEndDay;
-            //}
+            startingWeekDayList.ItemsSource = App.MainViewModel.DaysOfWeek;
+        
         }
 
         #region Navigation
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
-            App.SetupViewModel.ShowInitialSetup = true;
-                //!App.SetupViewModel.SetupCompleted;
+            App.SetupViewModel.ShowInitialSetup = !App.SetupViewModel.SetupCompleted;
 
             //remove initial setup page from history
             if (NavigationService.BackStack.Count() > 0)

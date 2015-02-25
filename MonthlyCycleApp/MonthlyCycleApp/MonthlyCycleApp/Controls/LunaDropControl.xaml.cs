@@ -18,7 +18,7 @@ namespace MonthlyCycleApp.Controls
 {
     public partial class LunaDropControl : UserControl
     {
-
+        
         public LunaDropControl()
         {
             InitializeComponent();
@@ -42,6 +42,11 @@ namespace MonthlyCycleApp.Controls
             }
         }
         #endregion
+
+        private void waving_Completed(object sender, EventArgs e)
+        {
+
+        }
 
     }
 }

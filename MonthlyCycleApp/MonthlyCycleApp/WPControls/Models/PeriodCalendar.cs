@@ -40,7 +40,6 @@ namespace WPControls.Models
         private int averagePeriodDuration;
         private int averageCycleDuration;
         private List<PeriodMonth> futurePeriods;
-        private PeriodMonth nextPeriod;
         private PeriodDay _today;
         #endregion
 
@@ -130,11 +129,17 @@ namespace WPControls.Models
             {
                 if (futurePeriods == null)
                     futurePeriods = new List<PeriodMonth>();
-                if(futurePeriods.Count ==0)
+                if (futurePeriods.Count == 0)
                 {
+                    List<PeriodMonth> periods = new List<PeriodMonth>();
                     if (PastPeriods != null && PastPeriods.Count > 0)
+                        periods = PastPeriods;
+                    periods.Add(CurrentPeriod);
+
+
+                    if (periods != null && periods.Count > 0)
                     {
-                        DateTime lastMonthEndPeriodDay = PastPeriods.Last().PeriodEndDay;
+                        DateTime lastMonthEndPeriodDay = periods.Last().PeriodEndDay;
 
                         PeriodMonth estimatedFuture1 = new PeriodMonth()
                         {
@@ -185,22 +190,7 @@ namespace WPControls.Models
             }
         }
 
-        public PeriodMonth NextPeriod
-        {
-            get
-            {
-
-               var period = new PeriodMonth();
-                if (CurrentPeriod != null && DateTime.Today < CurrentPeriod.CycleEndDay)
-                    period = currentPeriod;
-                if (CurrentPeriod != null && FuturePeriods != null && FuturePeriods.Count > 0 && DateTime.Today >= CurrentPeriod.CycleEndDay)
-                    period = FuturePeriods.FirstOrDefault();
-
-                return period;
-
-            }
-        }
-       
+            
         public PeriodDay Today
         {
             get
@@ -220,6 +210,7 @@ namespace WPControls.Models
         #endregion
 
         #region event handlers
+
         public event PropertyChangedEventHandler PropertyChanged;
 
         protected void OnPropertyChanged(string name)
@@ -230,6 +221,8 @@ namespace WPControls.Models
                 handler(this, new PropertyChangedEventArgs(name));
             }
         }
+
+     
         #endregion
 
       

@@ -69,7 +69,6 @@
                                 x:Name="Cal"
                                 Grid.Row="0"
                                 StartingDayOfWeek="{Binding FirstDayOfWeek}"
-                                PeriodCalendarProperty="{Binding Calendar}"
                                 ColorConverter="{StaticResource ColorConverter}"
                                 EnableGestures="False"
                     />
@@ -315,7 +314,7 @@
                            Style="{StaticResource settingsTBlLarge}"               
                            Text="{Binding PeriodDurationSetting}" Margin="0,31">
                         </TextBlock>
-                        <!--Scycle duration-->
+                        <!--Cycle duration-->
                         <TextBlock x:Name="tbCycleDurationText" 
                            Grid.Column="0" Grid.Row="8"
                            Style="{StaticResource settingsTBlLarge}"    

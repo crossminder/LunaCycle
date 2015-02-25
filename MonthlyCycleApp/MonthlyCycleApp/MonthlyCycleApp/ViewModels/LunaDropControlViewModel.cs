@@ -8,11 +8,18 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
+using WPControls.Models;
 
 namespace MonthlyCycleApp.ViewModels
 {
     public class LunaDropControlViewModel : INotifyPropertyChanged
     {
+
+        private const double MAX_HEIGHT = 385;
+        private double top = 0;
+        private double bottom = -303;
+
+
         #region Event handlers
         public event PropertyChangedEventHandler PropertyChanged;
         private void NotifyPropertyChanged(String propertyName)
@@ -73,8 +80,8 @@ namespace MonthlyCycleApp.ViewModels
             }
         }
 
-        private string daysToPeriod;
-        public string DaysToPeriod
+        private int daysToPeriod;
+        public int DaysToPeriod
         {
             get
             {
@@ -114,11 +121,57 @@ namespace MonthlyCycleApp.ViewModels
             }
         }
 
+        private double topMarginValue;
+        public double TopMarginValue 
+        {
+            get { return topMarginValue; }
+            set
+            {
+                if (value != topMarginValue)
+                {
+                    topMarginValue = value;
+                    NotifyPropertyChanged("TopMarginValue");
+                }
+            }
+        }
+        
+        private double bottomMarginValue;
+        public double BottomMarginValue
+        {
+            get { return bottomMarginValue; }
+            set
+            {
+                if (value != bottomMarginValue)
+                {
+                    bottomMarginValue = value;
+                    NotifyPropertyChanged("BottomMarginValue");
+                }
+            }
+        }
+
+        private Thickness wavingGridMargins;
+        public Thickness WavingGridMargins
+        {
+            get { return wavingGridMargins; }
+            set
+            {
+                if (value != wavingGridMargins)
+                {
+                    wavingGridMargins = value;
+                    NotifyPropertyChanged("WavingGridMargins");
+                }
+            }
+        }
+
+
         #endregion
 
         public LunaDropControlViewModel()
         {
-            var currentPeriod = App.MainViewModel.Calendar.CurrentPeriod;
+            App.MainViewModel.ShowSelectStartDay = !StartCycleConfirmed;
+            App.MainViewModel.ShowSelectEndDay = !EndCycleConfirmed;
+      
+            var currentPeriod = App.MainViewModel.NextPeriod;
             SetDropValues();
         }
 
@@ -131,24 +184,67 @@ namespace MonthlyCycleApp.ViewModels
 
         public void SetDropValues()
         {
-            var currentPeriod = App.MainViewModel.Calendar.NextPeriod;
+            var nextPeriod = App.MainViewModel.NextPeriod;
 
-            if(DateTime.Today < currentPeriod.CycleStartDay)
+            if(DateTime.Today < nextPeriod.CycleStartDay)
             {
-                int remainingDays = ((TimeSpan)(currentPeriod.CycleStartDay - DateTime.Today)).Days;
+                int remainingDays = ((TimeSpan)(nextPeriod.CycleStartDay - DateTime.Today)).Days;
      
                 DaysToPeriodText = AppResources.DaysToPeriodText;
-                DaysToPeriod = Math.Abs( remainingDays).ToString();
+                DaysToPeriod = Math.Abs( remainingDays);
             }
             else
-                if (DateTime.Today >= currentPeriod.CycleStartDay && DateTime.Today <= currentPeriod.CycleEndDay)
+                if (DateTime.Today >= nextPeriod.CycleStartDay && DateTime.Today <= nextPeriod.CycleEndDay)
                 {
-                    int daysIntoCycle = ((TimeSpan)(currentPeriod.CycleEndDay - DateTime.Today)).Days + 1;
+                    int daysUntilEndCycle = ((TimeSpan)(nextPeriod.CycleEndDay - DateTime.Today)).Days + 1;
                     DaysToPeriodText = AppResources.DayOfPeriodText;
-                    DaysToPeriod = Math.Abs(daysIntoCycle).ToString();
+                    DaysToPeriod = Math.Abs(daysUntilEndCycle);
                 }
 
+            SetWaveHeigth(nextPeriod);
+
             ClearCache();
+        }
+
+
+        private void SetWaveHeigth(PeriodMonth currentPeriod)
+        {
+            double top = 0;
+            //from begining to half of cycle you have 100%
+            if (DateTime.Today >= currentPeriod.CycleStartDay &&
+                DateTime.Today <= currentPeriod.CycleStartDay.AddDays(currentPeriod.CycleDuration/2))
+                top = 0;
+            else
+                //from half cycle to end, decreasing
+                if (DateTime.Today > currentPeriod.CycleStartDay.AddDays(currentPeriod.CycleDuration / 2) &&
+                    DateTime.Today <= currentPeriod.CycleEndDay)
+                {
+                    double totalDaysSpan = (currentPeriod.CycleEndDay - currentPeriod.CycleStartDay.AddDays(currentPeriod.CycleDuration / 2)).Days;
+                    double percentage = Math.Round(MAX_HEIGHT / totalDaysSpan);
+                    double remaining = (currentPeriod.CycleEndDay - DateTime.Today).Days +1;
+                    top = - percentage * remaining;
+                }
+                else
+                //half duration to start cycle, increasing
+                {
+                    double totalDaysSpan = currentPeriod.CycleDuration / 2;
+                    if (DaysToPeriod < totalDaysSpan &&
+                         DateTime.Today < currentPeriod.CycleStartDay)
+                    { 
+                        double percentage = Math.Round(MAX_HEIGHT / totalDaysSpan);
+                        double remaining = (DateTime.Today- currentPeriod.CycleStartDay).Days + 1;
+                        top = -percentage * (totalDaysSpan - remaining);
+                    }
+                }
+
+            double bottom = -303 - top;
+
+            TopMarginValue = top;
+            BottomMarginValue = bottom;
+
+            WavingGridMargins = new Thickness(-40, top, 40, bottom);
+
+         
         }
 
         private void ClearCache()

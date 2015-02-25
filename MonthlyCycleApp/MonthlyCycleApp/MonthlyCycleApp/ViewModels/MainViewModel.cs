@@ -10,6 +10,7 @@ using System.Globalization;
 using System.Collections.Generic;
 using MonthlyCycleApp.Model;
 using System.Windows;
+using System.Linq;
 
 namespace MonthlyCycleApp.ViewModels
 {
@@ -29,6 +30,26 @@ namespace MonthlyCycleApp.ViewModels
         #endregion
 
         #region Properties
+        public PeriodMonth NextPeriod
+        {
+            get
+            {
+
+                PeriodMonth period = new PeriodMonth(); 
+                PeriodMonth currentPeriod = Calendar.CurrentPeriod;
+                List<PeriodMonth> futurePeriods = Calendar.FuturePeriods;
+
+                if (currentPeriod != null && (ShowSelectStartDay|| ShowSelectEndDay))
+                    //&& DateTime.Today < currentPeriod.CycleEndDay)
+                    period = currentPeriod;
+             
+                if (currentPeriod != null && futurePeriods != null && futurePeriods.Count > 0 && DateTime.Today >= currentPeriod.CycleEndDay)
+                    period = futurePeriods.FirstOrDefault();
+
+                return period;
+
+            }
+        }
 
         public bool EndOfCycleEnabled
         {
@@ -46,8 +67,10 @@ namespace MonthlyCycleApp.ViewModels
             get
             {
                 if (calendar == null || calendar.IsNew())
-                    calendar = PersistanceStorage.MockCalendar();
-                //PersistanceStorage.ReadDataFromPersistanceStorage();
+                    calendar = //PersistanceStorage.MockCalendar();
+                PersistanceStorage.ReadDataFromPersistanceStorage();
+                if (calendar == null || calendar.IsNew())
+                    calendar = PersistanceStorage.GenerateCalendarData(CycleDurationSetting, PeriodDurationSetting, LastPeriodDateSetting);
                 return calendar;
             }
             set
@@ -77,7 +100,7 @@ namespace MonthlyCycleApp.ViewModels
             get { return ApplicationSettings.GetProperty<string>(ApplicationSettings.CYCLE_DURATION_SETTING); }
         }
 
-        public string LastPeriodDate
+        public string LastPeriodDateSetting
         {
             get { return ApplicationSettings.GetProperty<DateTime>(ApplicationSettings.LAST_PERIOD_SETTING).ToString("dd MMM"); }
         }
@@ -513,7 +536,6 @@ namespace MonthlyCycleApp.ViewModels
 
         public MainViewModel()
         {
-            
         }
 
         #region Dialog methods
@@ -645,7 +667,7 @@ namespace MonthlyCycleApp.ViewModels
         public void OkCommand()
         {
             Return = false;
-            var currentPeriod = Calendar.CurrentPeriod;
+            var currentPeriod = NextPeriod;
             if (ShowSelectStartDay && ShowSelectEndDay)
             {
                 currentPeriod.CycleStartDay = SelectedStartCycle;
@@ -682,15 +704,34 @@ namespace MonthlyCycleApp.ViewModels
             ShowSelectStartDay = !App.LunaViewModel.StartCycleConfirmed;
             ShowSelectEndDay = !App.LunaViewModel.EndCycleConfirmed;
 
-            Calendar.CurrentPeriod = currentPeriod;
+            SetupCalendarData(currentPeriod);
+
 
             App.LunaViewModel.SetDropValues();
             App.MainViewModel.ShowDialog = false;
         }
 
+        private void SetupCalendarData(PeriodMonth modifiedCurrentPeriod)
+        {
+            var currentStoredPeriod = Calendar.CurrentPeriod;
+            var pastPeriods = Calendar.PastPeriods;
+
+
+            if (pastPeriods.Contains(currentStoredPeriod))
+            {
+                PeriodMonth month = pastPeriods.FirstOrDefault(item => item.CycleStartDay == currentStoredPeriod.CycleStartDay && item.CycleEndDay == currentStoredPeriod.CycleEndDay);
+                month = modifiedCurrentPeriod;
+            }
+            else
+                pastPeriods.Add(modifiedCurrentPeriod);
+
+            Calendar.CurrentPeriod = modifiedCurrentPeriod;
+            Calendar.PastPeriods = pastPeriods;
+        }
+
         public void CancelCommand()
         {
-            var currentPeriod = Calendar.CurrentPeriod;
+            var currentPeriod = NextPeriod;
             App.MainViewModel.SelectedStartCycle = currentPeriod.CycleStartDay;
             App.MainViewModel.SelectedEndCycle = currentPeriod.CycleEndDay;
             ShowDialog = false;
