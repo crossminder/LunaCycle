@@ -46,6 +46,8 @@ namespace MonthlyCycleApp
     
         private void setupBtn_Click(object sender, RoutedEventArgs e)
         {
+            App.SetupViewModel.ShowInitialSetup = false;
+
             NavigationService.Navigate(new Uri("/MainPage.xaml", UriKind.Relative));
         }
 
@@ -94,7 +96,7 @@ namespace MonthlyCycleApp
 
         private void pkLastCycle_ManipulationCompleted(object sender, System.Windows.Input.ManipulationCompletedEventArgs e)
         {
-           SetupViewModel.LastDateSelected = true;
+            SetupViewModel.LastDateSelected = true;
         }
 
         #endregion

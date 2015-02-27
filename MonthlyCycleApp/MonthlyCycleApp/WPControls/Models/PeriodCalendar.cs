@@ -60,14 +60,14 @@ namespace WPControls.Models
                 currentPeriod = new PeriodMonth();
                 if (PastPeriods != null && PastPeriods.Count > 0)
                     currentPeriod = (from period in PastPeriods
-                                      where period.CycleStartDay.Month == DateTime.Today.Month
+                                      where period.PeriodStartDay.Month == DateTime.Today.Month
                                       select period).FirstOrDefault();
 
 
                 if (currentPeriod.IsEmpty() && PastPeriods != null && PastPeriods.Count > 0)
                 {
-                    currentPeriod.PeriodDuration = AveragePeriodDuration;
-                    currentPeriod.CycleDuration = AverageCycleDuration;
+                    currentPeriod.CycleDuration = AveragePeriodDuration;
+                    currentPeriod.PeriodDuration = AverageCycleDuration;
                 }
 
                 return currentPeriod != null ? currentPeriod : new PeriodMonth();
@@ -90,10 +90,20 @@ namespace WPControls.Models
                 {
                     if (PastPeriods != null && PastPeriods.Count > 0)
                     {
-                        var pastPeriodsList = (from month in PastPeriods.OrderBy(x => x.CycleStartDay.Month)
-                                               where month.CycleStartDay.Month <= DateTime.Today.AddMonths(-3).Month
-                                               select month).ToList();
-                        averagePeriodDuration = pastPeriodsList.Sum(x => x.PeriodDuration) / pastPeriodsList.Count();
+                        //pick the last year's entries
+                        List<int> values = (from month in PastPeriods.OrderBy(x => x.PeriodStartDay.Month)
+                                            where month.PeriodStartDay.Month <= DateTime.Today.AddMonths(-12).Month
+                                            select month.PeriodDuration).ToList();
+
+                        //remove the most minimal and maximal values 
+                        var minValue = values.Min();
+                        var maxValue = values.Max();
+                        if (minValue != maxValue)
+                            values = values.Where(x => x != minValue || x != maxValue).ToList();
+
+                        double arithmethicMean = Math.Round(values.Average());
+
+                        averagePeriodDuration = (Int32)arithmethicMean;
                     }
                     else
                         averagePeriodDuration = _defaultAveragePeriod;
@@ -107,14 +117,25 @@ namespace WPControls.Models
         {
             get
             {
-                if (averagePeriodDuration == 0)
+                if (averageCycleDuration == 0)
                 {
                     if (PastPeriods != null && PastPeriods.Count > 0)
                     {
-                        var pastPeriodsList = (from month in PastPeriods.OrderBy(x => x.CycleStartDay.Month)
-                                               where month.CycleStartDay.Month <= DateTime.Today.AddMonths(-3).Month
-                                               select month).ToList();
-                        averageCycleDuration = pastPeriodsList.Sum(x => x.CycleDuration) / pastPeriodsList.Count();
+
+                        //pick the last year's entries
+                        List<int> values = (from month in PastPeriods.OrderBy(x => x.PeriodStartDay.Month)
+                                            where month.PeriodStartDay.Month <= DateTime.Today.AddMonths(-12).Month
+                                            select month.CycleDuration).ToList();
+
+                        //remove the most minimal and maximal values 
+                        var minValue = values.Min();
+                        var maxValue = values.Max();
+                        if (minValue != maxValue)
+                            values = values.Where(x => x != minValue || x != maxValue).ToList();
+
+                        double arithmethicMean = Math.Round(values.Average());
+
+                        averageCycleDuration = (Int32)arithmethicMean;
                     }
                     else
                         averageCycleDuration = defaultAverageCycle;
@@ -139,27 +160,27 @@ namespace WPControls.Models
 
                     if (periods != null && periods.Count > 0)
                     {
-                        DateTime lastMonthEndPeriodDay = periods.Last().PeriodEndDay;
+                        DateTime lastMonthEndPeriodDay = periods.Last().CycleEndDay;
 
                         PeriodMonth estimatedFuture1 = new PeriodMonth()
                         {
-                            CycleDuration = AverageCycleDuration,
-                            PeriodDuration = AveragePeriodDuration,
-                            CycleStartDay = lastMonthEndPeriodDay.AddDays(1)
+                            PeriodDuration = AverageCycleDuration,
+                            CycleDuration = AveragePeriodDuration,
+                            PeriodStartDay = lastMonthEndPeriodDay.AddDays(1)
                         };
 
                         PeriodMonth estimatedFuture2 = new PeriodMonth()
                         {
-                            CycleDuration = AverageCycleDuration,
-                            PeriodDuration = AveragePeriodDuration,
-                            CycleStartDay = estimatedFuture1.PeriodEndDay.AddDays(1)
+                            PeriodDuration = AverageCycleDuration,
+                            CycleDuration = AveragePeriodDuration,
+                            PeriodStartDay = estimatedFuture1.CycleEndDay.AddDays(1)
                         };
 
                         PeriodMonth EstimatedFuture3 = new PeriodMonth()
                         {
-                            CycleDuration = AverageCycleDuration,
-                            PeriodDuration = AveragePeriodDuration,
-                            CycleStartDay = estimatedFuture2.PeriodEndDay.AddDays(1)
+                            PeriodDuration = AverageCycleDuration,
+                            CycleDuration = AveragePeriodDuration,
+                            PeriodStartDay = estimatedFuture2.CycleEndDay.AddDays(1)
                         };
 
                         futurePeriods.Add(estimatedFuture1);
@@ -183,6 +204,8 @@ namespace WPControls.Models
                     if (PastPeriods != null && PastPeriods.Count > 0)
                         periods = (from item in PastPeriods
                                     select item).ToList();
+                    if (CurrentPeriod != null && !PastPeriods.Contains(CurrentPeriod))
+                        periods.Add(CurrentPeriod);
                     if (FuturePeriods != null && FuturePeriods.Count > 0)
                         periods = periods.Concat(FuturePeriods).ToList();
                 }
@@ -190,6 +213,26 @@ namespace WPControls.Models
             }
         }
 
+
+        //public int FirstFertileDayPrediction
+        //{
+        //    get
+        //    {
+        //        int minCycleDuration = PastPeriods.Min(x => x.CycleDuration);
+        //        int average = AverageCycleDuration / 2;
+        //        return minCycleDuration > 18 ? minCycleDuration - 18 : average < 11 ? 11 : average;
+        //    }
+        //}
+
+        //public int LastFertileDayPrediction
+        //{
+        //    get
+        //    {
+        //        int maxCycleDuration = PastPeriods.Max(x => x.CycleDuration);
+        //        int average = AverageCycleDuration / 2;
+        //        return maxCycleDuration > 11 ? maxCycleDuration - 11 : average > 21 ? 21 : average;
+        //    }
+        //}
             
         public PeriodDay Today
         {
@@ -203,11 +246,13 @@ namespace WPControls.Models
         }
 
 
+        
+        #endregion
+
         public PeriodMonth GetPeriodForDate(DateTime date)
         {
-            return Periods.Where(item => date >= item.CycleStartDay && date <= item.PeriodEndDay).FirstOrDefault();
+            return Periods.Where(item => date >= item.PeriodStartDay && date <= item.CycleEndDay).FirstOrDefault();
         }
-        #endregion
 
         #region event handlers
 

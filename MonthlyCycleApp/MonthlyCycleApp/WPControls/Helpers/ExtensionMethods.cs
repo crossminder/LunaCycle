@@ -11,7 +11,7 @@ namespace WPControls.Helpers
     {
         public static bool IsEmpty(this PeriodMonth month)
         {
-            return month.PeriodDuration == 0 && month.CycleDuration == 0;
+            return month.CycleDuration == 0 && month.PeriodDuration == 0;
         }
 
         public static bool IsNew(this PeriodCalendar calendar)
@@ -24,7 +24,7 @@ namespace WPControls.Helpers
             foreach (var item in periods)
             {
                 DateRange addedPeriod = new DateRange(startDate, endDate);
-                DateRange tempPeriod = new DateRange(item.CycleStartDay, item.CycleEndDay);
+                DateRange tempPeriod = new DateRange(item.PeriodStartDay, item.PeriodEndDay);
                 if (addedPeriod.IsOverlapping(tempPeriod) && item != currentPeriod)
                     return item;
             }
@@ -65,34 +65,37 @@ namespace WPControls.Helpers
         {
             //this means you found the right period and may keep on going
 
-            if (periodMonth != null && date >= periodMonth.CycleStartDay && date <= periodMonth.PeriodEndDay)
+            if (periodMonth != null && date >= periodMonth.PeriodStartDay && date <= periodMonth.CycleEndDay)
             {
-                if (date.Equals(periodMonth.CycleStartDay))
+                if (date.Equals(periodMonth.PeriodStartDay))
                     return PeriodDayTypeEnum.CycleStartDay;
 
-                if (date.Equals(periodMonth.CycleEndDay))
+                if (date.Equals(periodMonth.PeriodEndDay))
                     return PeriodDayTypeEnum.CycleEndDay;
 
                 if (date.Equals(periodMonth.FertilityStartDay))
                     return PeriodDayTypeEnum.FertilityStartDay;
 
-                if (date.Equals(periodMonth.FertilityStartDay.AddDays(periodMonth.FertilityDuration)))
+                if (date.Equals(periodMonth.FertilityStartDay.AddDays(periodMonth.FertilityDuration - 1)))
                     return PeriodDayTypeEnum.FertilityEndDay;
 
-                DateRange cycle = new DateRange(periodMonth.CycleStartDay, periodMonth.CycleEndDay);
+                DateRange cycle = new DateRange(periodMonth.PeriodStartDay, periodMonth.PeriodEndDay);
                 if (cycle.Includes(date))
                     return PeriodDayTypeEnum.CycleDay;
 
-                DateRange fertility = new DateRange(periodMonth.FertilityStartDay, periodMonth.FertilityStartDay.AddDays(periodMonth.FertilityDuration));
+                if (date.Equals(periodMonth.OvulationPeakDay))
+                    return PeriodDayTypeEnum.OvulationDay;
+                DateRange fertility = new DateRange(periodMonth.FertilityStartDay, periodMonth.FertilityStartDay.AddDays(periodMonth.FertilityDuration - 1));
                 if (fertility.Includes(date))
                     return PeriodDayTypeEnum.FertilityDay;
+
             }
             return PeriodDayTypeEnum.RegularDay;
         }
 
         public static bool IsPillDay(DateTime date, PeriodMonth periodMonth)
         {
-            return periodMonth!=null ? (date >= periodMonth.CycleStartDay && date <= periodMonth.CycleStartDay.AddDays(21)): false;
+            return periodMonth!=null ? (date >= periodMonth.PeriodStartDay && date <= periodMonth.PeriodStartDay.AddDays(21)): false;
         }
 
         //public static void SetPeriod(this MonthObject month, int startPeriod, int periodDuration, int cycleDuration)

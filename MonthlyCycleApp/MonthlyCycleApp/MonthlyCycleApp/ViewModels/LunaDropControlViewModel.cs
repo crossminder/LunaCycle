@@ -32,44 +32,6 @@ namespace MonthlyCycleApp.ViewModels
         }
         #endregion
 
-        #region Properties
-        private bool? startCycleConfirmed;
-        public bool StartCycleConfirmed
-        {
-            get
-            {
-                return startCycleConfirmed.HasValue ? startCycleConfirmed.Value : ApplicationSettings.GetProperty<bool>(ApplicationSettings.IS_CYCLE_START_CONFIRMED); ;
-            }
-            set
-            {
-                if (value != startCycleConfirmed)
-                {
-                    startCycleConfirmed = value;
-                    ApplicationSettings.SetProperty(ApplicationSettings.IS_CYCLE_START_CONFIRMED, startCycleConfirmed);
-                    NotifyPropertyChanged("StartCycleConfirmed");
-                }
-            }
-        }
-
-        private bool? endCycleConfirmed;
-        public bool EndCycleConfirmed
-        {
-            get
-            {
-                return endCycleConfirmed.HasValue ? endCycleConfirmed.Value : ApplicationSettings.GetProperty<bool>(ApplicationSettings.IS_CYCLE_END_CONFIRMED); ;
-            }
-            set
-            {
-                if (value != endCycleConfirmed)
-                {
-                    endCycleConfirmed = value;
-                    ApplicationSettings.SetProperty(ApplicationSettings.IS_CYCLE_END_CONFIRMED, endCycleConfirmed);
-                    NotifyPropertyChanged("EndCycleConfirmed");
-                }
-            }
-        }
-
-        #endregion
 
         #region Drop infos
         public string Today
@@ -168,71 +130,70 @@ namespace MonthlyCycleApp.ViewModels
 
         public LunaDropControlViewModel()
         {
-            App.MainViewModel.ShowSelectStartDay = !StartCycleConfirmed;
-            App.MainViewModel.ShowSelectEndDay = !EndCycleConfirmed;
-      
-            var currentPeriod = App.MainViewModel.NextPeriod;
-            SetDropValues();
+            SetDropValues(App.MainViewModel.NextPeriod);
         }
 
-
-        public void SetupControlsVisibility(bool showCycleConfirmation, bool startCycleConfimed, bool endCycleConfirmed, bool needToAddCycleManually)
+        public void SetDropValues(PeriodMonth currentPeriod)
         {
-            StartCycleConfirmed = startCycleConfimed;
-            EndCycleConfirmed = endCycleConfirmed;
-        }
-
-        public void SetDropValues()
-        {
-            var nextPeriod = App.MainViewModel.NextPeriod;
-
-            if(DateTime.Today < nextPeriod.CycleStartDay)
+            // the current cycle's mestruation hasn't started yet
+            if (DateTime.Today < currentPeriod.PeriodStartDay)
             {
-                int remainingDays = ((TimeSpan)(nextPeriod.CycleStartDay - DateTime.Today)).Days;
-     
+                int remainingDays = ((TimeSpan)(currentPeriod.PeriodStartDay - DateTime.Today)).Days;
+
                 DaysToPeriodText = AppResources.DaysToPeriodText;
-                DaysToPeriod = Math.Abs( remainingDays);
+                DaysToPeriod = Math.Abs(remainingDays);
             }
             else
-                if (DateTime.Today >= nextPeriod.CycleStartDay && DateTime.Today <= nextPeriod.CycleEndDay)
+            {
+              // the current cycle's menstruation has ended
+                if (DateTime.Today > currentPeriod.PeriodEndDay)
                 {
-                    int daysUntilEndCycle = ((TimeSpan)(nextPeriod.CycleEndDay - DateTime.Today)).Days + 1;
-                    DaysToPeriodText = AppResources.DayOfPeriodText;
-                    DaysToPeriod = Math.Abs(daysUntilEndCycle);
+                    PeriodMonth nextPeriod = App.MainViewModel.Calendar.FuturePeriods.FirstOrDefault();
+
+                    int remainingDays = ((TimeSpan)(nextPeriod.PeriodStartDay - DateTime.Today)).Days;
+
+                    DaysToPeriodText = AppResources.DaysToPeriodText;
+                    DaysToPeriod = Math.Abs(remainingDays);
                 }
+                else
+                    // you are during your current cycle's menstruation
+                    if (DateTime.Today >= currentPeriod.PeriodStartDay && DateTime.Today <= currentPeriod.PeriodEndDay)
+                    {
+                        int daysUntilEndCycle = ((TimeSpan)(currentPeriod.PeriodEndDay - DateTime.Today)).Days + 1;
+                        DaysToPeriodText = AppResources.DayOfPeriodText;
+                        DaysToPeriod = Math.Abs(daysUntilEndCycle);
+                    }
+            }
 
-            SetWaveHeigth(nextPeriod);
-
-            ClearCache();
+            SetWaveHeigth(currentPeriod);
         }
-
 
         private void SetWaveHeigth(PeriodMonth currentPeriod)
         {
             double top = 0;
             //from begining to half of cycle you have 100%
-            if (DateTime.Today >= currentPeriod.CycleStartDay &&
-                DateTime.Today <= currentPeriod.CycleStartDay.AddDays(currentPeriod.CycleDuration/2))
+            if (DateTime.Today >= currentPeriod.PeriodStartDay &&
+                DateTime.Today <= currentPeriod.PeriodStartDay.AddDays(currentPeriod.PeriodDuration/2))
                 top = 0;
             else
                 //from half cycle to end, decreasing
-                if (DateTime.Today > currentPeriod.CycleStartDay.AddDays(currentPeriod.CycleDuration / 2) &&
-                    DateTime.Today <= currentPeriod.CycleEndDay)
+                if (DateTime.Today > currentPeriod.PeriodStartDay.AddDays(currentPeriod.PeriodDuration / 2) &&
+                    DateTime.Today <= currentPeriod.PeriodEndDay)
                 {
-                    double totalDaysSpan = (currentPeriod.CycleEndDay - currentPeriod.CycleStartDay.AddDays(currentPeriod.CycleDuration / 2)).Days;
+                    double totalDaysSpan = (currentPeriod.PeriodEndDay - currentPeriod.PeriodStartDay.AddDays(currentPeriod.PeriodDuration / 2)).Days;
                     double percentage = Math.Round(MAX_HEIGHT / totalDaysSpan);
-                    double remaining = (currentPeriod.CycleEndDay - DateTime.Today).Days +1;
+                    double remaining = (currentPeriod.PeriodEndDay - DateTime.Today).Days +1;
                     top = - percentage * remaining;
                 }
                 else
                 //half duration to start cycle, increasing
                 {
-                    double totalDaysSpan = currentPeriod.CycleDuration / 2;
+                    double totalDaysSpan = currentPeriod.PeriodDuration / 2;
                     if (DaysToPeriod < totalDaysSpan &&
-                         DateTime.Today < currentPeriod.CycleStartDay)
+                         DateTime.Today < currentPeriod.PeriodStartDay)
                     { 
                         double percentage = Math.Round(MAX_HEIGHT / totalDaysSpan);
-                        double remaining = (DateTime.Today- currentPeriod.CycleStartDay).Days + 1;
+                        double remaining = (DateTime.Today- currentPeriod.PeriodStartDay).Days + 1;
                         top = -percentage * (totalDaysSpan - remaining);
                     }
                 }
@@ -243,19 +204,7 @@ namespace MonthlyCycleApp.ViewModels
             BottomMarginValue = bottom;
 
             WavingGridMargins = new Thickness(-40, top, 40, bottom);
-
-         
         }
-
-        private void ClearCache()
-        {
-            if (StartCycleConfirmed && EndCycleConfirmed)
-            {
-                ApplicationSettings.RemoveProperty(ApplicationSettings.IS_CYCLE_START_CONFIRMED);
-                ApplicationSettings.RemoveProperty(ApplicationSettings.IS_CYCLE_END_CONFIRMED);
-            }
-        }
-
 
     }
 }

@@ -31,6 +31,8 @@ namespace MonthlyCycleApp
             DataContext = App.MainViewModel;
             Loaded += MainPage_Loaded;
             App.MainViewModel.Return = false;
+
+         
         }
 
         void MainPage_Loaded(object sender, RoutedEventArgs e)
@@ -47,8 +49,6 @@ namespace MonthlyCycleApp
         #region Navigation
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
-            App.SetupViewModel.ShowInitialSetup = !App.SetupViewModel.SetupCompleted;
-
             //remove initial setup page from history
             if (NavigationService.BackStack.Count() > 0)
             {
@@ -270,11 +270,14 @@ namespace MonthlyCycleApp
 
                 if (validationType == ValidationEnum.NoNeedForValidation)
                 {
+                    App.MainViewModel.SelectedEndCycle = tempEnd;
                     App.MainViewModel.SetupDialog(validationType);
-                   // App.MainViewModel.SelectedEndCycle = tempEnd;
                 }
                 else
+                {
+                    App.MainViewModel.SelectedEndCycle = tempEnd;
                     App.MainViewModel.SetupDialog(validationType);
+                }
 
                 (sender as DatePicker).BorderBrush = (validationType == ValidationEnum.NoNeedForValidation) ? new SolidColorBrush(Colors.White) : new SolidColorBrush(Colors.Red);
                 forthRowText.Foreground = (validationType == ValidationEnum.NoNeedForValidation) ? new SolidColorBrush(Colors.White) : new SolidColorBrush(Colors.Red);

@@ -35,19 +35,19 @@ namespace MonthlyCycleApp.ViewModels
             get
             {
 
-                PeriodMonth period = new PeriodMonth(); 
+             //   PeriodMonth period = new PeriodMonth(); 
                 PeriodMonth currentPeriod = Calendar.CurrentPeriod;
                 List<PeriodMonth> futurePeriods = Calendar.FuturePeriods;
 
-                if (currentPeriod != null && (ShowSelectStartDay|| ShowSelectEndDay))
-                    //&& DateTime.Today < currentPeriod.CycleEndDay)
-                    period = currentPeriod;
+                if (currentPeriod != null && 
+                    (!StartCycleConfirmed || !EndCycleConfirmed ||
+                    DateTime.Today <= currentPeriod.PeriodEndDay))
+                  return currentPeriod;
              
-                if (currentPeriod != null && futurePeriods != null && futurePeriods.Count > 0 && DateTime.Today >= currentPeriod.CycleEndDay)
-                    period = futurePeriods.FirstOrDefault();
+                if (currentPeriod != null && futurePeriods != null && futurePeriods.Count > 0 && DateTime.Today >= currentPeriod.PeriodEndDay)
+                   return futurePeriods.FirstOrDefault();
 
-                return period;
-
+                return new PeriodMonth();
             }
         }
 
@@ -55,7 +55,7 @@ namespace MonthlyCycleApp.ViewModels
         {
             get
             {
-                DateTime startCycle = Calendar.CurrentPeriod.CycleStartDay;
+                DateTime startCycle = Calendar.CurrentPeriod.PeriodStartDay;
                 return startCycle == DateTime.MinValue ? false : startCycle <= DateTime.Today.AddDays(-2) ? true : false;
             }
         }
@@ -100,9 +100,9 @@ namespace MonthlyCycleApp.ViewModels
             get { return ApplicationSettings.GetProperty<string>(ApplicationSettings.CYCLE_DURATION_SETTING); }
         }
 
-        public string LastPeriodDateSetting
+        public DateTime LastPeriodDateSetting
         {
-            get { return ApplicationSettings.GetProperty<DateTime>(ApplicationSettings.LAST_PERIOD_SETTING).ToString("dd MMM"); }
+            get { return ApplicationSettings.GetProperty<DateTime>(ApplicationSettings.LAST_PERIOD_SETTING); }
         }
 
 
@@ -438,7 +438,7 @@ namespace MonthlyCycleApp.ViewModels
         {
             get 
             {
-                return selectedStartCycle.HasValue ? selectedStartCycle.Value : Calendar.CurrentPeriod.CycleStartDay; 
+                return selectedStartCycle.HasValue ? selectedStartCycle.Value : Calendar.CurrentPeriod.PeriodStartDay; 
             }
             set
             {
@@ -456,7 +456,7 @@ namespace MonthlyCycleApp.ViewModels
         {
             get
             {
-                return selectedEndCycle.HasValue ? selectedEndCycle.Value : Calendar.CurrentPeriod.CycleEndDay; 
+                return selectedEndCycle.HasValue ? selectedEndCycle.Value : Calendar.CurrentPeriod.PeriodEndDay; 
             }
             set
             {
@@ -531,11 +531,51 @@ namespace MonthlyCycleApp.ViewModels
                 }
             }
         }
-     
+
+
+        #region Properties
+        private bool? startCycleConfirmed;
+        public bool StartCycleConfirmed
+        {
+            get
+            {
+                return startCycleConfirmed.HasValue ? startCycleConfirmed.Value : ApplicationSettings.GetProperty<bool>(ApplicationSettings.IS_CYCLE_START_CONFIRMED); ;
+            }
+            set
+            {
+                if (value != startCycleConfirmed)
+                {
+                    startCycleConfirmed = value;
+                    ApplicationSettings.SetProperty(ApplicationSettings.IS_CYCLE_START_CONFIRMED, startCycleConfirmed);
+                    NotifyPropertyChanged("StartCycleConfirmed");
+                }
+            }
+        }
+
+        private bool? endCycleConfirmed;
+        public bool EndCycleConfirmed
+        {
+            get
+            {
+                return endCycleConfirmed.HasValue ? endCycleConfirmed.Value : ApplicationSettings.GetProperty<bool>(ApplicationSettings.IS_CYCLE_END_CONFIRMED); ;
+            }
+            set
+            {
+                if (value != endCycleConfirmed)
+                {
+                    endCycleConfirmed = value;
+                    ApplicationSettings.SetProperty(ApplicationSettings.IS_CYCLE_END_CONFIRMED, endCycleConfirmed);
+                    NotifyPropertyChanged("EndCycleConfirmed");
+                }
+            }
+        }
+
+        #endregion
         #endregion
 
         public MainViewModel()
         {
+            
         }
 
         #region Dialog methods
@@ -548,9 +588,9 @@ namespace MonthlyCycleApp.ViewModels
                     {
                         var currentPeriod = Calendar.CurrentPeriod;
 
-                        if (!App.LunaViewModel.StartCycleConfirmed &&
-                            !App.LunaViewModel.EndCycleConfirmed &&
-                            DateTime.Now >= SelectedStartCycle.AddDays(currentPeriod.CycleDuration))
+                        if (!StartCycleConfirmed &&
+                            !EndCycleConfirmed &&
+                            DateTime.Now >= SelectedStartCycle.AddDays(currentPeriod.PeriodDuration))
                         {
                             FirstRowText = AppResources.PeriodStartedQuestion;
                             SecondRowText = string.Empty;
@@ -560,22 +600,30 @@ namespace MonthlyCycleApp.ViewModels
                             ShowSelectEndDay = true;
                         }
                         else
-                            if (!App.LunaViewModel.StartCycleConfirmed)
+                            if (!StartCycleConfirmed)
                             {
                                 FirstRowText = AppResources.PeriodStartedQuestion;
+
+                                ThirdRowText = string.Empty;
+                                ForthRowText = string.Empty;
+
                                 ShowSelectStartDay = true;
 
                             }
                             else
-                                if (!App.LunaViewModel.EndCycleConfirmed && DateTime.Now >= SelectedStartCycle.AddDays(2))
+                            {
+                                FirstRowText = string.Empty;
+                                SecondRowText = string.Empty;
+
+                                if (!EndCycleConfirmed && DateTime.Now >= SelectedStartCycle.AddDays(2))
                                 {
-                                    if (SelectedEndCycle != DateTime.Today)
+                                    if (SelectedEndCycle > DateTime.Today)
                                         SelectedEndCycle = DateTime.Today;
 
                                     ThirdRowText = AppResources.PeriodEndedQuestion;
                                     ShowSelectEndDay = true;
                                 }
-
+                            }
                         if (ShowSelectStartDay || ShowSelectEndDay)
                         {
                             OkButtonContent = AppResources.OkButton;
@@ -635,19 +683,18 @@ namespace MonthlyCycleApp.ViewModels
             DelayedAdvancedStart = 0;
             DelayedAdvancedEnd = 0;
 
-            DateTime expectedEndDate = SelectedStartCycle.AddDays(currentPeriod.CycleDuration);
+            DateTime expectedEndDate = SelectedStartCycle.AddDays(currentPeriod.PeriodDuration - 1);
 
-            if (ShowSelectStartDay && (SelectedStartCycle < currentPeriod.CycleStartDay || SelectedStartCycle > currentPeriod.CycleStartDay))
+            if (ShowSelectStartDay && (SelectedStartCycle < currentPeriod.PeriodStartDay || SelectedStartCycle > currentPeriod.PeriodStartDay))
             {
-                 counter = (SelectedStartCycle - currentPeriod.CycleStartDay).Days;
+                 counter = (SelectedStartCycle - currentPeriod.PeriodStartDay).Days;
                  DelayedAdvancedStart = Math.Abs(counter);
 
                 if (counter < 0)
                     SecondRowText = string.Format(AppResources.PeriodEarlierMessage, DelayedAdvancedStart);
                 else
                     if (counter > 0)
-                    SecondRowText = string.Format(AppResources.PeriodLaterMessage, DelayedAdvancedStart);
-                   
+                    SecondRowText = string.Format(AppResources.PeriodLaterMessage, DelayedAdvancedStart);               
             }
 
             if (ShowSelectEndDay && (SelectedEndCycle < expectedEndDate || SelectedEndCycle > expectedEndDate))
@@ -668,47 +715,37 @@ namespace MonthlyCycleApp.ViewModels
         {
             Return = false;
             var currentPeriod = NextPeriod;
-            if (ShowSelectStartDay && ShowSelectEndDay)
+
+            if (ShowSelectStartDay)
             {
-                currentPeriod.CycleStartDay = SelectedStartCycle;
-                currentPeriod.CycleEndDay = SelectedEndCycle;
-
-                App.LunaViewModel.StartCycleConfirmed = true;
-                App.LunaViewModel.EndCycleConfirmed = true;
+                currentPeriod.PeriodStartDay = SelectedStartCycle;
+                currentPeriod.PeriodEndDay = currentPeriod.PeriodStartDay.AddDays(currentPeriod.PeriodDuration - 1);
+                currentPeriod.CycleEndDay = currentPeriod.PeriodStartDay.AddDays(currentPeriod.CycleDuration - 1);
+ 
+                StartCycleConfirmed = true;
+                EndCycleConfirmed = false;
             }
-            else
-                if (ShowSelectStartDay)
+
+            if (ShowSelectEndDay)
+            {
+                if (Calendar.CurrentPeriod.PeriodEndDay != SelectedEndCycle)
                 {
-                    currentPeriod.CycleStartDay = SelectedStartCycle;
-                    currentPeriod.CycleEndDay = currentPeriod.CycleStartDay.AddDays(currentPeriod.CycleDuration);
-                    currentPeriod.PeriodEndDay = currentPeriod.CycleStartDay.AddDays(currentPeriod.PeriodDuration);
+                    currentPeriod.PeriodEndDay = SelectedEndCycle;
 
-                    App.LunaViewModel.StartCycleConfirmed = true;
-                    App.LunaViewModel.EndCycleConfirmed = false;
+                 
                 }
-                else
-                    if (ShowSelectEndDay)
-                    {
-                        if (Calendar.CurrentPeriod.CycleEndDay != SelectedEndCycle)
-                        {
-                            currentPeriod.CycleEndDay = SelectedEndCycle;
-
-                            int computedCycleDuration = (currentPeriod.CycleEndDay - currentPeriod.CycleStartDay).Days;
-                            if (computedCycleDuration != currentPeriod.CycleDuration)
-                                currentPeriod.CycleDuration = computedCycleDuration;
-                        }
-                        App.LunaViewModel.EndCycleConfirmed = true;
-                    }
-
-            //if there are confirmed, there is no need to show them
-            ShowSelectStartDay = !App.LunaViewModel.StartCycleConfirmed;
-            ShowSelectEndDay = !App.LunaViewModel.EndCycleConfirmed;
+                EndCycleConfirmed = true;
+            }
 
             SetupCalendarData(currentPeriod);
 
+            App.LunaViewModel.SetDropValues(currentPeriod);
 
-            App.LunaViewModel.SetDropValues();
-            App.MainViewModel.ShowDialog = false;
+            //if there are confirmed, there is no need to show them
+            ShowSelectStartDay = !StartCycleConfirmed;
+            ShowSelectEndDay = !EndCycleConfirmed;
+
+            ShowDialog = false;
         }
 
         private void SetupCalendarData(PeriodMonth modifiedCurrentPeriod)
@@ -716,26 +753,70 @@ namespace MonthlyCycleApp.ViewModels
             var currentStoredPeriod = Calendar.CurrentPeriod;
             var pastPeriods = Calendar.PastPeriods;
 
-
             if (pastPeriods.Contains(currentStoredPeriod))
             {
-                PeriodMonth month = pastPeriods.FirstOrDefault(item => item.CycleStartDay == currentStoredPeriod.CycleStartDay && item.CycleEndDay == currentStoredPeriod.CycleEndDay);
+                PeriodMonth month = pastPeriods.FirstOrDefault(item => item.PeriodStartDay == currentStoredPeriod.PeriodStartDay && item.PeriodEndDay == currentStoredPeriod.PeriodEndDay);
                 month = modifiedCurrentPeriod;
             }
             else
-                pastPeriods.Add(modifiedCurrentPeriod);
+            {
+                if (StartCycleConfirmed && EndCycleConfirmed)
+                {
+                    pastPeriods.Add(modifiedCurrentPeriod);
+                    Calendar.PastPeriods = pastPeriods;
+                    Calendar.CurrentPeriod = Calendar.FuturePeriods.FirstOrDefault();
+                    
+                    ClearCache();
+                }
+                else
+                {
+                    if (StartCycleConfirmed && pastPeriods.Count > 0)
+                    {
+                        PeriodMonth previousPeriod = pastPeriods[pastPeriods.Count - 1];
 
-            Calendar.CurrentPeriod = modifiedCurrentPeriod;
-            Calendar.PastPeriods = pastPeriods;
+                        //this period started early/ later -> this means the previous period ended early/later
+                        if (previousPeriod.CycleEndDay.AddDays(1) != modifiedCurrentPeriod.PeriodStartDay)
+                        {
+                            previousPeriod.CycleEndDay = modifiedCurrentPeriod.PeriodStartDay.AddDays(-1);
+                            previousPeriod.CycleDuration = (previousPeriod.CycleEndDay - previousPeriod.PeriodStartDay).Days + 1;
+                        }
+
+                        pastPeriods[pastPeriods.Count - 1] = previousPeriod;
+                    }
+                    else
+                        if (EndCycleConfirmed)
+                        {
+                            int computedCycleDuration = (modifiedCurrentPeriod.PeriodEndDay - modifiedCurrentPeriod.PeriodStartDay).Days + 1;
+                           
+                            //this period ended later/earlier -> this means the duration was longer/shorter
+                            if (computedCycleDuration != modifiedCurrentPeriod.PeriodDuration)
+                                modifiedCurrentPeriod.PeriodDuration = computedCycleDuration;
+                        }
+
+                    Calendar.CurrentPeriod = modifiedCurrentPeriod;
+                    Calendar.PastPeriods = pastPeriods;
+                }
+            }
+            PersistanceStorage.WriteDataToPersistanceStorage(calendar);
+
         }
 
         public void CancelCommand()
         {
             var currentPeriod = NextPeriod;
-            App.MainViewModel.SelectedStartCycle = currentPeriod.CycleStartDay;
-            App.MainViewModel.SelectedEndCycle = currentPeriod.CycleEndDay;
+            SelectedStartCycle = currentPeriod.PeriodStartDay;
+            SelectedEndCycle = currentPeriod.PeriodEndDay;
             ShowDialog = false;
             Return = false;
+        }
+
+        private void ClearCache()
+        {
+            if (StartCycleConfirmed && EndCycleConfirmed)
+            {
+                ApplicationSettings.RemoveProperty(ApplicationSettings.IS_CYCLE_START_CONFIRMED);
+                ApplicationSettings.RemoveProperty(ApplicationSettings.IS_CYCLE_END_CONFIRMED);
+            }
         }
         #endregion
 

@@ -500,6 +500,16 @@
             Date of the calendar item
             </summary>
         </member>
+        <member name="P:WPControls.Models.PeriodMonth.PeriodDuration">
+            <summary>
+            Between 3-5 days
+            </summary>
+        </member>
+        <member name="P:WPControls.Models.PeriodMonth.CycleDuration">
+            <summary>
+            average 28
+            </summary>
+        </member>
         <member name="T:WPControls.MonthChangedEventArgs">
             <summary>
             Event arguments used for MonthChanging and MonthChanged events of the calendar

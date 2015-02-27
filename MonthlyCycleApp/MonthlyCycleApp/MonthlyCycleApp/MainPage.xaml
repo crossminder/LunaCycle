@@ -395,12 +395,12 @@
               BorderBrush="White">-->
                 <StackPanel  Margin="5,150,5,0" >
                     <StackPanel  x:Name="firstRow"
-                         Visibility="{Binding FirstRowText,Converter={StaticResource StringToVisibilityConverter}}" 
                          Orientation="Horizontal"  
                          HorizontalAlignment="Center">
                         <TextBlock 
                        Margin="5,57,0,56"
                        VerticalAlignment="Center"
+                       Visibility="{Binding FirstRowText,Converter={StaticResource StringToVisibilityConverter}}" 
                        Text="{Binding FirstRowText}"
                        TextWrapping="Wrap"
                        FontSize="28" />

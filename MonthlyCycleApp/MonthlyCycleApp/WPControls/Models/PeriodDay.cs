@@ -32,6 +32,12 @@ namespace WPControls.Models
                new Point(85, 310),
                new SolidColorBrush(Color.FromArgb(255, 255, 255, 255))
                ),
+                 new Tuple<int, Point, SolidColorBrush>(
+              (int)Convert.ChangeType(PeriodDayTypeEnum.OvulationDay, typeof(Int32)),
+               new Point(85, 310),
+               new SolidColorBrush(Color.FromArgb(255, 255, 255, 255))
+               ),
+
                new Tuple<int, Point, SolidColorBrush>(
               (int)Convert.ChangeType(PeriodDayTypeEnum.FertilityDay, typeof(Int32)),
                new Point(85, 310),

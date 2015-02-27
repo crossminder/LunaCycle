@@ -14,41 +14,32 @@ namespace WPControls.Models
     public class PeriodMonth 
     {
         [DataMember]
-        public DateTime CycleStartDay
+        public DateTime PeriodStartDay
         {
             get;
             set;
         }
         
-         [DataMember]
-        public int CycleDuration { get; set; }
+        /// <summary>
+        /// Between 3-5 days
+        /// </summary>
          [DataMember]
         public int PeriodDuration { get; set; }
+
+        /// <summary>
+        /// average 28
+        /// </summary>
+         [DataMember]
+        public int CycleDuration { get; set; }
        
 
         public PeriodMonth() { }
 
-        public PeriodMonth(DateTime cycleStartDay, int cycleDuration, int periodDuration)
+        public PeriodMonth(DateTime periodStartDay, int cycleDuration, int periodDuration)
         {
-            this.PeriodDuration = periodDuration;
             this.CycleDuration = cycleDuration;
-            this.CycleStartDay = cycleStartDay;
-        }
-
-        private DateTime cycleEndDay;
-        public DateTime CycleEndDay
-        {
-            get
-            {
-                if (cycleEndDay == DateTime.MinValue)
-                    cycleEndDay = CycleStartDay.AddDays(CycleDuration);
-                return cycleEndDay;
-            }
-            set
-            {
-                if (value != DateTime.MinValue)
-                    cycleEndDay = value;
-            }
+            this.PeriodDuration = periodDuration;
+            this.PeriodStartDay = periodStartDay;
         }
 
         private DateTime periodEndDay;
@@ -57,33 +48,65 @@ namespace WPControls.Models
             get
             {
                 if (periodEndDay == DateTime.MinValue)
-                     periodEndDay = CycleStartDay.AddDays(PeriodDuration);
+                    periodEndDay = PeriodStartDay.AddDays(PeriodDuration - 1);
                 return periodEndDay;
             }
             set
             {
-                if (value != DateTime.MinValue)                  
+                if (value != DateTime.MinValue)
                     periodEndDay = value;
             }
         }
 
-        private DateTime _fertilityStartDay;
-        public DateTime FertilityStartDay
+        private DateTime cycleEndDay;
+        public DateTime CycleEndDay
         {
             get
             {
-                return _fertilityStartDay != DateTime.MinValue ? _fertilityStartDay : _fertilityStartDay = CycleStartDay.AddDays(PeriodDuration / 2);
+                if (cycleEndDay == DateTime.MinValue)
+                     cycleEndDay = PeriodStartDay.AddDays(CycleDuration-1);
+                return cycleEndDay;
             }
             set
             {
                 if (value != DateTime.MinValue)                  
-                    _fertilityStartDay = value;
+                    cycleEndDay = value;
+            }
+        }
+
+
+        private DateTime ovulationPeakDay;
+        public DateTime OvulationPeakDay
+        {
+            get
+            {
+                return ovulationPeakDay != DateTime.MinValue ? ovulationPeakDay : ovulationPeakDay = PeriodStartDay.AddDays(CycleDuration / 2);
+            }
+            set
+            {
+                if (value != DateTime.MinValue)
+                    ovulationPeakDay = value;
+            }
+        }
+
+
+        private DateTime fertilityStartDay;
+        public DateTime FertilityStartDay
+        {
+            get
+            {
+                return fertilityStartDay != DateTime.MinValue ? fertilityStartDay : fertilityStartDay = OvulationPeakDay.AddDays(-2);
+            }
+            set
+            {
+                if (value != DateTime.MinValue)                  
+                    fertilityStartDay = value;
             }
         }
 
         public int FertilityDuration { get { return 5; } }
 
-
+       
 
        
     }

@@ -104,36 +104,36 @@ namespace Monthly.Helpers
 
 
 
-        public static PeriodCalendar GenerateCalendarData(string cycleDurationSetting, string periodDurationSetting, string lastPeriodDateSetting)
+        public static PeriodCalendar GenerateCalendarData(string cycleDurationSetting, string periodDurationSetting, DateTime lastPeriodDateSetting)
         {
             PeriodCalendar generatedCalendar = new PeriodCalendar();
 
-            int allPeriodDuration = Int32.Parse(cycleDurationSetting);
-            int menstruationDuration = Int32.Parse(periodDurationSetting);
-            DateTime lastCycleDateStart = DateTime.Parse(lastPeriodDateSetting);
+            int cycleDuration = Int32.Parse(cycleDurationSetting);
+            int periodDuration = Int32.Parse(periodDurationSetting);
+            DateTime lastCycleDateStart = lastPeriodDateSetting;
 
-            DateTime startDate = lastCycleDateStart;
-            DateTime endDate = startDate.AddDays(menstruationDuration);
+            DateTime startPeriod = lastCycleDateStart;
+            DateTime endPeriod = startPeriod.AddDays(cycleDuration - 1);
 
             List<PeriodMonth> pastPeriods = new List<PeriodMonth>();
 
 
-            while (DateTime.Today > startDate && DateTime.Today > endDate)
+            while (DateTime.Today > startPeriod && DateTime.Today > endPeriod)
             {
-                PeriodMonth lastMonth = new PeriodMonth(startDate, allPeriodDuration, menstruationDuration);
+                PeriodMonth lastMonth = new PeriodMonth(startPeriod, cycleDuration, periodDuration);
 
                 pastPeriods.Add(lastMonth);
 
-                startDate = startDate.AddDays(allPeriodDuration).AddDays(1);
-                endDate = startDate.AddDays(menstruationDuration);
+                startPeriod = startPeriod.AddDays(cycleDuration).AddDays(1);
+                endPeriod = startPeriod.AddDays(cycleDuration - 1);
             }
-         
-            var currentPeriod = new PeriodMonth(startDate, menstruationDuration, allPeriodDuration);
-           
-            pastPeriods.Add(currentPeriod);
+
+            var currentPeriod = new PeriodMonth(startPeriod, cycleDuration, periodDuration);
            
             generatedCalendar.PastPeriods = pastPeriods;
             generatedCalendar.CurrentPeriod = currentPeriod;
+
+
 
             return generatedCalendar;
         }

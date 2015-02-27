@@ -21,7 +21,12 @@ namespace MonthlyCycleApp.ViewModels
         {
             get
             {
-                return string.IsNullOrWhiteSpace(cycleDuration) ? cycleDuration : ApplicationSettings.GetProperty<string>(ApplicationSettings.CYCLE_DURATION_SETTING);
+                var storedValue=ApplicationSettings.GetProperty<string>(ApplicationSettings.CYCLE_DURATION_SETTING);
+                return !string.IsNullOrWhiteSpace(cycleDuration) ?
+                    cycleDuration : storedValue;
+                    //!string.IsNullOrWhiteSpace(storedValue) ?
+                    //storedValue :
+                    //"28";
             }
             set
             {
@@ -39,7 +44,13 @@ namespace MonthlyCycleApp.ViewModels
         {
             get
             {
-                return string.IsNullOrWhiteSpace(periodDuration) ? periodDuration : ApplicationSettings.GetProperty<string>(ApplicationSettings.PERIOD_DURATION_SETTING);
+                var storedValue = ApplicationSettings.GetProperty<string>(ApplicationSettings.PERIOD_DURATION_SETTING);
+                return
+                    !string.IsNullOrWhiteSpace(periodDuration) ?
+                    periodDuration : storedValue;
+                    //!string.IsNullOrWhiteSpace(storedValue) ?
+                    //storedValue :
+                    //"6";
             }
             set
             {
@@ -57,7 +68,14 @@ namespace MonthlyCycleApp.ViewModels
         { 
             get
             {
-                return lastPeriodDate != DateTime.MinValue ? lastPeriodDate : ApplicationSettings.GetProperty<DateTime>(ApplicationSettings.LAST_PERIOD_SETTING);
+                var storedValue =ApplicationSettings.GetProperty<DateTime>(ApplicationSettings.LAST_PERIOD_SETTING);
+                return 
+                    lastPeriodDate != DateTime.MinValue ? 
+                    lastPeriodDate : 
+                    storedValue ;
+                    ///!= DateTime.MinValue ?
+                    //storedValue:
+                    //DateTime.Today;
             }
             set
             {
@@ -73,8 +91,8 @@ namespace MonthlyCycleApp.ViewModels
         {
             get
             {
-                return showInitialSetup.HasValue ? showInitialSetup.Value : ApplicationSettings.GetProperty<bool>(ApplicationSettings.SHOW_SETUP);
-
+                bool? storedValue= ApplicationSettings.GetProperty<bool?>(ApplicationSettings.SHOW_SETUP);
+                return showInitialSetup.HasValue ? showInitialSetup.Value : storedValue.HasValue ? storedValue.Value : true;
             }
             set
             {
@@ -97,9 +115,8 @@ namespace MonthlyCycleApp.ViewModels
             }
             set
             {
-                setupCompleted = value;
-               
-
+                if (value != setupCompleted)
+                    setupCompleted = value;
             }
         }
 
@@ -143,16 +160,18 @@ namespace MonthlyCycleApp.ViewModels
             }
         }
 
-        private void RefreshButton()
+        public void RefreshButton()
         {
             SetupCompleted = !string.IsNullOrWhiteSpace(CycleDuration) &&
                          !string.IsNullOrWhiteSpace(PeriodDuration) &&
                          !CycleDuration.Equals("0") &&
-                         !PeriodDuration.Equals("0")
-                         && lastDateSelected;
+                         !PeriodDuration.Equals("0") &&
+                         LastPeriodDate != DateTime.MinValue &&
+                         LastDateSelected;
 
             PropertyChanged(this,
-                   new PropertyChangedEventArgs("SetupCompleted"));
+                  new PropertyChangedEventArgs("SetupCompleted"));
+
             EndSetupButtonText = SetupCompleted ? AppResources.SetupCompletedBtnText : AppResources.SetupIncompletedBtnText;
             PropertyChanged(this,
                   new PropertyChangedEventArgs("EndSetupButtonText"));
@@ -160,10 +179,14 @@ namespace MonthlyCycleApp.ViewModels
 
         public SetupViewModel()
         {
-            PeriodDuration = "6";
-            CycleDuration = "28";
-            LastDateSelected = false;
-            LastPeriodDate = DateTime.Today;
+            LastDateSelected = !string.IsNullOrWhiteSpace(PeriodDuration) && !string.IsNullOrWhiteSpace(CycleDuration) && LastPeriodDate != DateTime.MinValue;
+
+            if(string.IsNullOrWhiteSpace(PeriodDuration))
+                    PeriodDuration = "6";
+            if (string.IsNullOrWhiteSpace(CycleDuration))
+                CycleDuration = "28";
+            if (LastPeriodDate == DateTime.MinValue) 
+                LastPeriodDate = DateTime.Today;
         }
     }
 }
