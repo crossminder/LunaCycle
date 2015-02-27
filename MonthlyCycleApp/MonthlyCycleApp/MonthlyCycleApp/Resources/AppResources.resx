@@ -264,11 +264,8 @@
   <data name="CancelButton" xml:space="preserve">
     <value>Cancel</value>
   </data>
-  <data name="KeepButton" xml:space="preserve">
-    <value>Keep</value>
-  </data>
-  <data name="ModifyButton" xml:space="preserve">
-    <value>Modify</value>
+  <data name="ReplaceButton" xml:space="preserve">
+    <value>Replace</value>
   </data>
   <data name="OkButton" xml:space="preserve">
     <value>Ok</value>

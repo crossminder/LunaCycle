@@ -39,13 +39,15 @@ namespace MonthlyCycleApp.ViewModels
                 PeriodMonth currentPeriod = Calendar.CurrentPeriod;
                 List<PeriodMonth> futurePeriods = Calendar.FuturePeriods;
 
+                if (currentPeriod != null && futurePeriods != null && futurePeriods.Count > 0 && DateTime.Today >= currentPeriod.PeriodEndDay)
+                    return futurePeriods.FirstOrDefault();
+
                 if (currentPeriod != null && 
                     (!StartCycleConfirmed || !EndCycleConfirmed ||
                     DateTime.Today <= currentPeriod.PeriodEndDay))
                   return currentPeriod;
              
-                if (currentPeriod != null && futurePeriods != null && futurePeriods.Count > 0 && DateTime.Today >= currentPeriod.PeriodEndDay)
-                   return futurePeriods.FirstOrDefault();
+               
 
                 return new PeriodMonth();
             }
@@ -438,7 +440,7 @@ namespace MonthlyCycleApp.ViewModels
         {
             get 
             {
-                return selectedStartCycle.HasValue ? selectedStartCycle.Value : Calendar.CurrentPeriod.PeriodStartDay; 
+                return selectedStartCycle.HasValue ? selectedStartCycle.Value : NextPeriod.PeriodStartDay <= DateTime.Today ? NextPeriod.PeriodStartDay : DateTime.Today; 
             }
             set
             {
@@ -456,7 +458,7 @@ namespace MonthlyCycleApp.ViewModels
         {
             get
             {
-                return selectedEndCycle.HasValue ? selectedEndCycle.Value : Calendar.CurrentPeriod.PeriodEndDay; 
+                return selectedEndCycle.HasValue ? selectedEndCycle.Value : NextPeriod.PeriodStartDay <= DateTime.Today ? NextPeriod.PeriodEndDay : SelectedStartCycle.AddDays(Calendar.AveragePeriodDuration - 1); 
             }
             set
             {
@@ -580,17 +582,15 @@ namespace MonthlyCycleApp.ViewModels
 
         #region Dialog methods
 
-        public void SetupDialog(ValidationEnum validationType)
+        public void SetupDialog(ValidationEnum validationType, PeriodMonth period)
         {
             switch (validationType)
             {
                 case ValidationEnum.NoNeedForValidation:
                     {
-                        var currentPeriod = Calendar.CurrentPeriod;
-
                         if (!StartCycleConfirmed &&
                             !EndCycleConfirmed &&
-                            DateTime.Now >= SelectedStartCycle.AddDays(currentPeriod.PeriodDuration))
+                            DateTime.Now >= SelectedStartCycle.AddDays(period.PeriodDuration))
                         {
                             FirstRowText = AppResources.PeriodStartedQuestion;
                             SecondRowText = string.Empty;
@@ -603,12 +603,9 @@ namespace MonthlyCycleApp.ViewModels
                             if (!StartCycleConfirmed)
                             {
                                 FirstRowText = AppResources.PeriodStartedQuestion;
-
                                 ThirdRowText = string.Empty;
                                 ForthRowText = string.Empty;
-
                                 ShowSelectStartDay = true;
-
                             }
                             else
                             {
@@ -623,18 +620,26 @@ namespace MonthlyCycleApp.ViewModels
                                     ThirdRowText = AppResources.PeriodEndedQuestion;
                                     ShowSelectEndDay = true;
                                 }
+                                else
+                                {
+                                    OkButtonContent = string.Empty;
+                                    CancelButtonContent = string.Empty;
+                                    ShowDialog = false;
+                                    break;
+                                }
                             }
                         if (ShowSelectStartDay || ShowSelectEndDay)
                         {
                             OkButtonContent = AppResources.OkButton;
                             CancelButtonContent = AppResources.CancelButton;
 
-                            SetDelayedAdvancedCounter(currentPeriod);
+                            SetDelayedAdvancedCounter(period);
                         }
                         break;
                     }
                 case ValidationEnum.StartDateInFuture:
                     {
+                        FirstRowText = AppResources.PeriodStartedQuestion;
                         SecondRowText = AppResources.StartDateInFutureValidation;
                         ShowSelectEndDay = false;
                         ThirdRowText = string.Empty;
@@ -643,12 +648,13 @@ namespace MonthlyCycleApp.ViewModels
                     }
                 case ValidationEnum.DateOverlappsExistingPeriod:
                     {
+                        FirstRowText = AppResources.PeriodStartedQuestion;
                         SecondRowText = AppResources.OverlapExistingPeriodValidation;
-                        OkButtonContent = AppResources.ModifyButton;
-                        CancelButtonContent = AppResources.KeepButton;
-                        //another page
-                        //modify, keep this too
-                        //
+                        OkButtonContent = AppResources.ReplaceButton;
+                        CancelButtonContent = AppResources.CancelButton;
+    
+                        //enable modify
+                        //recall this page
                         break;
                     }
                 case ValidationEnum.EndDateBeforeStart:
@@ -672,10 +678,8 @@ namespace MonthlyCycleApp.ViewModels
                         ForthRowText = AppResources.EndDateFarInFutureValidation;
                         break;
                     }
-            }
-            
+            }           
         }
-
 
         public void SetDelayedAdvancedCounter(PeriodMonth currentPeriod)
         {
@@ -750,7 +754,7 @@ namespace MonthlyCycleApp.ViewModels
 
         private void SetupCalendarData(PeriodMonth modifiedCurrentPeriod)
         {
-            var currentStoredPeriod = Calendar.CurrentPeriod;
+            var currentStoredPeriod = NextPeriod;
             var pastPeriods = Calendar.PastPeriods;
 
             if (pastPeriods.Contains(currentStoredPeriod))
@@ -820,8 +824,16 @@ namespace MonthlyCycleApp.ViewModels
         }
         #endregion
 
-     
-      
-      
+
+
+
+
+        public void ReplaceCommand()
+        {
+            PeriodMonth period = new PeriodMonth(SelectedStartCycle, Calendar.AverageCycleDuration, Calendar.AveragePeriodDuration);
+            SelectedEndCycle = SelectedStartCycle.AddDays(Calendar.AveragePeriodDuration - 1);
+
+            SetupDialog(ValidationEnum.NoNeedForValidation, period);
+        }
     }
 }

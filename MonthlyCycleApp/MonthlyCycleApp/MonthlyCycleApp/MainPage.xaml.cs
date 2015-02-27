@@ -228,18 +228,30 @@ namespace MonthlyCycleApp
 
         private void okBtn_Click(object sender, RoutedEventArgs e)
         {
-            App.MainViewModel.OkCommand();
+            if ((sender as Button).Content.Equals(AppResources.OkButton))
+            {
+                App.MainViewModel.OkCommand();
 
-            Cal.PeriodCalendarProperty = null;
-            Cal.PeriodCalendarProperty = App.MainViewModel.Calendar;
-            Cal.Refresh();
+                Cal.PeriodCalendarProperty = null;
+                Cal.PeriodCalendarProperty = App.MainViewModel.Calendar;
+                Cal.Refresh();
+            }
+
+            if ((sender as Button).Content.Equals(AppResources.ReplaceButton))
+            {
+                App.MainViewModel.ReplaceCommand();
+            }
+
             (dropControl.Resources["Blink"] as Storyboard).Resume();
         }
 
         private void cancelBtn_Click(object sender, RoutedEventArgs e)
         {
-            App.MainViewModel.CancelCommand();
-
+            if ((sender as Button).Content.Equals(AppResources.CancelButton))
+            {
+                App.MainViewModel.CancelCommand();
+            }
+         
             (dropControl.Resources["Blink"] as Storyboard).Resume();
         }
         
@@ -269,16 +281,18 @@ namespace MonthlyCycleApp
                         //faaar in the future
                         if (Math.Abs((tempEnd - App.MainViewModel.SelectedEndCycle).Days) > App.MainViewModel.Calendar.AveragePeriodDuration)
                             validationType = ValidationEnum.EndDateFarInTheFuture;
-
+             
+                var period = App.MainViewModel.NextPeriod;
+              
                 if (validationType == ValidationEnum.NoNeedForValidation)
                 {
                     App.MainViewModel.SelectedEndCycle = tempEnd;
-                    App.MainViewModel.SetupDialog(validationType);
+                    App.MainViewModel.SetupDialog(validationType, period);
                 }
                 else
                 {
                     App.MainViewModel.SelectedEndCycle = tempEnd;
-                    App.MainViewModel.SetupDialog(validationType);
+                    App.MainViewModel.SetupDialog(validationType, period);
                 }
 
                 (sender as DatePicker).BorderBrush = (validationType == ValidationEnum.NoNeedForValidation) ? new SolidColorBrush(Colors.White) : new SolidColorBrush(Colors.Red);
@@ -294,7 +308,7 @@ namespace MonthlyCycleApp
                 (sender as DatePicker).Name == pkStartDateCycle.Name)
             {
                 DateTime tempStart = e.NewDateTime.Value;
-                DateTime tempEnd = e.NewDateTime.Value.AddDays(App.MainViewModel.Calendar.AveragePeriodDuration);
+                DateTime tempEnd = e.NewDateTime.Value.AddDays(App.MainViewModel.Calendar.AveragePeriodDuration - 1);
 
                 ValidationEnum validationType = ValidationEnum.NoNeedForValidation;
 
@@ -303,20 +317,21 @@ namespace MonthlyCycleApp
                 else
                 {
                     PeriodMonth nearbyPeriod = ExtensionMethods.FindOverlappingExistingPeriod(tempStart, tempEnd,
-                           App.MainViewModel.Calendar.PastPeriods, App.MainViewModel.Calendar.CurrentPeriod);
+                           App.MainViewModel.Calendar.PastPeriods, App.MainViewModel.NextPeriod);
                     if (nearbyPeriod != null)
                         validationType = ValidationEnum.DateOverlappsExistingPeriod;
                 }
 
+                var period = App.MainViewModel.NextPeriod;
                 if (validationType == ValidationEnum.NoNeedForValidation)
                 {
                     App.MainViewModel.SelectedStartCycle = tempStart;
                     App.MainViewModel.SelectedEndCycle = tempEnd;
-                 
-                    App.MainViewModel.SetupDialog(validationType);
+
+                    App.MainViewModel.SetupDialog(validationType, period);
                 }
                 else
-                    App.MainViewModel.SetupDialog(validationType);
+                    App.MainViewModel.SetupDialog(validationType, period);
 
                 (sender as DatePicker).BorderBrush = (validationType == ValidationEnum.NoNeedForValidation) ? new SolidColorBrush(Colors.White) : new SolidColorBrush(Colors.Red);
                 secondRowText.Foreground = (validationType == ValidationEnum.NoNeedForValidation) ? new SolidColorBrush(Colors.White) : new SolidColorBrush(Colors.Red);

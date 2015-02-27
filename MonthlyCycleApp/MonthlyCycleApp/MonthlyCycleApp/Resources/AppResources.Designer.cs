@@ -268,15 +268,6 @@ namespace MonthlyCycleApp.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Keep.
-        /// </summary>
-        public static string KeepButton {
-            get {
-                return ResourceManager.GetString("KeepButton", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to When did your last cycle start?.
         /// </summary>
         public static string LastPeriodStartedSetting {
@@ -291,15 +282,6 @@ namespace MonthlyCycleApp.Resources {
         public static string MenstruationAllarmText {
             get {
                 return ResourceManager.GetString("MenstruationAllarmText", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Modify.
-        /// </summary>
-        public static string ModifyButton {
-            get {
-                return ResourceManager.GetString("ModifyButton", resourceCulture);
             }
         }
         
@@ -462,6 +444,15 @@ namespace MonthlyCycleApp.Resources {
         public static string PillAllarmTimeText {
             get {
                 return ResourceManager.GetString("PillAllarmTimeText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Replace.
+        /// </summary>
+        public static string ReplaceButton {
+            get {
+                return ResourceManager.GetString("ReplaceButton", resourceCulture);
             }
         }
         

@@ -132,6 +132,9 @@ C:\Users\georgiana\documents\visual studio 2013\Projects\MonthlyCycleApp\Monthly
 C:\Users\georgiana\documents\visual studio 2013\Projects\MonthlyCycleApp\MonthlyCycleApp\Bin\Debug\Assets\Icons\stop.png
 C:\Users\georgiana\documents\visual studio 2013\Projects\MonthlyCycleApp\MonthlyCycleApp\Bin\Debug\Assets\Images\drop-shadow.png
 C:\Users\georgiana\Documents\GitHub\LunaCycle\MonthlyCycleApp\MonthlyCycleApp\MonthlyCycleApp\Bin\Debug\Images\Dark\back.png
+C:\Users\georgiana\Documents\GitHub\LunaCycle\MonthlyCycleApp\MonthlyCycleApp\MonthlyCycleApp\Bin\Debug\Images\Dark\OvulationDay.png
+C:\Users\georgiana\Documents\GitHub\LunaCycle\MonthlyCycleApp\MonthlyCycleApp\MonthlyCycleApp\Bin\Debug\Images\Dark\OvulationDay_today.png
+C:\Users\georgiana\Documents\GitHub\LunaCycle\MonthlyCycleApp\MonthlyCycleApp\MonthlyCycleApp\Bin\Debug\Images\Dark\OvulationDay_selected.png
 C:\Users\georgiana\Documents\GitHub\LunaCycle\MonthlyCycleApp\MonthlyCycleApp\MonthlyCycleApp\Bin\Debug\Images\Dark\FertilityEndDay.png
 C:\Users\georgiana\Documents\GitHub\LunaCycle\MonthlyCycleApp\MonthlyCycleApp\MonthlyCycleApp\Bin\Debug\Images\Dark\next.png
 C:\Users\georgiana\Documents\GitHub\LunaCycle\MonthlyCycleApp\MonthlyCycleApp\MonthlyCycleApp\Bin\Debug\Images\Dark\_selected.png
@@ -262,6 +265,3 @@ C:\Users\georgiana\Documents\GitHub\LunaCycle\MonthlyCycleApp\MonthlyCycleApp\Mo
 C:\Users\georgiana\Documents\GitHub\LunaCycle\MonthlyCycleApp\MonthlyCycleApp\MonthlyCycleApp\obj\Debug\MonthlyCycleApp.dll
 C:\Users\georgiana\Documents\GitHub\LunaCycle\MonthlyCycleApp\MonthlyCycleApp\MonthlyCycleApp\obj\Debug\MonthlyCycleApp.pdb
 C:\Users\georgiana\Documents\GitHub\LunaCycle\MonthlyCycleApp\MonthlyCycleApp\MonthlyCycleApp\obj\Debug\XapCacheFile.xml
-C:\Users\georgiana\Documents\GitHub\LunaCycle\MonthlyCycleApp\MonthlyCycleApp\MonthlyCycleApp\Bin\Debug\Images\Dark\OvulationDay_today.png
-C:\Users\georgiana\Documents\GitHub\LunaCycle\MonthlyCycleApp\MonthlyCycleApp\MonthlyCycleApp\Bin\Debug\Images\Dark\OvulationDay_selected.png
-C:\Users\georgiana\Documents\GitHub\LunaCycle\MonthlyCycleApp\MonthlyCycleApp\MonthlyCycleApp\Bin\Debug\Images\Dark\OvulationDay.png

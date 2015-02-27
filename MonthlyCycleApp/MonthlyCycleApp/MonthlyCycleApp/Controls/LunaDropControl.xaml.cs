@@ -38,7 +38,8 @@ namespace MonthlyCycleApp.Controls
                 (this.Resources["Blink"] as Storyboard).Pause();
 
                 App.MainViewModel.ShowDialog = true;
-                App.MainViewModel.SetupDialog(ValidationEnum.NoNeedForValidation);
+
+                App.MainViewModel.SetupDialog(ValidationEnum.NoNeedForValidation, App.MainViewModel.NextPeriod);
             }
         }
         #endregion

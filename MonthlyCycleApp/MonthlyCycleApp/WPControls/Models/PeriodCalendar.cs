@@ -59,9 +59,10 @@ namespace WPControls.Models
 
                 currentPeriod = new PeriodMonth();
                 if (PastPeriods != null && PastPeriods.Count > 0)
-                    currentPeriod = (from period in PastPeriods
-                                      where period.PeriodStartDay.Month == DateTime.Today.Month
-                                      select period).FirstOrDefault();
+                    currentPeriod = PastPeriods.OrderByDescending(x => x.PeriodStartDay).FirstOrDefault();
+                        //(from period in PastPeriods
+                        //              where period.PeriodStartDay.Month == DateTime.Today.Month
+                        //              select period).FirstOrDefault();
 
 
                 if (currentPeriod.IsEmpty() && PastPeriods != null && PastPeriods.Count > 0)

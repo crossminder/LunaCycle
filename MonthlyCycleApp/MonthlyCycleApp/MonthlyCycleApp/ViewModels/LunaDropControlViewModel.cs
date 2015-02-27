@@ -131,6 +131,12 @@ namespace MonthlyCycleApp.ViewModels
         public LunaDropControlViewModel()
         {
             SetDropValues(App.MainViewModel.NextPeriod);
+
+            if (App.MainViewModel.StartCycleConfirmed && App.MainViewModel.EndCycleConfirmed)
+            {
+                App.MainViewModel.ShowSelectStartDay = true;
+                App.MainViewModel.ShowSelectEndDay = true;
+            }
         }
 
         public void SetDropValues(PeriodMonth currentPeriod)
