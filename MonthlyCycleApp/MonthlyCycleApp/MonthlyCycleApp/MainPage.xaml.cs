@@ -100,7 +100,6 @@ namespace MonthlyCycleApp
         private void toggleBtnPeriodForecast_CheckedUnchecked(object sender, RoutedEventArgs e)
         {
             ToggleSwitch toggleSwitchBtn = (sender as ToggleSwitch);
-          //  Grid gridContainer = (toggleSwitchBtn.Parent as Grid).Children.OfType<Grid>().SingleOrDefault(x => x.Name == toggleSwitchBtn.Name + "TimePanel") as Grid;
             TextBlock tblExplanation = (toggleSwitchBtn.Parent as Grid).Children.OfType<TextBlock>().SingleOrDefault(x => x.Name == toggleSwitchBtn.Name + "Explanation") as TextBlock;
 
             if (toggleSwitchBtn.IsChecked.GetValueOrDefault())
@@ -251,7 +250,10 @@ namespace MonthlyCycleApp
 
         private void pkEndDateCycle_ValueChanged(object sender, DateTimeValueChangedEventArgs e)
         {
-            if (e.NewDateTime != DateTime.MinValue && e.NewDateTime != e.OldDateTime && e.NewDateTime.HasValue)
+            if (e.NewDateTime != DateTime.MinValue && 
+                e.NewDateTime != e.OldDateTime &&
+                e.NewDateTime.HasValue && 
+                (sender as DatePicker).Name == pkEndDateCycle.Name)
             {
                 DateTime tempEnd = e.NewDateTime.Value;
                 bool validateEndDate = tempEnd < App.MainViewModel.SelectedStartCycle.AddDays(2);
@@ -265,7 +267,7 @@ namespace MonthlyCycleApp
                         validationType = ValidationEnum.EndDateBeforeStart;
                     else
                         //faaar in the future
-                        if (Math.Abs((tempEnd - App.MainViewModel.SelectedEndCycle).Days) > App.MainViewModel.Calendar.AverageCycleDuration)
+                        if (Math.Abs((tempEnd - App.MainViewModel.SelectedEndCycle).Days) > App.MainViewModel.Calendar.AveragePeriodDuration)
                             validationType = ValidationEnum.EndDateFarInTheFuture;
 
                 if (validationType == ValidationEnum.NoNeedForValidation)
@@ -286,10 +288,13 @@ namespace MonthlyCycleApp
 
         private void pkStartDateCycle_ValueChanged(object sender, DateTimeValueChangedEventArgs e)
         {
-            if (e.NewDateTime != DateTime.MinValue && e.NewDateTime != e.OldDateTime && e.NewDateTime.HasValue)
+            if (e.NewDateTime != DateTime.MinValue && 
+                e.NewDateTime != e.OldDateTime && 
+                e.NewDateTime.HasValue &&
+                (sender as DatePicker).Name == pkStartDateCycle.Name)
             {
                 DateTime tempStart = e.NewDateTime.Value;
-                DateTime tempEnd = e.NewDateTime.Value.AddDays(App.MainViewModel.Calendar.AverageCycleDuration);
+                DateTime tempEnd = e.NewDateTime.Value.AddDays(App.MainViewModel.Calendar.AveragePeriodDuration);
 
                 ValidationEnum validationType = ValidationEnum.NoNeedForValidation;
 

@@ -45,7 +45,7 @@ namespace WPControls.Models
 
         #region const
 
-        private const int _defaultAveragePeriod = 28;
+        private const int defaultAveragePeriod = 28;
         private const int defaultAverageCycle = 6;
 
         #endregion
@@ -66,8 +66,8 @@ namespace WPControls.Models
 
                 if (currentPeriod.IsEmpty() && PastPeriods != null && PastPeriods.Count > 0)
                 {
-                    currentPeriod.CycleDuration = AveragePeriodDuration;
-                    currentPeriod.PeriodDuration = AverageCycleDuration;
+                    currentPeriod.CycleDuration = AverageCycleDuration;
+                    currentPeriod.PeriodDuration = AveragePeriodDuration;
                 }
 
                 return currentPeriod != null ? currentPeriod : new PeriodMonth();
@@ -82,46 +82,14 @@ namespace WPControls.Models
             }
         }
    
-        public int AveragePeriodDuration 
+        public int AverageCycleDuration 
         {
             get 
-            {
-                if (averagePeriodDuration == 0)
-                {
-                    if (PastPeriods != null && PastPeriods.Count > 0)
-                    {
-                        //pick the last year's entries
-                        List<int> values = (from month in PastPeriods.OrderBy(x => x.PeriodStartDay.Month)
-                                            where month.PeriodStartDay.Month <= DateTime.Today.AddMonths(-12).Month
-                                            select month.PeriodDuration).ToList();
-
-                        //remove the most minimal and maximal values 
-                        var minValue = values.Min();
-                        var maxValue = values.Max();
-                        if (minValue != maxValue)
-                            values = values.Where(x => x != minValue || x != maxValue).ToList();
-
-                        double arithmethicMean = Math.Round(values.Average());
-
-                        averagePeriodDuration = (Int32)arithmethicMean;
-                    }
-                    else
-                        averagePeriodDuration = _defaultAveragePeriod;
-                }
-
-                return averagePeriodDuration;
-            }
-        }
-       
-        public int AverageCycleDuration
-        {
-            get
             {
                 if (averageCycleDuration == 0)
                 {
                     if (PastPeriods != null && PastPeriods.Count > 0)
                     {
-
                         //pick the last year's entries
                         List<int> values = (from month in PastPeriods.OrderBy(x => x.PeriodStartDay.Month)
                                             where month.PeriodStartDay.Month <= DateTime.Today.AddMonths(-12).Month
@@ -140,7 +108,39 @@ namespace WPControls.Models
                     else
                         averageCycleDuration = defaultAverageCycle;
                 }
+
                 return averageCycleDuration;
+            }
+        }
+       
+        public int AveragePeriodDuration
+        {
+            get
+            {
+                if (averagePeriodDuration == 0)
+                {
+                    if (PastPeriods != null && PastPeriods.Count > 0)
+                    {
+
+                        //pick the last year's entries
+                        List<int> values = (from month in PastPeriods.OrderBy(x => x.PeriodStartDay.Month)
+                                            where month.PeriodStartDay.Month <= DateTime.Today.AddMonths(-12).Month
+                                            select month.PeriodDuration).ToList();
+
+                        //remove the most minimal and maximal values 
+                        var minValue = values.Min();
+                        var maxValue = values.Max();
+                        if (minValue != maxValue)
+                            values = values.Where(x => x != minValue || x != maxValue).ToList();
+
+                        double arithmethicMean = Math.Round(values.Average());
+
+                        averagePeriodDuration = (Int32)arithmethicMean;
+                    }
+                    else
+                        averagePeriodDuration = defaultAveragePeriod;
+                }
+                return averagePeriodDuration;
             }
         }
 
@@ -164,22 +164,22 @@ namespace WPControls.Models
 
                         PeriodMonth estimatedFuture1 = new PeriodMonth()
                         {
-                            PeriodDuration = AverageCycleDuration,
-                            CycleDuration = AveragePeriodDuration,
+                            PeriodDuration = AveragePeriodDuration,
+                            CycleDuration = AverageCycleDuration,
                             PeriodStartDay = lastMonthEndPeriodDay.AddDays(1)
                         };
 
                         PeriodMonth estimatedFuture2 = new PeriodMonth()
                         {
-                            PeriodDuration = AverageCycleDuration,
-                            CycleDuration = AveragePeriodDuration,
+                            PeriodDuration = AveragePeriodDuration,
+                            CycleDuration = AverageCycleDuration,
                             PeriodStartDay = estimatedFuture1.CycleEndDay.AddDays(1)
                         };
 
                         PeriodMonth EstimatedFuture3 = new PeriodMonth()
                         {
-                            PeriodDuration = AverageCycleDuration,
-                            CycleDuration = AveragePeriodDuration,
+                            PeriodDuration = AveragePeriodDuration,
+                            CycleDuration = AverageCycleDuration,
                             PeriodStartDay = estimatedFuture2.CycleEndDay.AddDays(1)
                         };
 

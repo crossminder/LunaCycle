@@ -21,12 +21,9 @@ namespace MonthlyCycleApp.ViewModels
         {
             get
             {
-                var storedValue=ApplicationSettings.GetProperty<string>(ApplicationSettings.CYCLE_DURATION_SETTING);
+                var storedValue = ApplicationSettings.GetProperty<string>(ApplicationSettings.CYCLE_DURATION_SETTING);
                 return !string.IsNullOrWhiteSpace(cycleDuration) ?
                     cycleDuration : storedValue;
-                    //!string.IsNullOrWhiteSpace(storedValue) ?
-                    //storedValue :
-                    //"28";
             }
             set
             {
@@ -48,9 +45,6 @@ namespace MonthlyCycleApp.ViewModels
                 return
                     !string.IsNullOrWhiteSpace(periodDuration) ?
                     periodDuration : storedValue;
-                    //!string.IsNullOrWhiteSpace(storedValue) ?
-                    //storedValue :
-                    //"6";
             }
             set
             {
@@ -69,13 +63,10 @@ namespace MonthlyCycleApp.ViewModels
             get
             {
                 var storedValue =ApplicationSettings.GetProperty<DateTime>(ApplicationSettings.LAST_PERIOD_SETTING);
-                return 
-                    lastPeriodDate != DateTime.MinValue ? 
-                    lastPeriodDate : 
-                    storedValue ;
-                    ///!= DateTime.MinValue ?
-                    //storedValue:
-                    //DateTime.Today;
+                return
+                    lastPeriodDate != DateTime.MinValue ?
+                    lastPeriodDate :
+                    storedValue;
             }
             set
             {
