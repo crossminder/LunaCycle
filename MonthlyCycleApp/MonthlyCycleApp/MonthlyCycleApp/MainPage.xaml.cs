@@ -42,8 +42,7 @@ namespace MonthlyCycleApp
             Cal.PeriodCalendarProperty = null;
             Cal.PeriodCalendarProperty = App.MainViewModel.Calendar;
           
-            startingWeekDayList.ItemsSource = App.MainViewModel.DaysOfWeek;
-        
+          //  startingWeekDayList.ItemsSource = App.MainViewModel.DaysOfWeek;
         }
 
         #region Navigation
@@ -74,7 +73,6 @@ namespace MonthlyCycleApp
         {
             ToggleSwitch toggleSwitchBtn = (sender as ToggleSwitch);
             Grid gridContainer = (toggleSwitchBtn.Parent as Grid).Children.OfType<Grid>().SingleOrDefault(x => x.Name == toggleSwitchBtn.Name + "TimePanel") as Grid;
-
 
             Storyboard sbUp;
             Storyboard sbDown;

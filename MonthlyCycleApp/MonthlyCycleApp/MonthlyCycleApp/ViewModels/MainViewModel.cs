@@ -124,11 +124,37 @@ namespace MonthlyCycleApp.ViewModels
                 if (value != isPillAllarmOn)
                 {
                     isPillAllarmOn = value;
+
+                    ShowMensOvulAlarmOption = !value;
+                    if (value)
+                    {
+                        IsMenstruationAllarmOn = false;
+                        IsOvulationAllarmOn = false;
+                    }
+                       
+                    
                     ApplicationSettings.SetProperty(ApplicationSettings.IS_PILL_ALARM_ON, isPillAllarmOn);
                     NotifyPropertyChanged("IsPillAllarmOn");
+
                 }
             }
         }
+
+        private bool showMensOvulAlarmOption = true;
+        public bool ShowMensOvulAlarmOption
+        {
+            get { return showMensOvulAlarmOption; }
+            set
+            {
+                if (value != showMensOvulAlarmOption)
+                {
+                    showMensOvulAlarmOption = value;
+                    NotifyPropertyChanged("ShowMensOvulAlarmOption");
+                }
+            }
+
+        }
+
 
         private DateTime? takePillHour;
         public DateTime TakePillHour
@@ -766,10 +792,18 @@ namespace MonthlyCycleApp.ViewModels
             {
                 if (StartCycleConfirmed && EndCycleConfirmed)
                 {
+                    //update existing past period
                     pastPeriods.Add(modifiedCurrentPeriod);
                     Calendar.PastPeriods = pastPeriods;
-                    Calendar.CurrentPeriod = Calendar.FuturePeriods.FirstOrDefault();
-                    
+                   
+                    //update current period
+                    var currentPeriod = Calendar.FuturePeriods.FirstOrDefault();
+                  
+                    //update current period's period&cycle duration
+                    currentPeriod.CycleDuration = Calendar.AverageCycleDuration;
+                    currentPeriod.PeriodDuration = Calendar.AveragePeriodDuration;
+
+                    Calendar.CurrentPeriod = currentPeriod;
                     ClearCache();
                 }
                 else

@@ -209,6 +209,7 @@
                                         Style="{StaticResource settingsTBlLarge}"  FontSize="24"/>
                             <toolkit:TimePicker x:Name="alarmTimePicker" 
                             	Width="150" HorizontalAlignment="Right" Grid.Column="1"
+                              
                             	Value="{Binding TakePillHour, Mode=TwoWay}"                             
                             	/>
                         </Grid>
@@ -223,6 +224,7 @@
                                       Checked="toggleBtnPillAllarm_CheckedUnchecked"
                                       Unchecked="toggleBtnPillAllarm_CheckedUnchecked"   
                                       Loaded="toggleBtnPillAllarm_CheckedUnchecked"
+                                      IsEnabled="{Binding ShowMensOvulAlarmOption}"
                                       />
 
                         <TextBlock x:Name="toggleBtnMenstruationAllarmExplanation" 
@@ -257,6 +259,7 @@
                                       Checked="toggleBtnPillAllarm_CheckedUnchecked"
                                       Unchecked="toggleBtnPillAllarm_CheckedUnchecked"   
                                       Loaded="toggleBtnPillAllarm_CheckedUnchecked"
+                                      IsEnabled="{Binding ShowMensOvulAlarmOption}"
                                       />
                         <TextBlock x:Name="toggleBtnOvulationAllarmExplanation" 
                                 Grid.Row="4"
@@ -281,96 +284,8 @@
                                                 Value="{Binding OvulationAlarmHour,Mode=TwoWay}"                             
                                                 />
                         </Grid>
-                        <!--Starting day of the week-->
-                        <TextBlock x:Name="tbStartingWeekDayText" 
-                           Grid.Column="0" Grid.Row="6"
-                           Style="{StaticResource settingsTBlLarge}"   
-                           Text="{Binding Path=LocalizedResources.StartingWeekDaySettingText, Source={StaticResource LocalizedStrings}}" Margin="0,36" Grid.ColumnSpan="2" />
-
-                        <toolkit:ListPicker x:Name="startingWeekDayList" 
-                                        Grid.Column="1" Grid.Row="6" 
-                                        Width="150"
-                                        DataContext="{Binding}"  
-                                        Margin="0,-12,12,0"
-                                        VerticalAlignment="Center"
-                                        HorizontalAlignment="Right"
-                                        HorizontalContentAlignment="Center"
-                                        VerticalContentAlignment="Center"
-                                        SelectedIndex="{Binding FirstDayOfWeek, 
-                                                       Converter={StaticResource EnumConverter},
-                                                       Mode=TwoWay}" 
-                                        SelectionChanged="startingWeekDayList_SelectionChanged">
-                        </toolkit:ListPicker>
-
-                        <!--period duration-->
-                        <TextBlock x:Name="tbPeriodDurationText" 
-                           Grid.Column="0" Grid.Row="7"
-                           Style="{StaticResource settingsTBlLarge}"     
-                           Text="{Binding Path=LocalizedResources.PeriodDurationSettingText, Source={StaticResource LocalizedStrings}}"
-                           Margin="0,31"/>
-                        <TextBlock x:Name="tbPeriodDuration" 
-                           Grid.Column="2" Grid.Row="7"                          
-                           TextAlignment="Center"
-                           Style="{StaticResource settingsTBlLarge}"               
-                           Text="{Binding PeriodDurationSetting}" Margin="0,31">
-                        </TextBlock>
-                        <!--Cycle duration-->
-                        <TextBlock x:Name="tbCycleDurationText" 
-                           Grid.Column="0" Grid.Row="8"
-                           Style="{StaticResource settingsTBlLarge}"    
-                           Text="{Binding Path=LocalizedResources.CycleDurationSettingText, Source={StaticResource LocalizedStrings}}" 
-                           Margin="0,31"/>
-                        <TextBlock x:Name="tbCycleDuration" 
-                           Grid.Row="8"
-                           TextAlignment="Center"
-                           Style="{StaticResource settingsTBlLarge}"   
-                           Text="{Binding CycleDurationSetting}"
-                           Margin="0,31" Grid.Column="2"
-                          >
-                        </TextBlock>
-
-                        <!--last cycle-->
-                        <TextBlock x:Name="tbLastCycleText" 
-                           Grid.Column="0" Grid.Row="9"
-                           Style="{StaticResource settingsTBlLarge}"   
-                           Text="{Binding Path=LocalizedResources.LastPeriodStartedSetting, Source={StaticResource LocalizedStrings}}"
-                           Margin="0,31" Grid.ColumnSpan="2" />
-                        <TextBlock x:Name="tbLastCycle" 
-                           Grid.Column="2" Grid.Row="9"   
-                           HorizontalAlignment="Right"
-                           Style="{StaticResource settingsTBlLarge}"   
-                           Text="{Binding LastPeriodDate}" 
-                           Margin="0,0,25,0" />
-
-                        <!--period forecast-->
-                        <toolkit:ToggleSwitch x:Name="toggleBtnPeriodForecast" 
-                                      Style="{StaticResource toggleSwitch}"
-                                      Grid.Row="10"
-                                      Header="{Binding Path=LocalizedResources.PeriodForecastSetting, Source={StaticResource LocalizedStrings}}"
-                                      Content="{Binding Path=LocalizedResources.Standard, Source={StaticResource LocalizedStrings}}"
-                                      IsChecked="{Binding IsPeriodForecastEnabled, Mode=TwoWay}"
-                                      Checked="toggleBtnPeriodForecast_CheckedUnchecked"
-                                      Unchecked="toggleBtnPeriodForecast_CheckedUnchecked"   
-                                      Loaded="toggleBtnPeriodForecast_CheckedUnchecked"
-                                      />
-                        <TextBlock x:Name="toggleBtnPeriodForecastExplanation" 
-                              Grid.Row="10" Style="{StaticResource settingsTBlExplanation}"
-                                  Text="{Binding PeriodForecastExplanation}" />
-
-                        <!--fertility forecast-->
-                        <toolkit:ToggleSwitch x:Name="toggleBtnShowFertility" 
-                                      Style="{StaticResource toggleSwitch}"
-                                      Grid.Row="11" Grid.ColumnSpan="2"
-                                      Header="{Binding Path=LocalizedResources.FertilityForecastSetting, Source={StaticResource LocalizedStrings}}"
-                                      Content="{Binding Path=LocalizedResources.Off, Source={StaticResource LocalizedStrings}}"
-                                      IsChecked="{Binding IsFertilityForecastEnabled,Mode=TwoWay}"
-                                      Checked="toggleBtnPeriodForecast_CheckedUnchecked"
-                                      Unchecked="toggleBtnPeriodForecast_CheckedUnchecked"   
-                                      Loaded="toggleBtnPeriodForecast_CheckedUnchecked"
-                                      />
-                        <TextBlock x:Name="toggleBtnFertilityForecastExplanation" 
-                              Grid.Row="11" Grid.ColumnSpan="2" Style="{StaticResource settingsTBlExplanation}"
-                                  Text="{Binding FertilityForecastExplanation}" />
+                
+                    
                     </Grid>
                 </ScrollViewer>
             </phone:PivotItem>

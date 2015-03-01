@@ -92,16 +92,21 @@ namespace WPControls.Models
                     if (PastPeriods != null && PastPeriods.Count > 0)
                     {
                         //pick the last year's entries
-                        List<int> values = (from month in PastPeriods.OrderBy(x => x.PeriodStartDay.Month)
-                                            where month.PeriodStartDay.Month <= DateTime.Today.AddMonths(-12).Month
-                                            select month.CycleDuration).ToList();
+                        var past = PastPeriods;
+                       
+                        List<int> values = new List<int>();
+                        if (past.Count >= 12)
+                            values = past
+                                        .OrderByDescending(x => x.PeriodStartDay.Month)
+                                        .Where(x => x.PeriodStartDay.Month >= DateTime.Today.AddMonths(-12).Month)
+                                        .Select(x => x.CycleDuration).ToList();
+                        else
+                            values = past.Select(x => x.CycleDuration).ToList();
 
-                        //remove the most minimal and maximal values 
-                        var minValue = values.Min();
-                        var maxValue = values.Max();
-                        if (minValue != maxValue)
-                            values = values.Where(x => x != minValue || x != maxValue).ToList();
+                        var minValue = 21;
+                        var maxValue = 45;
 
+                        values = values.Where(x => x > minValue && x < maxValue).ToList();
                         double arithmethicMean = Math.Round(values.Average());
 
                         averageCycleDuration = (Int32)arithmethicMean;
@@ -122,18 +127,35 @@ namespace WPControls.Models
                 {
                     if (PastPeriods != null && PastPeriods.Count > 0)
                     {
+                        var past = PastPeriods;
+                        List<int> values = new List<int>();
 
                         //pick the last year's entries
-                        List<int> values = (from month in PastPeriods.OrderBy(x => x.PeriodStartDay.Month)
-                                            where month.PeriodStartDay.Month <= DateTime.Today.AddMonths(-12).Month
-                                            select month.PeriodDuration).ToList();
+                        if (past.Count >= 12)
+                            values = past
+                                        .OrderByDescending(x => x.PeriodStartDay.Month)
+                                        .Where(x => x.PeriodStartDay.Month >= DateTime.Today.AddMonths(-12).Month)
+                                        .Select(x => x.PeriodDuration).ToList();
+                        else
+                            values = past.Select(x => x.PeriodDuration).ToList();
 
+                        //remove the most minimal and maximal values 
                         //remove the most minimal and maximal values 
                         var minValue = values.Min();
                         var maxValue = values.Max();
-                        if (minValue != maxValue)
+
+                        int count = values.Count;
+
+                        //we aim to remove only the unusually long/short periods
+                        //this means we shouldn't remove regular entries, 
+                        //so we search for min+ max values that don't appear very often
+                        if (minValue != maxValue &&
+                            values.Count(x => x == minValue) < count / 4 &&
+                            values.Count(x => x == maxValue) < count / 4)
+
                             values = values.Where(x => x != minValue || x != maxValue).ToList();
 
+                        
                         double arithmethicMean = Math.Round(values.Average());
 
                         averagePeriodDuration = (Int32)arithmethicMean;
@@ -245,9 +267,7 @@ namespace WPControls.Models
                 return _today;
             }
         }
-
-
-        
+       
         #endregion
 
         public PeriodMonth GetPeriodForDate(DateTime date)

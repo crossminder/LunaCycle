@@ -12,6 +12,7 @@ namespace MonthlyCycleApp.Helpers
         public const string APPLICATION_DEACTIVATED = "application_decativated";
 
         #region notifications
+        public const string SHOW_ALARM_MENS_OVUL = "showalarmmenstruationandovulation";
         public const string IS_PILL_ALARM_ON = "ispillalarmon";
         public const string PILL_ALARM_TIME = "pillalarmtime";
         public const string IS_MENSTRUATION_ALARM_ON = "ismenstruationalarmon";

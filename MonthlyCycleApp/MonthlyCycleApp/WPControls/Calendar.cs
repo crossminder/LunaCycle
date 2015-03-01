@@ -1207,7 +1207,7 @@ namespace WPControls
                         }
                         else
                         {
-                            // the week didn't started at column 0
+                            // the week didn't started at column 1
                             if (StartingDayOfWeek != dayOfWeek && daysToAddBefore > 0 && value == -1)
                             { 
                                 //need to add dates before
@@ -1216,7 +1216,7 @@ namespace WPControls
                             }
                             else
 
-                                // the week didn't ended at column 8
+                                // the week didn't ended at column 7
                                 if (EndingDayOfWeek != endOfMonthDayOfWeek && indexAfter < daysToAddAfter && value == 1)
                                 {  
                                     //need to add dates before
