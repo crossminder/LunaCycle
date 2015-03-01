@@ -800,6 +800,31 @@ namespace WPControls
             ((Calendar)sender).BuildItems();
         }
 
+
+        /// <summary>
+        /// Gets or sets the starting day of week.
+        /// </summary>
+        /// <value>
+        /// The starting day of week.
+        /// </value>
+        public DayOfWeek EndingDayOfWeek
+        {
+            get { return (DayOfWeek)GetValue(EndingDayOfWeekProperty); }
+            set { SetValue(EndingDayOfWeekProperty, value); }
+        }
+
+
+        /// <summary>
+        /// The starting day of week property
+        /// </summary>
+        public static readonly DependencyProperty EndingDayOfWeekProperty =
+            DependencyProperty.Register("EndingDayOfWeek", typeof(DayOfWeek), typeof(Calendar), new PropertyMetadata(DayOfWeek.Saturday, OnEndDayOfWeekChanged));
+
+        private static void OnEndDayOfWeekChanged(DependencyObject sender, DependencyPropertyChangedEventArgs args)
+        {
+            ((Calendar)sender).SetupDayLabels();
+            ((Calendar)sender).BuildItems();
+        }
         
 
         #endregion
@@ -999,6 +1024,31 @@ namespace WPControls
             }
         }
 
+        private int DayColumnOffsetFromSaturday()
+        {
+            switch (StartingDayOfWeek)
+            {
+                case DayOfWeek.Saturday:
+                    return 0;
+                case DayOfWeek.Sunday:
+                    return -1;
+                case DayOfWeek.Monday:
+                    return -1;
+           
+                case DayOfWeek.Tuesday:
+                    return -3;
+                case DayOfWeek.Wednesday:
+                    return -4;
+                case DayOfWeek.Thursday:
+                    return -2;
+                case DayOfWeek.Friday:
+                    return -5;
+              
+                default:
+                    throw new ArgumentOutOfRangeException();
+            }
+        }
+
         private int DefaultDayColumnIndex(DayOfWeek dayOfWeek)
         {
             switch (dayOfWeek)
@@ -1073,6 +1123,26 @@ namespace WPControls
                 var daysInMonth = (int)Math.Floor(startOfMonth.AddMonths(1).Subtract(startOfMonth).TotalDays);
                 var addedDays = 0;
                 int lastWeekNumber = 0;
+
+                int firstDayColumnIndex = DefaultDayColumnIndex(startOfMonth.DayOfWeek);
+                int daysToAddBefore = firstDayColumnIndex - 1;
+
+
+                var endOfMonth = startOfMonth.AddMonths(1).AddDays(-1);
+                DayOfWeek endOfMonthDayOfWeek = endOfMonth.DayOfWeek;
+                int lastDayColumnIndex = DefaultDayColumnIndex(endOfMonthDayOfWeek);
+                int daysToAddAfter = DefaultDayColumnIndex(EndingDayOfWeek) - lastDayColumnIndex;
+                int indexAfter = 0;
+
+                if (EndingDayOfWeek != DayOfWeek.Saturday)
+                {
+                    lastDayColumnIndex = lastDayColumnIndex + DayColumnOffsetFromSaturday();
+                    if (lastDayColumnIndex <= 0)
+                    {
+                        lastDayColumnIndex += 7;
+                    }
+                }
+
                 for (int rowCount = 1; rowCount <= RowCount; rowCount++)
                 {
                     for (var columnCount = 1; columnCount < ColumnCount; columnCount++)
@@ -1081,17 +1151,22 @@ namespace WPControls
                                                   where oneChild is CalendarItem &&
                                                   ((CalendarItem)oneChild).Tag.ToString() == string.Concat(rowCount.ToString(CultureInfo.InvariantCulture), ":", columnCount.ToString(CultureInfo.InvariantCulture))
                                                   select oneChild).First();
+                        int value = 0;
+
                         if (rowCount == 1 && columnCount < startColumn)
                         {
                             item.Visibility = Visibility.Collapsed;
+                            value = -1;
                         }
                         else if (addedDays < daysInMonth)
                         {
                             item.Visibility = Visibility.Visible;
+                            value = 0;
                         }
                         else
                         {
                             item.Visibility = Visibility.Collapsed;
+                            value = 1;
                         }
 
                         var weekItem = (CalendarWeekItem)(from oneChild in _itemsGrid.Children
@@ -1099,35 +1174,11 @@ namespace WPControls
                                                           ((CalendarWeekItem)oneChild).Tag.ToString() == string.Concat(rowCount.ToString(CultureInfo.InvariantCulture), ":0")
                                                           select oneChild).FirstOrDefault();
 
-                        if (item.Visibility == Visibility.Visible)
+                        if (value == 0)
                         {
                             item.ItemDate = startOfMonth.AddDays(addedDays);
-                            if (SelectedDate == DateTime.MinValue && item.ItemDate == DateTime.Today)
-                            {
-                                SelectedDate = item.ItemDate;
-                                if (ShowSelectedDate)
-                                    item.IsSelected = true;
-                                _lastItem = item;
-                            }
-                            else
-                            {
-                                if (item.ItemDate == SelectedDate)
-                                {
-                                    if (ShowSelectedDate)
-                                        item.IsSelected = true;
-                                }
-                                else
-                                {
-                                    item.IsSelected = false;
-                                }
-                            }
-                            
                             addedDays += 1;
-                            item.DayNumber = addedDays;
-                            item.SetDayType(this.PeriodCalendarProperty);
-
-                            item.SetBackcolor();
-                            item.SetForecolor();
+                            SetItemProperties(addedDays, item);
 
                             if (WeekNumberDisplay != WeekNumberDisplayOption.None)
                             {
@@ -1152,17 +1203,76 @@ namespace WPControls
                                     weekItem.Visibility = Visibility.Visible;
                                 }
                             }
+                            item.Opacity = 1;
                         }
                         else
                         {
-                            if (WeekNumberDisplay != WeekNumberDisplayOption.None && weekItem != null && weekItem.WeekNumber != lastWeekNumber)
-                            {
-                                weekItem.Visibility = Visibility.Collapsed;
+                            // the week didn't started at column 0
+                            if (StartingDayOfWeek != dayOfWeek && daysToAddBefore > 0 && value == -1)
+                            { 
+                                //need to add dates before
+                                AddItemsBeforeAfter(startOfMonth, -daysToAddBefore, item);
+                                daysToAddBefore--;
                             }
+                            else
+
+                                // the week didn't ended at column 8
+                                if (EndingDayOfWeek != endOfMonthDayOfWeek && indexAfter < daysToAddAfter && value == 1)
+                                {  
+                                    //need to add dates before
+                                    indexAfter++;
+                                    AddItemsBeforeAfter(endOfMonth, indexAfter, item);
+                                }
+                                else
+                                    if (WeekNumberDisplay != WeekNumberDisplayOption.None && weekItem != null && weekItem.WeekNumber != lastWeekNumber)
+                                    {
+                                        weekItem.Visibility = Visibility.Collapsed;
+                                    }
                         }
                     }
                 }
             }
+        }
+
+        private void AddItemsBeforeAfter(DateTime edgeOfMonth, int index, CalendarItem item)
+        {
+            item.Visibility = Visibility.Visible;
+
+            DateTime date = edgeOfMonth.AddDays(index);
+            item.ItemDate = date;
+
+            SetItemProperties(date.Day, item);
+            item.Opacity = 0.7;
+        }
+
+        private void SetItemProperties(int addedDays, CalendarItem item)
+        {
+            if (SelectedDate == DateTime.MinValue && item.ItemDate == DateTime.Today)
+            {
+                SelectedDate = item.ItemDate;
+                if (ShowSelectedDate)
+                    item.IsSelected = true;
+                _lastItem = item;
+            }
+            else
+            {
+                if (item.ItemDate == SelectedDate)
+                {
+                    if (ShowSelectedDate)
+                        item.IsSelected = true;
+                }
+                else
+                {
+                    item.IsSelected = false;
+                }
+            }
+
+
+            item.DayNumber = addedDays;
+            item.SetDayType(this.PeriodCalendarProperty);
+
+            item.SetBackcolor();
+            item.SetForecolor();
         }
 
         private void AddDefaultItems()
@@ -1176,7 +1286,8 @@ namespace WPControls
                         var item = new CalendarItem(this);
                         item.SetValue(Grid.RowProperty, rowCount);
                         item.SetValue(Grid.ColumnProperty, columnCount);
-                        item.Visibility = Visibility.Collapsed;
+                      item.Visibility = Visibility.Collapsed;
+                       //   item.Visibility = Visibility.Visible;
                         item.Tag = string.Concat(rowCount.ToString(CultureInfo.InvariantCulture), ":", columnCount.ToString(CultureInfo.InvariantCulture));
                         item.Click += ItemClick;
                         if (CalendarItemStyle != null)
@@ -1192,7 +1303,8 @@ namespace WPControls
                         var item = new CalendarWeekItem();
                         item.SetValue(Grid.RowProperty, rowCount);
                         item.SetValue(Grid.ColumnProperty, columnCount);
-                        item.Visibility = Visibility.Collapsed;
+                       item.Visibility = Visibility.Collapsed;
+                       //  item.Visibility = Visibility.Visible;
                         item.Tag = string.Concat(rowCount.ToString(CultureInfo.InvariantCulture), ":", columnCount.ToString(CultureInfo.InvariantCulture));
                         if (CalendarWeekItemStyle != null)
                         {

@@ -238,6 +238,11 @@
             The starting day of week property
             </summary>
         </member>
+        <member name="F:WPControls.Calendar.EndingDayOfWeekProperty">
+            <summary>
+            The starting day of week property
+            </summary>
+        </member>
         <member name="M:WPControls.Calendar.OnApplyTemplate">
             <summary>
             Apply default template and perform initialization
@@ -392,6 +397,14 @@
             </summary>
         </member>
         <member name="P:WPControls.Calendar.StartingDayOfWeek">
+            <summary>
+            Gets or sets the starting day of week.
+            </summary>
+            <value>
+            The starting day of week.
+            </value>
+        </member>
+        <member name="P:WPControls.Calendar.EndingDayOfWeek">
             <summary>
             Gets or sets the starting day of week.
             </summary>
