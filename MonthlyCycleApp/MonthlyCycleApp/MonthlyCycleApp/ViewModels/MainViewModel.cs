@@ -131,11 +131,9 @@ namespace MonthlyCycleApp.ViewModels
                         IsMenstruationAllarmOn = false;
                         IsOvulationAllarmOn = false;
                     }
-                       
                     
                     ApplicationSettings.SetProperty(ApplicationSettings.IS_PILL_ALARM_ON, isPillAllarmOn);
                     NotifyPropertyChanged("IsPillAllarmOn");
-
                 }
             }
         }
@@ -246,6 +244,76 @@ namespace MonthlyCycleApp.ViewModels
             }
         }
 
+        private bool? isPasswordProtected;
+        public bool IsPasswordProtected
+        {
+            get
+            {
+                return isPasswordProtected.HasValue ? isPasswordProtected.Value : ApplicationSettings.GetProperty<bool>(ApplicationSettings.IS_PASSWORD_PROTECTED);
+            }
+            set
+            {
+                if (value != isPasswordProtected)
+                {
+                    isPasswordProtected = value;
+                    ApplicationSettings.SetProperty(ApplicationSettings.IS_PASSWORD_PROTECTED, isPasswordProtected);
+                }
+            }
+        }
+
+        private string applicationPassword;
+        public string ApplicationPassword
+        {
+            get
+            {
+                return string.IsNullOrWhiteSpace(applicationPassword) ? applicationPassword : PasswordEncryption.RetrievePassword();
+            }
+            set
+            {
+                if (value != applicationPassword)
+                {
+                    applicationPassword = value;
+                    PasswordEncryption.StorePassword(applicationPassword);
+                }
+            }
+        }
+
+
+        private bool? loggedInNeeded;
+        public bool LoggedInNeeded
+        {
+            get
+            {
+                return loggedInNeeded.HasValue ? loggedInNeeded.Value : ApplicationSettings.GetProperty<bool>(ApplicationSettings.NEED_LOGIN);
+            }
+            set
+            {
+                if (value != loggedInNeeded)
+                {
+                    loggedInNeeded = value;
+                    ApplicationSettings.SetProperty(ApplicationSettings.NEED_LOGIN, loggedInNeeded);
+                    NotifyPropertyChanged("LoggedInNeeded");
+                }
+            }
+        }
+
+        private bool setPassword = false;
+        public bool SetPassword
+        {
+            get
+            {
+                return setPassword;
+            }
+            set
+            {
+                if (value != setPassword)
+                {
+                    setPassword = value;
+                    NotifyPropertyChanged("SetPassword");
+                }
+            }
+        }
+        
         #endregion
 
         #region Settings - preferences

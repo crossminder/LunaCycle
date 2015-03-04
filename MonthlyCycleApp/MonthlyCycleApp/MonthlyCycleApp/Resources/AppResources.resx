@@ -288,4 +288,40 @@
   <data name="SetupStartDateInFutureValidation" xml:space="preserve">
     <value>The date you selected is in the future. Is this correct?</value>
   </data>
+  <data name="PasswordProtectionText" xml:space="preserve">
+    <value>Password protection</value>
+  </data>
+  <data name="ConfirmPinText" xml:space="preserve">
+    <value>Confirm pin</value>
+  </data>
+  <data name="EnterPinText" xml:space="preserve">
+    <value>Enter pin</value>
+  </data>
+  <data name="NewPinText" xml:space="preserve">
+    <value>New pin</value>
+  </data>
+  <data name="OldPinText" xml:space="preserve">
+    <value>Old pin</value>
+  </data>
+  <data name="ChangeButtonText" xml:space="preserve">
+    <value>Change</value>
+  </data>
+  <data name="ResetPinButtonText" xml:space="preserve">
+    <value>Reset pin</value>
+  </data>
+  <data name="SetPinButtonText" xml:space="preserve">
+    <value>Set pin</value>
+  </data>
+  <data name="PinValidationInvalidSize" xml:space="preserve">
+    <value>The pin must have 4 digits.</value>
+  </data>
+  <data name="PinValidationMissing" xml:space="preserve">
+    <value>The {0} cannot be empty. You must enter the pin.</value>
+  </data>
+  <data name="PinValidationNewPinNotMatch" xml:space="preserve">
+    <value>New pin and Confirm pin does not match.</value>
+  </data>
+  <data name="PinValidationOldPinNotMatch" xml:space="preserve">
+    <value>Old pin you introduced doesn't match your existing pin.</value>
+  </data>
 </root>

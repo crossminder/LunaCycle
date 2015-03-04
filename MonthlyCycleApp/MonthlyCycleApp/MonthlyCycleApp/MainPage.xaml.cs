@@ -58,6 +58,7 @@ namespace MonthlyCycleApp
                     this.NavigationService.RemoveBackEntry();
                 }
             }
+
         }
      
         #endregion
@@ -74,13 +75,7 @@ namespace MonthlyCycleApp
             ToggleSwitch toggleSwitchBtn = (sender as ToggleSwitch);
             Grid gridContainer = (toggleSwitchBtn.Parent as Grid).Children.OfType<Grid>().SingleOrDefault(x => x.Name == toggleSwitchBtn.Name + "TimePanel") as Grid;
 
-            Storyboard sbUp;
-            Storyboard sbDown;
-            if (gridContainer != null)
-            {
-                DefineAnimations(gridContainer, 80, out sbUp, out sbDown);
-                SetupCheckUncheckBehaviour(toggleSwitchBtn, sbUp, sbDown, AppResources.On, AppResources.Off);
-            }
+            SetupAnimation(toggleSwitchBtn, gridContainer, 80);
         }
       
         private void panoramaControl_Loaded(object sender, RoutedEventArgs e)
@@ -95,42 +90,95 @@ namespace MonthlyCycleApp
                 App.MainViewModel.FirstDayOfWeek = (DayOfWeek)Enum.Parse(typeof(DayOfWeek), selectedIndex.ToString());
         }
 
-        private void toggleBtnPeriodForecast_CheckedUnchecked(object sender, RoutedEventArgs e)
-        {
-            ToggleSwitch toggleSwitchBtn = (sender as ToggleSwitch);
-            TextBlock tblExplanation = (toggleSwitchBtn.Parent as Grid).Children.OfType<TextBlock>().SingleOrDefault(x => x.Name == toggleSwitchBtn.Name + "Explanation") as TextBlock;
+        //private void toggleBtnPeriodForecast_CheckedUnchecked(object sender, RoutedEventArgs e)
+        //{
+        //    ToggleSwitch toggleSwitchBtn = (sender as ToggleSwitch);
+        //    TextBlock tblExplanation = (toggleSwitchBtn.Parent as Grid).Children.OfType<TextBlock>().SingleOrDefault(x => x.Name == toggleSwitchBtn.Name + "Explanation") as TextBlock;
 
-            if (toggleSwitchBtn.IsChecked.GetValueOrDefault())
-            {
-                toggleSwitchBtn.Content = AppResources.Advanced;
-            }
-            else
-            {
-                toggleSwitchBtn.Content = AppResources.Standard;
-            }
-            /*
-            Storyboard sbUp;
-            Storyboard sbDown;
+        //    if (toggleSwitchBtn.IsChecked.GetValueOrDefault())
+        //    {
+        //        toggleSwitchBtn.Content = AppResources.Advanced;
+        //    }
+        //    else
+        //    {
+        //        toggleSwitchBtn.Content = AppResources.Standard;
+        //    }
+        //    /*
+        //    Storyboard sbUp;
+        //    Storyboard sbDown;
 
-            if (gridContainer != null)
-            {
-                double height =  80;
-                DefineAnimations(gridContainer, height, out sbUp, out sbDown);
-                SetupCheckUncheckBehaviour(toggleSwitchBtn,  sbUp, sbDown, AppResources.Advanced, AppResources.Standard);
+        //    if (gridContainer != null)
+        //    {
+        //        double height =  80;
+        //        DefineAnimations(gridContainer, height, out sbUp, out sbDown);
+        //        SetupCheckUncheckBehaviour(toggleSwitchBtn,  sbUp, sbDown, AppResources.Advanced, AppResources.Standard);
 
-               if (tblExplanation != null)
-                   tblExplanation.Visibility = System.Windows.Visibility.Visible;
-            }
+        //       if (tblExplanation != null)
+        //           tblExplanation.Visibility = System.Windows.Visibility.Visible;
+        //    }
 
-            //settingsScroll.UpdateLayout();
-            //settingsScroll.ScrollToVerticalOffset(SettingsGrid.ActualHeight);
-             * */
-        }
+        //    //settingsScroll.UpdateLayout();
+        //    //settingsScroll.ScrollToVerticalOffset(SettingsGrid.ActualHeight);
+        //     * */
+        //}
         #endregion
 
         #region Private Methods
 
-        private static void SetupCheckUncheckBehaviour(ToggleSwitch toggleSwitchBtn,Storyboard sbUp, Storyboard sbDown, string onValue, string offValue)
+        private void AppBarContextualMenu()
+        {
+          //  cycleDropControl.Opacity = 0.7;
+            this.ApplicationBar.Mode = ApplicationBarMode.Default;
+            this.ApplicationBar.Opacity = 1;
+            (ApplicationBar.MenuItems[0] as ApplicationBarMenuItem).IsEnabled = true;
+            (ApplicationBar.MenuItems[1] as ApplicationBarMenuItem).IsEnabled = App.MainViewModel.EndOfCycleEnabled;
+        }
+
+        private void RestoreAppBarDefaultValues()
+        {
+         //   cycleDropControl.Opacity = 1;
+            this.ApplicationBar.Opacity = 0.5;
+            this.ApplicationBar.Mode = ApplicationBarMode.Minimized;
+            (ApplicationBar.MenuItems[0] as ApplicationBarMenuItem).IsEnabled = false;
+            (ApplicationBar.MenuItems[1] as ApplicationBarMenuItem).IsEnabled = false;
+        }
+        #endregion
+
+        #region Setttings password
+        private void togglePwdProtection_CheckedUnchecked(object sender, RoutedEventArgs e)
+        {
+            ToggleSwitch toggleSwitchBtn = (sender as ToggleSwitch);
+            if (toggleSwitchBtn.IsChecked.HasValue)
+            {
+                bool firstTimePassword = string.IsNullOrWhiteSpace(App.MainViewModel.ApplicationPassword);
+
+                if (firstTimePassword)
+                {
+                    btnResetPin.Content = AppResources.SetPinButtonText;
+
+                    bool isChecked = toggleSwitchBtn.IsChecked.Value;
+
+                    oldPin.Visibility = tblOldPin.Visibility = isChecked ? Visibility.Collapsed : Visibility.Visible;
+                    btnChangePin.Content = isChecked ? AppResources.SetPinButtonText : AppResources.ChangeButtonText;
+
+                    Grid gridContainer = (toggleSwitchBtn.Parent as Grid).Children.OfType<Grid>().SingleOrDefault(x => x.Name == toggleSwitchBtn.Name + "Panel") as Grid;
+
+                    SetupAnimation(toggleSwitchBtn, gridContainer, 110);
+
+                    btnResetPin.Background = isChecked ? Application.Current.Resources["PinkColor"] as SolidColorBrush : new SolidColorBrush(Colors.Transparent);
+                }
+                else
+                    btnResetPin.Content = AppResources.ResetPinButtonText;
+            }
+        }
+        private void resetPin_Click(object sender, RoutedEventArgs e)
+        {
+            App.MainViewModel.SetPassword = true;
+        }
+        #endregion
+
+        #region Animation
+        private static void SetupCheckUncheckBehaviour(ToggleSwitch toggleSwitchBtn, Storyboard sbUp, Storyboard sbDown, string onValue, string offValue)
         {
             TextBlock tblExplanation = (toggleSwitchBtn.Parent as Grid).Children.OfType<TextBlock>().SingleOrDefault(x => x.Name == toggleSwitchBtn.Name + "Explanation") as TextBlock;
 
@@ -140,8 +188,8 @@ namespace MonthlyCycleApp
                 toggleSwitchBtn.Content = onValue;
                 sbDown.Stop();
                 sbUp.Begin();
-               if( tblExplanation != null )
-                   tblExplanation.Visibility = System.Windows.Visibility.Visible;
+                if (tblExplanation != null)
+                    tblExplanation.Visibility = System.Windows.Visibility.Visible;
             }
             else
             {
@@ -188,39 +236,28 @@ namespace MonthlyCycleApp
             sbDown.Children.Add(heightDown);
         }
 
-
-        private void AppBarContextualMenu()
+        private static void SetupAnimation(ToggleSwitch toggleSwitchBtn, Grid gridContainer, double height)
         {
-          //  cycleDropControl.Opacity = 0.7;
-            this.ApplicationBar.Mode = ApplicationBarMode.Default;
-            this.ApplicationBar.Opacity = 1;
-            (ApplicationBar.MenuItems[0] as ApplicationBarMenuItem).IsEnabled = true;
-            (ApplicationBar.MenuItems[1] as ApplicationBarMenuItem).IsEnabled = App.MainViewModel.EndOfCycleEnabled;
+            Storyboard sbUp;
+            Storyboard sbDown;
+            if (gridContainer != null)
+            {
+                DefineAnimations(gridContainer, height, out sbUp, out sbDown);
+                SetupCheckUncheckBehaviour(toggleSwitchBtn, sbUp, sbDown, AppResources.On, AppResources.Off);
+            }
         }
 
-        private void RestoreAppBarDefaultValues()
+        private static void AnimateValidation(TextBox tb)
         {
-         //   cycleDropControl.Opacity = 1;
-            this.ApplicationBar.Opacity = 0.5;
-            this.ApplicationBar.Mode = ApplicationBarMode.Minimized;
-            (ApplicationBar.MenuItems[0] as ApplicationBarMenuItem).IsEnabled = false;
-            (ApplicationBar.MenuItems[1] as ApplicationBarMenuItem).IsEnabled = false;
+            Grid gridContainer = tb.Parent as Grid;
+            Storyboard sbUp;
+            Storyboard sbDown;
+            if (gridContainer != null)
+            {
+                DefineAnimations(gridContainer, 110, out sbUp, out sbDown);
+            }
         }
         #endregion
-
-        private void cbPeriodForecastTimeText_Checked(object sender, RoutedEventArgs e)
-        {
-
-        }
-        private void tbPeriodForecast_GotFocus(object sender, RoutedEventArgs e)
-        {
-
-        }
-
-        private void tbPeriodForecast_LostFocus(object sender, RoutedEventArgs e)
-        {
-
-        }
 
         #region Dialog events
 
@@ -340,6 +377,142 @@ namespace MonthlyCycleApp
     
 
         #endregion
+
+        #region Password
+        private void enterPin_KeyUp(object sender, System.Windows.Input.KeyEventArgs e)
+        {
+
+        }
+
+        private void btnLogin_Click(object sender, RoutedEventArgs e)
+        {
+            if (App.MainViewModel.IsPasswordProtected)
+            {
+                string pinEntered = enterPin.Text;
+                if (pinEntered.Length > 4)
+                    MessageBox.Show("Enter a 4 digit pin");
+                else
+                {
+                    string pwd = App.MainViewModel.ApplicationPassword;
+                    if (pwd != pinEntered)
+                        MessageBox.Show("Pins don't match");
+                    else
+                        App.MainViewModel.LoggedInNeeded = false;
+                }
+            }
+        }
+
+        private void btnChangePin_Click(object sender, RoutedEventArgs e)
+        {
+            if (!string.IsNullOrWhiteSpace(newPinValue))
+            {
+                App.MainViewModel.ApplicationPassword = newPinValue;
+                App.MainViewModel.SetPassword = false;
+            }
+        }
+
+        private void btnCancel_Click(object sender, RoutedEventArgs e)
+        {
+            App.MainViewModel.SetPassword = false;
+        }
+
+        private void oldPin_LostFocus(object sender, RoutedEventArgs e)
+        {
+            TextBox tb = sender as TextBox;
+
+            tblValidation.SetValue(Grid.RowProperty, 0);
+
+            if (ValidatePin(tb, string.Format(AppResources.PinValidationMissing, tblOldPin.Text), AppResources.PinValidationInvalidSize))
+            {
+                string oldPwd = App.MainViewModel.ApplicationPassword;
+                if (ValidatePinWithExisting(tb, oldPwd, AppResources.PinValidationOldPinNotMatch))
+                {
+                    newPin.IsEnabled = newPinConfirm.IsEnabled = true;
+                    newPin.Focus();
+                }
+                else
+                {
+                    AnimateValidation(tb);
+
+                    newPin.IsEnabled = newPinConfirm.IsEnabled = false;
+
+                }
+
+            }
+        }
+
+        string newPinValue = string.Empty;
+        private void newPin_LostFocus(object sender, RoutedEventArgs e)
+        {
+            TextBox tb = sender as TextBox;
+
+            tblValidation.SetValue(Grid.RowProperty, 1);
+
+            if (ValidatePin(tb, string.Format(AppResources.PinValidationMissing, tblNewPin.Text), AppResources.PinValidationInvalidSize))
+            {
+                newPinValue = tb.Text;
+                newPinConfirm.IsEnabled = true;
+                newPinConfirm.Focus();
+            }
+            else
+                newPinConfirm.IsEnabled = false;
+        }
+
+        private void newPinConfirm_LostFocus(object sender, RoutedEventArgs e)
+        {
+            TextBox tb = sender as TextBox;
+
+            tblValidation.SetValue(Grid.RowProperty, 2);
+
+            if (ValidatePin(tb, string.Format(AppResources.PinValidationMissing, tblConfirmPin.Text), AppResources.PinValidationInvalidSize)
+                && ValidatePinWithExisting(tb, newPinValue, AppResources.PinValidationNewPinNotMatch))
+            {
+                btnChangePin.Focus();
+            }
+            else 
+            {
+            }
+        }
+
+        #endregion
+
+        #region Password validation
+
+        private bool ValidatePin(TextBox tb, string validationMissingMessage, string validationInvalidMessage)
+        {
+            if (string.IsNullOrWhiteSpace(tb.Text))
+            {
+                tb.BorderBrush = Application.Current.Resources["PinkColor"] as SolidColorBrush;
+                tblValidation.Text = validationMissingMessage;
+                return false;
+            }
+            if (tb.Text.Length > 4)
+            {
+                tb.BorderBrush = Application.Current.Resources["PinkColor"] as SolidColorBrush;
+                tblValidation.Text = validationInvalidMessage;
+                return false;
+            }
+            tb.BorderBrush = new SolidColorBrush(Colors.White);
+            tblValidation.Text = string.Empty;
+            return true;
+        }
+
+        private bool ValidatePinWithExisting(TextBox tb, string existingPwd, string validationMessage)
+        {
+            if (tb.Text != existingPwd)
+            {
+                tb.BorderBrush = Application.Current.Resources["PinkColor"] as SolidColorBrush;
+                tblValidation.Text = validationMessage;
+                return false;
+            }
+
+            tb.BorderBrush = new SolidColorBrush(Colors.White);
+            tblValidation.Text = string.Empty;
+            return true;
+        }
+
+        #endregion
+
 
     }
 }

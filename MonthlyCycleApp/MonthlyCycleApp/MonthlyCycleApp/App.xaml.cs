@@ -115,7 +115,8 @@ namespace MonthlyCycleApp
         // This code will not execute when the application is reactivated
         private void Application_Launching(object sender, LaunchingEventArgs e)
         {
-        }
+            App.MainViewModel.LoggedInNeeded = App.MainViewModel.IsPasswordProtected;
+          }
 
         // Code to execute when the application is activated (brought to foreground)
         // This code will not execute when the application is first launched
@@ -123,8 +124,6 @@ namespace MonthlyCycleApp
         {
             // Ensure that application state is restored appropriately
 
-
-           
         }
 
         // Code to execute when the application is deactivated (sent to background)

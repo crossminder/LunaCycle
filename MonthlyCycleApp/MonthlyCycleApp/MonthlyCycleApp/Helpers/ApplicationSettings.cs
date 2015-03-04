@@ -20,7 +20,10 @@ namespace MonthlyCycleApp.Helpers
         public const string IS_OVULATION_ALARM_ON = "isovulationalarmon";
         public const string OVULATION_ALARM_TIME = "ovuilationalarmtime";
 
+        public const string IS_PASSWORD_PROTECTED = "ispasswordprotected";
+        public const string NEED_LOGIN = "needtologin";
         #endregion
+
         #region initial setup
         public const string CYCLE_DURATION_SETTING = "cycledurationsetting";
         public const string PERIOD_DURATION_SETTING = "perioddurationsetting";
@@ -57,10 +60,30 @@ namespace MonthlyCycleApp.Helpers
 
         public const int MINIM_CYCLE_PERIOD = 2;
 
-        private static IsolatedStorageSettings isoStore = IsolatedStorageSettings.ApplicationSettings;
+        private static IsolatedStorageSettings isoStore;
+
+
+        public static void SetIsoStore()
+        {
+            // Get the settings for this application.
+            try
+            {
+                if (isoStore == null)
+                {
+                    if (!System.ComponentModel.DesignerProperties.IsInDesignTool)
+                        isoStore = IsolatedStorageSettings.ApplicationSettings;
+                }
+            }
+            catch (System.Exception ex)
+            {
+
+            }
+        }
 
         public static T GetProperty<T>(string propertyName)
         {
+            SetIsoStore();
+
             if (string.IsNullOrEmpty(propertyName)) return default(T);
 
             if (isoStore.Contains(propertyName))
@@ -73,6 +96,8 @@ namespace MonthlyCycleApp.Helpers
 
         public static T GetPropertyWithDefault<T>(string propertyName, object defaultValue)
         {
+            SetIsoStore();
+
             if (string.IsNullOrEmpty(propertyName)) return (T)defaultValue;
 
             if (isoStore.Contains(propertyName))
@@ -85,6 +110,8 @@ namespace MonthlyCycleApp.Helpers
 
         public static void SetProperty(string propertyName, object propertyValue)
         {
+            SetIsoStore();
+
             // System.Diagnostics.Debug.WriteLine("******** SetProperty " + propertyName + ", " + propertyValue);
             if (string.IsNullOrEmpty(propertyName)
                 || propertyValue == null) return;
@@ -102,6 +129,8 @@ namespace MonthlyCycleApp.Helpers
 
         public static void RemoveProperty(string propertyName)
         {
+            SetIsoStore();
+
             isoStore.Remove(propertyName);
         }
     }

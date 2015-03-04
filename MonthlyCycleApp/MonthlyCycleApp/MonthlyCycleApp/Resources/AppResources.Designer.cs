@@ -142,6 +142,24 @@ namespace MonthlyCycleApp.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Change.
+        /// </summary>
+        public static string ChangeButtonText {
+            get {
+                return ResourceManager.GetString("ChangeButtonText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Confirm pin.
+        /// </summary>
+        public static string ConfirmPinText {
+            get {
+                return ResourceManager.GetString("ConfirmPinText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Cycles can range anywhere from 21 to 35 days in adults and from 21 to 45 days in young teens..
         /// </summary>
         public static string CycleDurationSettingExplanation {
@@ -232,6 +250,15 @@ namespace MonthlyCycleApp.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Enter pin.
+        /// </summary>
+        public static string EnterPinText {
+            get {
+                return ResourceManager.GetString("EnterPinText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Based on a 12 months average. Improves prediction based on input..
         /// </summary>
         public static string FertilityForecastExplanationAdvanced {
@@ -286,6 +313,15 @@ namespace MonthlyCycleApp.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to New pin.
+        /// </summary>
+        public static string NewPinText {
+            get {
+                return ResourceManager.GetString("NewPinText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Off.
         /// </summary>
         public static string Off {
@@ -300,6 +336,15 @@ namespace MonthlyCycleApp.Resources {
         public static string OkButton {
             get {
                 return ResourceManager.GetString("OkButton", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Old pin.
+        /// </summary>
+        public static string OldPinText {
+            get {
+                return ResourceManager.GetString("OldPinText", resourceCulture);
             }
         }
         
@@ -327,6 +372,15 @@ namespace MonthlyCycleApp.Resources {
         public static string OvulationAllarmText {
             get {
                 return ResourceManager.GetString("OvulationAllarmText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Password protection.
+        /// </summary>
+        public static string PasswordProtectionText {
+            get {
+                return ResourceManager.GetString("PasswordProtectionText", resourceCulture);
             }
         }
         
@@ -448,11 +502,56 @@ namespace MonthlyCycleApp.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The pin must have 4 digits..
+        /// </summary>
+        public static string PinValidationInvalidSize {
+            get {
+                return ResourceManager.GetString("PinValidationInvalidSize", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The {0} cannot be empty. You must enter the pin..
+        /// </summary>
+        public static string PinValidationMissing {
+            get {
+                return ResourceManager.GetString("PinValidationMissing", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to New pin and Confirm pin does not match..
+        /// </summary>
+        public static string PinValidationNewPinNotMatch {
+            get {
+                return ResourceManager.GetString("PinValidationNewPinNotMatch", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Old pin you introduced doesn&apos;t match your existing pin..
+        /// </summary>
+        public static string PinValidationOldPinNotMatch {
+            get {
+                return ResourceManager.GetString("PinValidationOldPinNotMatch", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Replace.
         /// </summary>
         public static string ReplaceButton {
             get {
                 return ResourceManager.GetString("ReplaceButton", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Reset pin.
+        /// </summary>
+        public static string ResetPinButtonText {
+            get {
+                return ResourceManager.GetString("ResetPinButtonText", resourceCulture);
             }
         }
         
@@ -471,6 +570,15 @@ namespace MonthlyCycleApp.Resources {
         public static string ResourceLanguage {
             get {
                 return ResourceManager.GetString("ResourceLanguage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Set pin.
+        /// </summary>
+        public static string SetPinButtonText {
+            get {
+                return ResourceManager.GetString("SetPinButtonText", resourceCulture);
             }
         }
         
