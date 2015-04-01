@@ -40,6 +40,12 @@ namespace WPControls.Models
             this.CycleDuration = cycleDuration;
             this.PeriodDuration = periodDuration;
             this.PeriodStartDay = periodStartDay;
+
+            this.PeriodEndDay = PeriodStartDay.AddDays(PeriodDuration - 1);
+            this.CycleEndDay = PeriodStartDay.AddDays(CycleDuration - 1);
+            this.OvulationPeakDay = PeriodStartDay.AddDays(CycleDuration / 2);
+            this.FertilityStartDay = OvulationPeakDay.AddDays(-2);
+
         }
 
         private DateTime periodEndDay;
@@ -47,8 +53,6 @@ namespace WPControls.Models
         {
             get
             {
-                if (periodEndDay == DateTime.MinValue)
-                    periodEndDay = PeriodStartDay.AddDays(PeriodDuration - 1);
                 return periodEndDay;
             }
             set
@@ -63,8 +67,6 @@ namespace WPControls.Models
         {
             get
             {
-                if (cycleEndDay == DateTime.MinValue)
-                     cycleEndDay = PeriodStartDay.AddDays(CycleDuration-1);
                 return cycleEndDay;
             }
             set
@@ -80,11 +82,11 @@ namespace WPControls.Models
         {
             get
             {
-                return ovulationPeakDay != DateTime.MinValue ? ovulationPeakDay : ovulationPeakDay = PeriodStartDay.AddDays(CycleDuration / 2);
+                return ovulationPeakDay;
             }
             set
             {
-                if (value != DateTime.MinValue)
+                if (DateTime.MinValue != value)
                     ovulationPeakDay = value;
             }
         }
@@ -95,7 +97,7 @@ namespace WPControls.Models
         {
             get
             {
-                return fertilityStartDay != DateTime.MinValue ? fertilityStartDay : fertilityStartDay = OvulationPeakDay.AddDays(-2);
+                return fertilityStartDay;
             }
             set
             {

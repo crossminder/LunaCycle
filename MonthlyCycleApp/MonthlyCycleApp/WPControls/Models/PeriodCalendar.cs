@@ -45,8 +45,8 @@ namespace WPControls.Models
 
         #region const
 
-        private const int defaultAveragePeriod = 28;
-        private const int defaultAverageCycle = 6;
+        private const int defaultAveragePeriod = 6;
+        private const int defaultAverageCycle = 28;
 
         #endregion
 
@@ -171,48 +171,43 @@ namespace WPControls.Models
         {
             get
             {
-                if (futurePeriods == null)
-                    futurePeriods = new List<PeriodMonth>();
-                if (futurePeriods.Count == 0)
+                if (futurePeriods== null || futurePeriods.Count == 0)
                 {
-                    List<PeriodMonth> periods = new List<PeriodMonth>();
-                    if (PastPeriods != null && PastPeriods.Count > 0)
-                        periods = PastPeriods;
-                    periods.Add(CurrentPeriod);
-
-
-                    if (periods != null && periods.Count > 0)
-                    {
-                        DateTime lastMonthEndPeriodDay = periods.Last().CycleEndDay;
-
-                        PeriodMonth estimatedFuture1 = new PeriodMonth()
-                        {
-                            PeriodDuration = AveragePeriodDuration,
-                            CycleDuration = AverageCycleDuration,
-                            PeriodStartDay = lastMonthEndPeriodDay.AddDays(1)
-                        };
-
-                        PeriodMonth estimatedFuture2 = new PeriodMonth()
-                        {
-                            PeriodDuration = AveragePeriodDuration,
-                            CycleDuration = AverageCycleDuration,
-                            PeriodStartDay = estimatedFuture1.CycleEndDay.AddDays(1)
-                        };
-
-                        PeriodMonth EstimatedFuture3 = new PeriodMonth()
-                        {
-                            PeriodDuration = AveragePeriodDuration,
-                            CycleDuration = AverageCycleDuration,
-                            PeriodStartDay = estimatedFuture2.CycleEndDay.AddDays(1)
-                        };
-
-                        futurePeriods.Add(estimatedFuture1);
-                        futurePeriods.Add(estimatedFuture2);
-                        futurePeriods.Add(EstimatedFuture3);
-                    }
+                    ComputeFuturePeriods();
                 }
                 return futurePeriods;
             }
+            private set 
+            {
+                if (futurePeriods == null)
+                    futurePeriods = new List<PeriodMonth>();
+                if (futurePeriods != value)
+                    futurePeriods = value;
+            }
+        }
+
+        private void ComputeFuturePeriods()
+        {
+            List<PeriodMonth> future = new List<PeriodMonth>();
+            List<PeriodMonth> periods = new List<PeriodMonth>();
+            if (PastPeriods != null && PastPeriods.Count > 0)
+                periods = PastPeriods;
+            periods.Add(CurrentPeriod);
+
+
+            if (periods != null && periods.Count > 0)
+            {
+                DateTime lastMonthEndPeriodDay = periods.Last().CycleEndDay;
+
+                PeriodMonth estimatedFuture1 = new PeriodMonth(lastMonthEndPeriodDay.AddDays(1), AverageCycleDuration, AveragePeriodDuration);
+                PeriodMonth estimatedFuture2 = new PeriodMonth(estimatedFuture1.CycleEndDay.AddDays(1), AverageCycleDuration, AveragePeriodDuration);
+                PeriodMonth EstimatedFuture3 = new PeriodMonth(estimatedFuture2.CycleEndDay.AddDays(1), AverageCycleDuration, AveragePeriodDuration);
+               
+                future.Add(estimatedFuture1);
+                future.Add(estimatedFuture2);
+                future.Add(EstimatedFuture3);
+            }
+            futurePeriods = future;
         }
 
         public List<PeriodMonth> periods;
@@ -284,6 +279,7 @@ namespace WPControls.Models
             PropertyChangedEventHandler handler = PropertyChanged;
             if (handler != null)
             {
+                ComputeFuturePeriods();
                 handler(this, new PropertyChangedEventArgs(name));
             }
         }
