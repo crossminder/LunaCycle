@@ -69,11 +69,11 @@
                                 x:Name="Cal"
                                 Grid.Row="0"
                                 StartingDayOfWeek="{Binding FirstDayOfWeek}"
-                                
+                                ColorConverter="{StaticResource ColorConverter}"
                                 EnableGestures="False"
                     />
                 </Grid>
-                <!--ColorConverter="{StaticResource ColorConverter}"-->
+                <!---->
 
 
             </phone:PivotItem>
@@ -210,7 +210,8 @@
                                         Style="{StaticResource settingsTBlLarge}"  FontSize="24"/>
                             <toolkit:TimePicker x:Name="alarmTimePicker" 
                             	Width="150" HorizontalAlignment="Right" Grid.Column="1"
-                              
+                                GotFocus="timePicker_GotFocus"
+                                ManipulationCompleted="timePicker_ManipulationCompleted"
                             	Value="{Binding TakePillHour, Mode=TwoWay}"                             
                             	/>
                         </Grid>
@@ -246,7 +247,9 @@
                                         Style="{StaticResource settingsTBlLarge}"  FontSize="24"/>
                             <toolkit:TimePicker x:Name="menstruationTimePicker" 
                                             Width="150" HorizontalAlignment="Right" Grid.Column="1"
-                                            Value="{Binding MenstruationAlarmHour,Mode=TwoWay}"                             
+                                            Value="{Binding MenstruationAlarmHour,Mode=TwoWay}"      
+                                           GotFocus="timePicker_GotFocus"
+                                            ManipulationCompleted="timePicker_ManipulationCompleted"
                                             />
                         </Grid>
 
@@ -282,7 +285,9 @@
                                                 Width="150"
                                                 HorizontalAlignment="Right"
                                                 Grid.Column="1"
-                                                Value="{Binding OvulationAlarmHour,Mode=TwoWay}"                             
+                                                Value="{Binding OvulationAlarmHour,Mode=TwoWay}" 
+                                                GotFocus="timePicker_GotFocus"
+                                                ManipulationCompleted="timePicker_ManipulationCompleted"
                                                 />
                         </Grid>
                     </Grid>

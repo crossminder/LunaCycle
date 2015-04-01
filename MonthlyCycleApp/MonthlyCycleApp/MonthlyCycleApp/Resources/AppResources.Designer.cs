@@ -115,11 +115,38 @@ namespace MonthlyCycleApp.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to /InitialSetupPage.xaml.
+        /// </summary>
+        public static string ApplicationInitialUri {
+            get {
+                return ResourceManager.GetString("ApplicationInitialUri", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to luna.
         /// </summary>
         public static string ApplicationTitle {
             get {
                 return ResourceManager.GetString("ApplicationTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Luna says your {0} medical check is approaching..
+        /// </summary>
+        public static string BreastControlReminderContent {
+            get {
+                return ResourceManager.GetString("BreastControlReminderContent", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Breast control reminder.
+        /// </summary>
+        public static string BreastControlReminderName {
+            get {
+                return ResourceManager.GetString("BreastControlReminderName", resourceCulture);
             }
         }
         
@@ -286,6 +313,24 @@ namespace MonthlyCycleApp.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Luna says your {0} medical check is approaching..
+        /// </summary>
+        public static string GyneControlReminderContent {
+            get {
+                return ResourceManager.GetString("GyneControlReminderContent", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Gyne control reminder.
+        /// </summary>
+        public static string GyneControlReminderName {
+            get {
+                return ResourceManager.GetString("GyneControlReminderName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to home.
         /// </summary>
         public static string HomePageTitle {
@@ -309,6 +354,33 @@ namespace MonthlyCycleApp.Resources {
         public static string MenstruationAllarmText {
             get {
                 return ResourceManager.GetString("MenstruationAllarmText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Luna estimates your mestruation will begin tomorrow..
+        /// </summary>
+        public static string MenstruationReminderContent {
+            get {
+                return ResourceManager.GetString("MenstruationReminderContent", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Menstruation reminder.
+        /// </summary>
+        public static string MenstruationReminderName {
+            get {
+                return ResourceManager.GetString("MenstruationReminderName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Monthly.
+        /// </summary>
+        public static string Monthly {
+            get {
+                return ResourceManager.GetString("Monthly", resourceCulture);
             }
         }
         
@@ -358,6 +430,15 @@ namespace MonthlyCycleApp.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to One time.
+        /// </summary>
+        public static string OneTime {
+            get {
+                return ResourceManager.GetString("OneTime", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to This start date is overlapping another existing cycle period. Do you want to modify existing period?.
         /// </summary>
         public static string OverlapExistingPeriodValidation {
@@ -372,6 +453,24 @@ namespace MonthlyCycleApp.Resources {
         public static string OvulationAllarmText {
             get {
                 return ResourceManager.GetString("OvulationAllarmText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Luna estimates your fertility will be at its peak tomorrow.
+        /// </summary>
+        public static string OvulationReminderContent {
+            get {
+                return ResourceManager.GetString("OvulationReminderContent", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Ovulation reminder.
+        /// </summary>
+        public static string OvulationReminderName {
+            get {
+                return ResourceManager.GetString("OvulationReminderName", resourceCulture);
             }
         }
         
@@ -475,11 +574,29 @@ namespace MonthlyCycleApp.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Luna says it&apos;s time to take your pill..
+        /// </summary>
+        public static string PillAlarmContent {
+            get {
+                return ResourceManager.GetString("PillAlarmContent", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to You will receive a notification to take your contraceptive pill..
         /// </summary>
         public static string PillAlarmExplanation {
             get {
                 return ResourceManager.GetString("PillAlarmExplanation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Pill Alarm by Luna.
+        /// </summary>
+        public static string PillAlarmName {
+            get {
+                return ResourceManager.GetString("PillAlarmName", resourceCulture);
             }
         }
         
@@ -628,6 +745,15 @@ namespace MonthlyCycleApp.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to 6 months.
+        /// </summary>
+        public static string SixMonths {
+            get {
+                return ResourceManager.GetString("SixMonths", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Standard.
         /// </summary>
         public static string Standard {
@@ -669,6 +795,24 @@ namespace MonthlyCycleApp.Resources {
         public static string StatisticsHeader {
             get {
                 return ResourceManager.GetString("StatisticsHeader", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 3 months.
+        /// </summary>
+        public static string ThreeMonths {
+            get {
+                return ResourceManager.GetString("ThreeMonths", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Anually.
+        /// </summary>
+        public static string Yearly {
+            get {
+                return ResourceManager.GetString("Yearly", resourceCulture);
             }
         }
     }

@@ -161,6 +161,10 @@ C:\Users\georgiana\Documents\GitHub\LunaCycle\MonthlyCycleApp\MonthlyCycleApp\Mo
 C:\Users\georgiana\Documents\GitHub\LunaCycle\MonthlyCycleApp\MonthlyCycleApp\MonthlyCycleApp\Bin\Debug\Images\Light\next.png
 C:\Users\georgiana\Documents\GitHub\LunaCycle\MonthlyCycleApp\MonthlyCycleApp\MonthlyCycleApp\Bin\Debug\Assets\Images\PivotShadow-Bottom.png
 C:\Users\georgiana\Documents\GitHub\LunaCycle\MonthlyCycleApp\MonthlyCycleApp\MonthlyCycleApp\Bin\Debug\Assets\Images\PivotShadow-Top.png
+C:\Users\georgiana\Documents\GitHub\LunaCycle\MonthlyCycleApp\MonthlyCycleApp\MonthlyCycleApp\Bin\Debug\Assets\Tiles\ApplicationIcon.png
+C:\Users\georgiana\Documents\GitHub\LunaCycle\MonthlyCycleApp\MonthlyCycleApp\MonthlyCycleApp\Bin\Debug\Assets\Tiles\FlipCycleTileWide.png
+C:\Users\georgiana\Documents\GitHub\LunaCycle\MonthlyCycleApp\MonthlyCycleApp\MonthlyCycleApp\Bin\Debug\Assets\Tiles\IconicTileMedium.png
+C:\Users\georgiana\Documents\GitHub\LunaCycle\MonthlyCycleApp\MonthlyCycleApp\MonthlyCycleApp\Bin\Debug\Assets\Tiles\TileBackground.jpg
 C:\Users\georgiana\Documents\GitHub\LunaCycle\MonthlyCycleApp\MonthlyCycleApp\MonthlyCycleApp\Bin\Debug\SplashScreenImage.jpg
 C:\Users\georgiana\Documents\GitHub\LunaCycle\MonthlyCycleApp\MonthlyCycleApp\MonthlyCycleApp\Bin\Debug\Assets\Logos\AppBar.png
 C:\Users\georgiana\Documents\GitHub\LunaCycle\MonthlyCycleApp\MonthlyCycleApp\MonthlyCycleApp\Bin\Debug\Assets\Logos\FlipCycleTileMedium.png
@@ -168,10 +172,8 @@ C:\Users\georgiana\Documents\GitHub\LunaCycle\MonthlyCycleApp\MonthlyCycleApp\Mo
 C:\Users\georgiana\Documents\GitHub\LunaCycle\MonthlyCycleApp\MonthlyCycleApp\MonthlyCycleApp\Bin\Debug\Assets\Logos\FlipCycleTileWide.png
 C:\Users\georgiana\Documents\GitHub\LunaCycle\MonthlyCycleApp\MonthlyCycleApp\MonthlyCycleApp\Bin\Debug\Assets\Logos\IconicTileMedium.png
 C:\Users\georgiana\Documents\GitHub\LunaCycle\MonthlyCycleApp\MonthlyCycleApp\MonthlyCycleApp\Bin\Debug\Assets\Logos\IconicTileSmall.png
-C:\Users\georgiana\Documents\GitHub\LunaCycle\MonthlyCycleApp\MonthlyCycleApp\MonthlyCycleApp\Bin\Debug\Assets\Tiles\FlipCycleTileLarge.png
 C:\Users\georgiana\Documents\GitHub\LunaCycle\MonthlyCycleApp\MonthlyCycleApp\MonthlyCycleApp\Bin\Debug\Assets\Tiles\FlipCycleTileMedium.png
 C:\Users\georgiana\Documents\GitHub\LunaCycle\MonthlyCycleApp\MonthlyCycleApp\MonthlyCycleApp\Bin\Debug\Assets\Tiles\FlipCycleTileSmall.png
-C:\Users\georgiana\Documents\GitHub\LunaCycle\MonthlyCycleApp\MonthlyCycleApp\MonthlyCycleApp\Bin\Debug\Assets\Tiles\IconicTileMediumLarge.png
 C:\Users\georgiana\Documents\GitHub\LunaCycle\MonthlyCycleApp\MonthlyCycleApp\MonthlyCycleApp\Bin\Debug\Assets\Tiles\IconicTileSmall.png
 C:\Users\georgiana\Documents\GitHub\LunaCycle\MonthlyCycleApp\MonthlyCycleApp\MonthlyCycleApp\Bin\Debug\Assets\Icons\add.png
 C:\Users\georgiana\Documents\GitHub\LunaCycle\MonthlyCycleApp\MonthlyCycleApp\MonthlyCycleApp\Bin\Debug\Assets\Icons\check.png
@@ -265,3 +267,4 @@ C:\Users\georgiana\Documents\GitHub\LunaCycle\MonthlyCycleApp\MonthlyCycleApp\Mo
 C:\Users\georgiana\Documents\GitHub\LunaCycle\MonthlyCycleApp\MonthlyCycleApp\MonthlyCycleApp\obj\Debug\MonthlyCycleApp.dll
 C:\Users\georgiana\Documents\GitHub\LunaCycle\MonthlyCycleApp\MonthlyCycleApp\MonthlyCycleApp\obj\Debug\MonthlyCycleApp.pdb
 C:\Users\georgiana\Documents\GitHub\LunaCycle\MonthlyCycleApp\MonthlyCycleApp\MonthlyCycleApp\obj\Debug\XapCacheFile.xml
+C:\Users\georgiana\Documents\GitHub\LunaCycle\MonthlyCycleApp\MonthlyCycleApp\MonthlyCycleApp\Bin\Debug\Reminder\Reminder01.wav

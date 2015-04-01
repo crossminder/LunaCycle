@@ -11,6 +11,7 @@ using System.Collections.Generic;
 using MonthlyCycleApp.Model;
 using System.Windows;
 using System.Linq;
+using MonthlyCycleApp.NotificationsAndTiles;
 
 namespace MonthlyCycleApp.ViewModels
 {
@@ -128,8 +129,28 @@ namespace MonthlyCycleApp.ViewModels
                     ShowMensOvulAlarmOption = !value;
                     if (value)
                     {
+                          //period.PeriodEndDay.AddDays(1),
+                          //  period.CycleEndDay,
+
+                        //var current = Calendar.CurrentPeriod;
+                        //DateTime begin = TakePillHour;
+
+                        //add reminder
+                   
+
+                        RemindersManager.AddPillAlarm(Calendar.CurrentPeriod);
+
+                        //remove reminders
+                        RemindersManager.RemoveAlarmOrReminder(AppResources.MenstruationReminderName);
+                        RemindersManager.RemoveAlarmOrReminder(AppResources.OvulationReminderName);
+
                         IsMenstruationAllarmOn = false;
                         IsOvulationAllarmOn = false;
+                    }
+                    else
+                    {
+                        //remove reminders
+                        RemindersManager.RemoveAlarmOrReminder(AppResources.PillAlarmName);
                     }
                     
                     ApplicationSettings.SetProperty(ApplicationSettings.IS_PILL_ALARM_ON, isPillAllarmOn);
@@ -167,6 +188,10 @@ namespace MonthlyCycleApp.ViewModels
                 if (value != takePillHour)
                 {
                     takePillHour = value;
+
+                    //update reminder
+                    RemindersManager.AddPillAlarm(Calendar.CurrentPeriod);
+
                     ApplicationSettings.SetProperty(ApplicationSettings.PILL_ALARM_TIME, takePillHour);
                 }
             }
@@ -316,97 +341,7 @@ namespace MonthlyCycleApp.ViewModels
         
         #endregion
 
-        #region Settings - preferences
-
-        private DayOfWeek? firstDayOfWeek;
-        public DayOfWeek FirstDayOfWeek
-        {
-            get
-            {
-                CultureInfo cultureInfo = CultureInfo.CurrentCulture;
-                DayOfWeek firstDayCulture = cultureInfo.DateTimeFormat.FirstDayOfWeek;
-
-                var storedValue = ApplicationSettings.GetPropertyWithDefault<DayOfWeek>(ApplicationSettings.FIRST_DAY_OF_WEEK, firstDayCulture);
-
-                return firstDayOfWeek.HasValue ? firstDayOfWeek.Value : storedValue;
-            }
-            set
-            {
-                if (value != firstDayOfWeek)
-                {
-                    firstDayOfWeek = value;
-                    ApplicationSettings.SetProperty(ApplicationSettings.FIRST_DAY_OF_WEEK, firstDayOfWeek);
-                    //  NotifyPropertyChanged("FirstDayOfWeek");
-                }
-            }
-        }
- 
-        //public Forecast PeriodForecast
-        //{
-        //    get
-        //    {
-        //        return IsPeriodForecastAdvanced ? Forecast.Advanced : Forecast.Standard;
-        //    }
-        //}
-
-        private bool? isPeriodForecastEnabled;
-        public bool IsPeriodForecastEnabled
-        {
-            get
-            {
-                return isPeriodForecastEnabled.HasValue ? isPeriodForecastEnabled.Value : ApplicationSettings.GetProperty<bool>(ApplicationSettings.IS_PERIOD_FORECAST_ENABLED);
-            }
-            set
-            {
-                if (value != isPeriodForecastEnabled)
-                {
-                    isPeriodForecastEnabled = value;
-                    ApplicationSettings.SetProperty(ApplicationSettings.IS_PERIOD_FORECAST_ENABLED, isPeriodForecastEnabled);
-                    NotifyPropertyChanged("IsPeriodForecastEnabled");
-                    NotifyPropertyChanged("PeriodForecastExplanation");
-                }
-            }
-        }
-
-        public string PeriodForecastExplanation
-        {
-            get
-            {
-                return IsPeriodForecastEnabled ? AppResources.PeriodForecastExplanationAdvanced : AppResources.PeriodForecastExplanationStandard;
-            }
-        }
-
-        private bool? isFertilityForecastEnabled;
-        public bool IsFertilityForecastEnabled
-        {
-            get
-            {
-                return isFertilityForecastEnabled.HasValue ? isFertilityForecastEnabled.Value : ApplicationSettings.GetProperty<bool>(ApplicationSettings.IS_FERTILITY_FORECAST_ENABLED);
-            }
-            set
-            {
-                if (value != isFertilityForecastEnabled)
-                {
-                    isFertilityForecastEnabled = value;
-                    ApplicationSettings.SetProperty(ApplicationSettings.IS_FERTILITY_FORECAST_ENABLED, isFertilityForecastEnabled);
-                    NotifyPropertyChanged("IsFertilityForecastEnabled");
-                    NotifyPropertyChanged("FertilityForecastExplanation");
-                }
-            }
-        }
-
-        public string FertilityForecastExplanation
-        {
-            get
-            {
-                return IsFertilityForecastEnabled ? AppResources.FertilityForecastExplanationAdvanced : AppResources.FertilityForecastExplanationStandard;
-            }
-        }
-
-
-        #endregion
-
-        #region dialog properties
+        #region Dialog Prperties
 
         private string firstRowText;
         public string FirstRowText
@@ -829,14 +764,11 @@ namespace MonthlyCycleApp.ViewModels
                 if (Calendar.CurrentPeriod.PeriodEndDay != SelectedEndCycle)
                 {
                     currentPeriod.PeriodEndDay = SelectedEndCycle;
-
-                 
                 }
                 EndCycleConfirmed = true;
             }
 
             SetupCalendarData(currentPeriod);
-
             App.LunaViewModel.SetDropValues(currentPeriod);
 
             //if there are confirmed, there is no need to show them

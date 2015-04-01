@@ -24,3 +24,36 @@ C:\Users\mircea\Documents\Visual Studio 2013\Projects\wpcontrols_calendar\WPCont
 C:\Users\mircea\Documents\Visual Studio 2013\Projects\wpcontrols_calendar\WPControls\obj\Release\WPControls.g.resources
 C:\Users\mircea\Documents\Visual Studio 2013\Projects\wpcontrols_calendar\WPControls\obj\Release\WPControls.dll
 C:\Users\mircea\Documents\Visual Studio 2013\Projects\wpcontrols_calendar\WPControls\obj\Release\WPControls.pdb
+C:\Users\georgiana\Documents\GitHub\LunaCycle\MonthlyCycleApp\MonthlyCycleApp\WPControls\Bin\Release\Images\Light\basecircle.png
+C:\Users\georgiana\Documents\GitHub\LunaCycle\MonthlyCycleApp\MonthlyCycleApp\WPControls\Bin\Release\Images\Dark\back.png
+C:\Users\georgiana\Documents\GitHub\LunaCycle\MonthlyCycleApp\MonthlyCycleApp\WPControls\Bin\Release\Images\Dark\OvulationDay.png
+C:\Users\georgiana\Documents\GitHub\LunaCycle\MonthlyCycleApp\MonthlyCycleApp\WPControls\Bin\Release\Images\Dark\OvulationDay_today.png
+C:\Users\georgiana\Documents\GitHub\LunaCycle\MonthlyCycleApp\MonthlyCycleApp\WPControls\Bin\Release\Images\Dark\OvulationDay_selected.png
+C:\Users\georgiana\Documents\GitHub\LunaCycle\MonthlyCycleApp\MonthlyCycleApp\WPControls\Bin\Release\Images\Dark\FertilityEndDay.png
+C:\Users\georgiana\Documents\GitHub\LunaCycle\MonthlyCycleApp\MonthlyCycleApp\WPControls\Bin\Release\Images\Dark\next.png
+C:\Users\georgiana\Documents\GitHub\LunaCycle\MonthlyCycleApp\MonthlyCycleApp\WPControls\Bin\Release\Images\Dark\_selected.png
+C:\Users\georgiana\Documents\GitHub\LunaCycle\MonthlyCycleApp\MonthlyCycleApp\WPControls\Bin\Release\Images\Dark\CycleDay.png
+C:\Users\georgiana\Documents\GitHub\LunaCycle\MonthlyCycleApp\MonthlyCycleApp\WPControls\Bin\Release\Images\Dark\CycleEndDay_selected.png
+C:\Users\georgiana\Documents\GitHub\LunaCycle\MonthlyCycleApp\MonthlyCycleApp\WPControls\Bin\Release\Images\Dark\CycleEndDay_today.png
+C:\Users\georgiana\Documents\GitHub\LunaCycle\MonthlyCycleApp\MonthlyCycleApp\WPControls\Bin\Release\Images\Dark\FertilityEndDay_selected.png
+C:\Users\georgiana\Documents\GitHub\LunaCycle\MonthlyCycleApp\MonthlyCycleApp\WPControls\Bin\Release\Images\Dark\FertilityDay_selected.png
+C:\Users\georgiana\Documents\GitHub\LunaCycle\MonthlyCycleApp\MonthlyCycleApp\WPControls\Bin\Release\Images\Dark\CycleStartDay.png
+C:\Users\georgiana\Documents\GitHub\LunaCycle\MonthlyCycleApp\MonthlyCycleApp\WPControls\Bin\Release\Images\Dark\FertilityEndDay_today.png
+C:\Users\georgiana\Documents\GitHub\LunaCycle\MonthlyCycleApp\MonthlyCycleApp\WPControls\Bin\Release\Images\Dark\CycleEndDay.png
+C:\Users\georgiana\Documents\GitHub\LunaCycle\MonthlyCycleApp\MonthlyCycleApp\WPControls\Bin\Release\Images\Dark\FertilityDay_today.png
+C:\Users\georgiana\Documents\GitHub\LunaCycle\MonthlyCycleApp\MonthlyCycleApp\WPControls\Bin\Release\Images\Dark\FertilityDay.png
+C:\Users\georgiana\Documents\GitHub\LunaCycle\MonthlyCycleApp\MonthlyCycleApp\WPControls\Bin\Release\Images\Dark\CycleDay_selected.png
+C:\Users\georgiana\Documents\GitHub\LunaCycle\MonthlyCycleApp\MonthlyCycleApp\WPControls\Bin\Release\Images\Dark\FertilityStartDay_selected.png
+C:\Users\georgiana\Documents\GitHub\LunaCycle\MonthlyCycleApp\MonthlyCycleApp\WPControls\Bin\Release\Images\Dark\_today.png
+C:\Users\georgiana\Documents\GitHub\LunaCycle\MonthlyCycleApp\MonthlyCycleApp\WPControls\Bin\Release\Images\Dark\CycleStartDay_today.png
+C:\Users\georgiana\Documents\GitHub\LunaCycle\MonthlyCycleApp\MonthlyCycleApp\WPControls\Bin\Release\Images\Dark\FertilityStartDay_today.png
+C:\Users\georgiana\Documents\GitHub\LunaCycle\MonthlyCycleApp\MonthlyCycleApp\WPControls\Bin\Release\Images\Dark\FertilityStartDay.png
+C:\Users\georgiana\Documents\GitHub\LunaCycle\MonthlyCycleApp\MonthlyCycleApp\WPControls\Bin\Release\Images\Dark\CycleStartDay_selected.png
+C:\Users\georgiana\Documents\GitHub\LunaCycle\MonthlyCycleApp\MonthlyCycleApp\WPControls\Bin\Release\Images\Light\back.png
+C:\Users\georgiana\Documents\GitHub\LunaCycle\MonthlyCycleApp\MonthlyCycleApp\WPControls\Bin\Release\Images\Dark\CycleDay_today.png
+C:\Users\georgiana\Documents\GitHub\LunaCycle\MonthlyCycleApp\MonthlyCycleApp\WPControls\Bin\Release\Images\Light\next.png
+C:\Users\georgiana\Documents\GitHub\LunaCycle\MonthlyCycleApp\MonthlyCycleApp\WPControls\Bin\Release\WPControls.dll
+C:\Users\georgiana\Documents\GitHub\LunaCycle\MonthlyCycleApp\MonthlyCycleApp\WPControls\Bin\Release\WPControls.pdb
+C:\Users\georgiana\Documents\GitHub\LunaCycle\MonthlyCycleApp\MonthlyCycleApp\WPControls\obj\Release\WPControls.g.resources
+C:\Users\georgiana\Documents\GitHub\LunaCycle\MonthlyCycleApp\MonthlyCycleApp\WPControls\obj\Release\WPControls.dll
+C:\Users\georgiana\Documents\GitHub\LunaCycle\MonthlyCycleApp\MonthlyCycleApp\WPControls\obj\Release\WPControls.pdb

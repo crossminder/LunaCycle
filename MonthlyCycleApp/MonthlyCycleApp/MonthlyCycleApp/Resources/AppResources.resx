@@ -324,4 +324,52 @@
   <data name="PinValidationOldPinNotMatch" xml:space="preserve">
     <value>Old pin you introduced doesn't match your existing pin.</value>
   </data>
+  <data name="ApplicationInitialUri" xml:space="preserve">
+    <value>/InitialSetupPage.xaml</value>
+  </data>
+  <data name="BreastControlReminderContent" xml:space="preserve">
+    <value>Luna says your {0} medical check is approaching.</value>
+  </data>
+  <data name="BreastControlReminderName" xml:space="preserve">
+    <value>Breast control reminder</value>
+  </data>
+  <data name="GyneControlReminderContent" xml:space="preserve">
+    <value>Luna says your {0} medical check is approaching.</value>
+  </data>
+  <data name="GyneControlReminderName" xml:space="preserve">
+    <value>Gyne control reminder</value>
+  </data>
+  <data name="MenstruationReminderContent" xml:space="preserve">
+    <value>Luna estimates your mestruation will begin tomorrow.</value>
+  </data>
+  <data name="MenstruationReminderName" xml:space="preserve">
+    <value>Menstruation reminder</value>
+  </data>
+  <data name="Monthly" xml:space="preserve">
+    <value>Monthly</value>
+  </data>
+  <data name="OneTime" xml:space="preserve">
+    <value>One time</value>
+  </data>
+  <data name="OvulationReminderContent" xml:space="preserve">
+    <value>Luna estimates your fertility will be at its peak tomorrow</value>
+  </data>
+  <data name="OvulationReminderName" xml:space="preserve">
+    <value>Ovulation reminder</value>
+  </data>
+  <data name="PillAlarmContent" xml:space="preserve">
+    <value>Luna says it's time to take your pill.</value>
+  </data>
+  <data name="PillAlarmName" xml:space="preserve">
+    <value>Pill Alarm by Luna</value>
+  </data>
+  <data name="SixMonths" xml:space="preserve">
+    <value>6 months</value>
+  </data>
+  <data name="ThreeMonths" xml:space="preserve">
+    <value>3 months</value>
+  </data>
+  <data name="Yearly" xml:space="preserve">
+    <value>Anually</value>
+  </data>
 </root>

@@ -16,6 +16,7 @@ using System.Windows.Data;
 using WPControls.Models;
 using MonthlyCycleApp.Helpers;
 using WPControls.Helpers;
+using MonthlyCycleApp.NotificationsAndTiles;
 
 
 namespace MonthlyCycleApp
@@ -60,6 +61,12 @@ namespace MonthlyCycleApp
             }
 
         }
+
+        protected override void OnNavigatedFrom(NavigationEventArgs e)
+        {
+            if (!outToTimePicker)
+                FlipTile.CreateOrUpdateFlipTile(App.LunaViewModel.DaysToPeriod, App.LunaViewModel.DaysToPeriodText);
+        }
      
         #endregion
 
@@ -81,13 +88,6 @@ namespace MonthlyCycleApp
         private void panoramaControl_Loaded(object sender, RoutedEventArgs e)
         {
             panoramaControl.Visibility = Visibility.Visible;
-        }
-
-        private void startingWeekDayList_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            int selectedIndex = (sender as ListPicker).SelectedIndex;
-            if (selectedIndex >= 0)
-                App.MainViewModel.FirstDayOfWeek = (DayOfWeek)Enum.Parse(typeof(DayOfWeek), selectedIndex.ToString());
         }
 
         //private void toggleBtnPeriodForecast_CheckedUnchecked(object sender, RoutedEventArgs e)
@@ -344,6 +344,18 @@ namespace MonthlyCycleApp
     
 
         #endregion
+
+        bool outToTimePicker = false;
+
+        private void timePicker_GotFocus(object sender, RoutedEventArgs e)
+        {
+            outToTimePicker = true;
+        }
+
+        private void timePicker_ManipulationCompleted(object sender, System.Windows.Input.ManipulationCompletedEventArgs e)
+        {
+            outToTimePicker = false;
+        }
 
     }
 }

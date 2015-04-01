@@ -11,6 +11,7 @@ using Microsoft.Phone.Shell;
 using MonthlyCycleApp.Resources;
 using MonthlyCycleApp.ViewModels;
 using Monthly.Helpers;
+using MonthlyCycleApp.NotificationsAndTiles;
 
 namespace MonthlyCycleApp
 {
@@ -63,6 +64,7 @@ namespace MonthlyCycleApp
                 return lunaViewModel;
             }
         }
+
         #endregion
 
 
@@ -116,6 +118,7 @@ namespace MonthlyCycleApp
         private void Application_Launching(object sender, LaunchingEventArgs e)
         {
             App.MainViewModel.LoggedInNeeded = App.MainViewModel.IsPasswordProtected;
+
           }
 
         // Code to execute when the application is activated (brought to foreground)
@@ -123,6 +126,7 @@ namespace MonthlyCycleApp
         private void Application_Activated(object sender, ActivatedEventArgs e)
         {
             // Ensure that application state is restored appropriately
+
 
         }
 
@@ -139,7 +143,6 @@ namespace MonthlyCycleApp
         private void Application_Closing(object sender, ClosingEventArgs e)
         {
             PersistanceStorage.WriteDataToPersistanceStorage(MainViewModel.Calendar);
-
         }
 
         // Code to execute if a navigation fails
@@ -194,6 +197,7 @@ namespace MonthlyCycleApp
             // Set the root visual to allow the application to render
             if (RootVisual != RootFrame)
                 RootVisual = RootFrame;
+
 
             // Remove this handler since it is no longer needed
             RootFrame.Navigated -= CompleteInitializePhoneApplication;
