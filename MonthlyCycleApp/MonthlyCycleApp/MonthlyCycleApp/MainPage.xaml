@@ -10,6 +10,7 @@
     xmlns:controls ="clr-namespace:MonthlyCycleApp.Controls"
     xmlns:toolkit="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone.Controls.Toolkit"
     xmlns:converters="clr-namespace:MonthlyCycleApp.Converters"
+    xmlns:sparrow="clr-namespace:Sparrow.Chart;assembly=Sparrow.Chart.WP8.45"
     mc:Ignorable="d"
     FontFamily="{StaticResource PhoneFontFamilyNormal}"
     FontSize="{StaticResource PhoneFontSizeNormal}"
@@ -51,8 +52,7 @@
                 FontSize="90"  />
         </Grid>
         <phone:Pivot x:Name="panoramaControl" Grid.RowSpan="4" Grid.Row="0"
-                        Loaded="panoramaControl_Loaded"
-                        SelectionChanged="startingPageList_SelectionChanged" >
+                        Loaded="panoramaControl_Loaded">
             <!--Drop-->
             <phone:PivotItem x:Name="DropPage" >
                 <controls:LunaDropControl x:Name="dropControl" />
@@ -62,8 +62,9 @@
             <phone:PivotItem Margin="0,150,0,0">
                 <Grid Margin="0,0,0,0">
                     <Grid.RowDefinitions>
-                        <RowDefinition Height="0.8*"/>
-                        <RowDefinition Height="0.2*"/>
+                        <RowDefinition Height="0.7*"/>
+                        <RowDefinition Height="50"/>
+                        <RowDefinition Height="0.3*"/>
                     </Grid.RowDefinitions>
                     <wpcontrols:Calendar 
                                 x:Name="Cal"
@@ -72,9 +73,46 @@
                                 ColorConverter="{StaticResource ColorConverter}"
                                 EnableGestures="False"
                     />
+                    <TextBlock Margin="10"
+                               Text="{Binding Path=LocalizedResources.Legend, Source={StaticResource LocalizedStrings}}" 
+                               Style="{StaticResource settingsTBlTitle}"
+                               Foreground="{StaticResource PinkColor}"
+                               VerticalAlignment="Center"
+                               Grid.Row="1" />
+                    <Grid Grid.Row="2" Margin="10,0,10,10">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="50" />
+                            <RowDefinition Height="50" />
+                            <RowDefinition Height="50" />
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="30"/>
+                            <ColumnDefinition Width="180"/>
+                            <ColumnDefinition Width="30"/>
+                            <ColumnDefinition Width="30"/>
+                            <ColumnDefinition Width="150"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <Image Source="Assets/Images/CycleDay.png"
+                               Grid.Row="0" Grid.Column="0"/>
+                        <TextBlock Text="{Binding Path=LocalizedResources.MenstruationDay, Source={StaticResource LocalizedStrings}}" 
+                                   Style="{StaticResource legendTBl}"
+                                   VerticalAlignment="Center"
+                                   Grid.Row="0" Grid.Column="1" />
+                        <Image Source="Assets/Images/FertilityDay.png" 
+                               Grid.Row="1" Grid.Column="0"/>
+                        <TextBlock Text="{Binding Path=LocalizedResources.FertilityDay, Source={StaticResource LocalizedStrings}}" 
+                                   Style="{StaticResource legendTBl}"
+                                   VerticalAlignment="Center"
+                                   Grid.Row="1" Grid.Column="1" />
+                        <Image Source="Assets/Images/OvulationDay.png" 
+                               Grid.Row="0" Grid.Column="3"/>
+                        <TextBlock Text="{Binding Path=LocalizedResources.OvulationDay, Source={StaticResource LocalizedStrings}}" 
+                                   Style="{StaticResource legendTBl}"
+                                   VerticalAlignment="Center"
+                                   Grid.Row="0" Grid.Column="4" />
+                    </Grid>
                 </Grid>
-                <!---->
-
 
             </phone:PivotItem>
 
@@ -84,21 +122,59 @@
                     <Grid ScrollViewer.VerticalScrollBarVisibility="Auto">
                         <Grid.RowDefinitions>
                             <RowDefinition Height="80"/>
-                            <RowDefinition/>
+                            <RowDefinition Height="80"/>
+                            <RowDefinition Height="300"/>
                         </Grid.RowDefinitions>
-                        <TextBlock FontFamily="{StaticResource PhoneFontFamilySemiLight}"
-                        Grid.Row="0"
-                        FontSize="{StaticResource PhoneFontSizeExtraLarge}"
-                        Foreground="{StaticResource PinkColor}"
-                        TextWrapping="Wrap"
-                        Text="{Binding Path=LocalizedResources.StatisticsHeader, Source={StaticResource LocalizedStrings}}" />
-                        <TextBlock FontFamily="{StaticResource PhoneFontFamilySemiLight}"
-                        Grid.Row="1"
-                        Style="{StaticResource settingsTBlLarge}"
-                        VerticalAlignment="Top"
-                        TextWrapping="Wrap"
-                        Text="{Binding Path=LocalizedResources.StatisticsHeader, Source={StaticResource LocalizedStrings}}" />
-                    </Grid>
+                            <TextBlock FontFamily="{StaticResource PhoneFontFamilySemiLight}"
+                                Grid.Row="0"
+                                FontSize="{StaticResource PhoneFontSizeExtraLarge}"
+                                Foreground="{StaticResource PinkColor}"
+                                TextWrapping="Wrap"
+                                Text="{Binding Path=LocalizedResources.StatisticsHeader, Source={StaticResource LocalizedStrings}}" />
+                            <TextBlock FontFamily="{StaticResource PhoneFontFamilySemiLight}"
+                                Grid.Row="1"
+                                Style="{StaticResource settingsTBlLarge}"
+                                VerticalAlignment="Top"
+                                TextWrapping="Wrap"
+                                Text="{Binding Path=LocalizedResources.StatisticsHeader, Source={StaticResource LocalizedStrings}}" />
+
+                            <!--<sparrow:SparrowChart x:Name="spChart"  
+                                                  Grid.Row="2"
+
+                                                  Visibility="Collapsed">
+                              
+                                <sparrow:SparrowChart.XAxis>
+                                    <sparrow:CategoryXAxis Header="Months"/>
+                                </sparrow:SparrowChart.XAxis>
+                                <sparrow:SparrowChart.YAxis>
+                                    <sparrow:LinearYAxis Header="Cycles"/>
+                                </sparrow:SparrowChart.YAxis>
+                                <sparrow:ColumnSeries PointsSource="{Binding}" XPath="X" YPath="Y"/>
+                            </sparrow:SparrowChart>-->
+                            <!--<sparrow:SparrowChart 
+                                Grid.Row="2">
+                                <sparrow:SparrowChart.XAxis>
+                                    <sparrow:LinearXAxis/>
+                                </sparrow:SparrowChart.XAxis>
+                                <sparrow:SparrowChart.YAxis>
+                                    <sparrow:LinearYAxis>
+                                    </sparrow:LinearYAxis>
+                                </sparrow:SparrowChart.YAxis>
+                               
+                                   
+                                 
+                                <sparrow:LineSeries Foreground="Red">
+                                    <sparrow:LineSeries.Points>
+                                        <sparrow:DoublePoint Data="0" Value="0"/>
+                                        <sparrow:DoublePoint Data="1" Value="28"/>
+                                        <sparrow:DoublePoint Data="2" Value="30"/>
+                                        <sparrow:DoublePoint Data="3" Value="29"/>
+                                    </sparrow:LineSeries.Points>
+                                </sparrow:LineSeries>
+                            </sparrow:SparrowChart>-->
+                        </Grid>
+                    
+                    
                 </ScrollViewer>
 
             </phone:PivotItem>
@@ -119,7 +195,8 @@
                         Text="{Binding Path=LocalizedResources.AboutHeader, Source={StaticResource LocalizedStrings}}" />
 
                     <ScrollViewer Grid.Row="1">
-                        <RichTextBox
+                            <StackPanel>
+                                <RichTextBox
                         ScrollViewer.VerticalScrollBarVisibility="Auto"
                         CharacterSpacing="1"
                         VerticalAlignment="Top" 
@@ -138,17 +215,21 @@
                                 <Paragraph x:Name="p3">
                                     <Run Text="{Binding Path=LocalizedResources.AboutContent3, Source={StaticResource LocalizedStrings}}"/>
                                 </Paragraph>
-                                <Paragraph x:Name="p4">
-                                    <Run Text="{Binding Path=LocalizedResources.AboutContent4, Source={StaticResource LocalizedStrings}}"/>
-                                </Paragraph>
-
-                                <Paragraph x:Name="p5"
-                                LineHeight="150" >
-                                    <Run Text=" "/>
-                                </Paragraph>
-                            </RichTextBox.Blocks>
+                                        <Paragraph x:Name="p4">
+                                            <Run Text="{Binding Path=LocalizedResources.AboutContent4, Source={StaticResource LocalizedStrings}}"/>
+                                        </Paragraph>
+                                    </RichTextBox.Blocks>
                         </RichTextBox>
+                                <Button x:Name="btnRate" 
+                                        Content="Rate it!" 
+                                        Click="btnRate_Click" />
+                                <Button x:Name="btnShare" 
+                                        Content="Share it!" 
+                                        Click="btnShare_Click" />
+                                <Line Height="120"/>
+                            </StackPanel>
                     </ScrollViewer>
+                    
                 </Grid>
             </phone:PivotItem>
 
@@ -156,33 +237,33 @@
             <phone:PivotItem 
                  Margin="0,150,0,0">
                 <ScrollViewer x:Name="settingsScroll">
-                    <Grid x:Name="SettingsGrid"  Margin="20,0,20,0" 
+                        <Grid x:Name="SettingsGrid"  Margin="20,0,20,0" 
                         ScrollViewer.VerticalScrollBarVisibility="Visible">
-                        <Grid.RowDefinitions>
-                            <!--0-->
-                            <RowDefinition Height="130"/>
-                            <RowDefinition Height="8*"/>
-                            <RowDefinition Height="130"/>
-                            <RowDefinition Height="8*"/>
-                            <RowDefinition Height="130"/>
-                            <!--5-->
-                            <RowDefinition Height="8*"/>
-                            <RowDefinition Height="130"/>
-                            <RowDefinition Height="110"/>
-                            <RowDefinition Height="110"/>
-                            <RowDefinition Height="110"/>
-                            <!--10-->
-                            <RowDefinition Height="130"/>
-                            <RowDefinition Height="130"/>
-                            <RowDefinition Height="110"/>
-                        </Grid.RowDefinitions>
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="6*"/>
-                            <ColumnDefinition Width="4*"/>
-                        </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <!--0-->
+                                <RowDefinition Height="130"/>
+                                <RowDefinition Height="8*"/>
+                                <RowDefinition Height="130"/>
+                                <RowDefinition Height="8*"/>
+                                <RowDefinition Height="130"/>
+                                <!--5-->
+                                <RowDefinition Height="8*"/>
+                                <RowDefinition Height="80"/>
+                                <RowDefinition Height="80"/>
+                                <RowDefinition Height="110"/>
+                                <RowDefinition Height="110"/>
+                                <!--10-->
+                                <RowDefinition Height="130"/>
+                                <RowDefinition Height="130"/>
+                                <RowDefinition Height="110"/>
+                            </Grid.RowDefinitions>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="6*"/>
+                                <ColumnDefinition Width="4*"/>
+                            </Grid.ColumnDefinitions>
 
-                        <!--Pill alarm-->
-                        <toolkit:ToggleSwitch x:Name="toggleBtnPillAllarm" 
+                            <!--Pill alarm-->
+                            <toolkit:ToggleSwitch x:Name="toggleBtnPillAllarm" 
                                       Style="{StaticResource toggleSwitch}"
                                       Grid.Row="0"
                                       Header="{Binding Path=LocalizedResources.PillAllarmText, Source={StaticResource LocalizedStrings}}"
@@ -192,32 +273,32 @@
                                       Unchecked="toggleBtnPillAllarm_CheckedUnchecked"   
                                       Loaded="toggleBtnPillAllarm_CheckedUnchecked"
                                       />
-                        <TextBlock x:Name="toggleBtnPillAllarmExplanation" Grid.ColumnSpan="2"
+                            <TextBlock x:Name="toggleBtnPillAllarmExplanation" Grid.ColumnSpan="2"
                                     Grid.Row="0"
                                     Style="{StaticResource settingsTBlExplanation}"
                                     Text="{Binding Path=LocalizedResources.PillAlarmExplanation, Source={StaticResource LocalizedStrings}}" />
 
-                        <Grid x:Name="toggleBtnPillAllarmTimePanel"
+                            <Grid x:Name="toggleBtnPillAllarmTimePanel"
                                     Margin="30,0,0,0" Height="80"
                                     Grid.ColumnSpan="2" Grid.Row="1" Grid.Column="0">
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition />
-                                <ColumnDefinition />
-                            </Grid.ColumnDefinitions>
-                            <TextBlock x:Name="tbAlarmTimeText" 
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition />
+                                    <ColumnDefinition />
+                                </Grid.ColumnDefinitions>
+                                <TextBlock x:Name="tbAlarmTimeText" 
                                        HorizontalAlignment="Right"
                                         Text="{Binding Path=LocalizedResources.PillAllarmTimeText, Source={StaticResource LocalizedStrings}}" 
                                         Style="{StaticResource settingsTBlLarge}"  FontSize="24"/>
-                            <toolkit:TimePicker x:Name="alarmTimePicker" 
+                                <toolkit:TimePicker x:Name="alarmTimePicker" 
                             	Width="150" HorizontalAlignment="Right" Grid.Column="1"
                                 GotFocus="timePicker_GotFocus"
                                 ManipulationCompleted="timePicker_ManipulationCompleted"
                             	Value="{Binding TakePillHour, Mode=TwoWay}"                             
                             	/>
-                        </Grid>
+                            </Grid>
 
-                        <!--Menstruation alarm-->
-                        <toolkit:ToggleSwitch x:Name="toggleBtnMenstruationAllarm" 
+                            <!--Menstruation alarm-->
+                            <toolkit:ToggleSwitch x:Name="toggleBtnMenstruationAllarm" 
                                       Style="{StaticResource toggleSwitch}"
                                       Grid.Row="2"
                                       Header="{Binding Path=LocalizedResources.MenstruationAllarmText, Source={StaticResource LocalizedStrings}}"
@@ -229,32 +310,32 @@
                                       IsEnabled="{Binding ShowMensOvulAlarmOption}"
                                       />
 
-                        <TextBlock x:Name="toggleBtnMenstruationAllarmExplanation" 
+                            <TextBlock x:Name="toggleBtnMenstruationAllarmExplanation" 
                                 Grid.Row="2"
                                 Style="{StaticResource settingsTBlExplanation}"
                                 Text="{Binding Path=LocalizedResources.PillAlarmExplanation, Source={StaticResource LocalizedStrings}}" />
 
-                        <Grid x:Name="toggleBtnMenstruationAllarmTimePanel"                                 
+                            <Grid x:Name="toggleBtnMenstruationAllarmTimePanel"                                 
                                     Margin="30,0,0,0" Height="80"
                                     Grid.ColumnSpan="2" Grid.Row="3" >
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition />
-                                <ColumnDefinition />
-                            </Grid.ColumnDefinitions>
-                            <TextBlock x:Name="tMenstruationTimeText" Grid.Column="0"
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition />
+                                    <ColumnDefinition />
+                                </Grid.ColumnDefinitions>
+                                <TextBlock x:Name="tMenstruationTimeText" Grid.Column="0"
                                        HorizontalAlignment="Right"
                                         Text="{Binding Path=LocalizedResources.PillAllarmTimeText, Source={StaticResource LocalizedStrings}}" 
                                         Style="{StaticResource settingsTBlLarge}"  FontSize="24"/>
-                            <toolkit:TimePicker x:Name="menstruationTimePicker" 
+                                <toolkit:TimePicker x:Name="menstruationTimePicker" 
                                             Width="150" HorizontalAlignment="Right" Grid.Column="1"
                                             Value="{Binding MenstruationAlarmHour,Mode=TwoWay}"      
                                            GotFocus="timePicker_GotFocus"
                                             ManipulationCompleted="timePicker_ManipulationCompleted"
                                             />
-                        </Grid>
+                            </Grid>
 
-                        <!--Ovulation alarm-->
-                        <toolkit:ToggleSwitch x:Name="toggleBtnOvulationAllarm" 
+                            <!--Ovulation alarm-->
+                            <toolkit:ToggleSwitch x:Name="toggleBtnOvulationAllarm" 
                                       Style="{StaticResource toggleSwitch}"
                                       Grid.Row="4"
                                       Header="{Binding Path=LocalizedResources.OvulationAllarmText, Source={StaticResource LocalizedStrings}}"
@@ -265,23 +346,23 @@
                                       Loaded="toggleBtnPillAllarm_CheckedUnchecked"
                                       IsEnabled="{Binding ShowMensOvulAlarmOption}"
                                       />
-                        <TextBlock x:Name="toggleBtnOvulationAllarmExplanation" 
+                            <TextBlock x:Name="toggleBtnOvulationAllarmExplanation" 
                                 Grid.Row="4"
                                 Style="{StaticResource settingsTBlExplanation}"
                                 Text="{Binding Path=LocalizedResources.PillAlarmExplanation, Source={StaticResource LocalizedStrings}}" />
 
-                        <Grid x:Name="toggleBtnOvulationAllarmTimePanel"
+                            <Grid x:Name="toggleBtnOvulationAllarmTimePanel"
                                     Margin="30,0,0,0" Height="80"
                                     Grid.ColumnSpan="2" Grid.Row="5" >
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition />
-                                <ColumnDefinition />
-                            </Grid.ColumnDefinitions>
-                            <TextBlock x:Name="tbOvulationTimeText" Grid.Column="0"
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition />
+                                    <ColumnDefinition />
+                                </Grid.ColumnDefinitions>
+                                <TextBlock x:Name="tbOvulationTimeText" Grid.Column="0"
                                        HorizontalAlignment="Right"
                                         Text="{Binding Path=LocalizedResources.PillAllarmTimeText, Source={StaticResource LocalizedStrings}}" 
                                         Style="{StaticResource settingsTBlLarge}"  FontSize="24"/>
-                            <toolkit:TimePicker x:Name="ovulationTimePicker" 
+                                <toolkit:TimePicker x:Name="ovulationTimePicker" 
                                                 Width="150"
                                                 HorizontalAlignment="Right"
                                                 Grid.Column="1"
@@ -289,9 +370,79 @@
                                                 GotFocus="timePicker_GotFocus"
                                                 ManipulationCompleted="timePicker_ManipulationCompleted"
                                                 />
+                            </Grid>
+
+                            <!--Gyne reminder Name="Gynecological check reminder" -->
+                            <toolkit:ExpanderView x:Name="expanderGyne"
+                                                Grid.Row="6" 
+                                                Grid.ColumnSpan="2" 
+                                                Grid.Column="0"
+                                                Header=""
+                                                ItemsSource="{Binding GyneCheckPeriods}"
+                                                Style="{StaticResource expanderViewStyle}"
+                                                Tap="expander_Tap">
+                                <toolkit:ExpanderView.HeaderTemplate>
+                                    <DataTemplate>
+                                        <StackPanel Orientation="Vertical">
+                                            <TextBlock FontFamily="{StaticResource PhoneFontFamilySemiLight}"
+                                                    FontSize="{StaticResource PhoneFontSizeMediumLarge}"
+                                                    Foreground="{StaticResource PinkColor}"
+                                                    TextWrapping="Wrap"
+                                                    Text="Gynecological check reminder" />
+                                            <StackPanel Orientation="Horizontal" Margin="10,2,0,0">
+                                                <Line x:Name="Line" HorizontalAlignment="Left"
+                                                      Margin="10,0,0,0"
+                                                      Stretch="Fill" 
+                                                      Stroke="White" StrokeThickness="3" X1="0" X2="0" Y1="0" Y2="1"/>
+                                                <TextBlock FontFamily="{StaticResource PhoneFontFamilySemiLight}"
+                                                        FontSize="{StaticResource PhoneFontSizeMediumLarge}"
+                                                        Foreground="White"
+                                                        Margin="15,0,0,0"
+                                                        TextWrapping="Wrap"
+                                                        Text="{Binding}" />
+                                            </StackPanel>
+                                        </StackPanel>
+                                    </DataTemplate>
+                                </toolkit:ExpanderView.HeaderTemplate>
+                            </toolkit:ExpanderView>
+
+
+                            <!--breast reminder-->
+                            <toolkit:ExpanderView x:Name="expanderBreast"
+                                                Grid.Row="7" 
+                                                Grid.ColumnSpan="2" 
+                                                Grid.Column="0"
+                                                Header=""
+                                                ItemsSource="{Binding BreastCheckPeriods}"
+                                                Style="{StaticResource expanderViewStyle}"
+                                                Tap="expander_Tap">
+                                <toolkit:ExpanderView.HeaderTemplate>
+                                    <DataTemplate>
+                                        <StackPanel Orientation="Vertical">
+                                            <TextBlock FontFamily="{StaticResource PhoneFontFamilySemiLight}"
+                                                    FontSize="{StaticResource PhoneFontSizeMediumLarge}"
+                                                    Foreground="{StaticResource PinkColor}"
+                                                    TextWrapping="Wrap"
+                                                    Text="Breast check reminder" />
+                                            <StackPanel Orientation="Horizontal" Margin="10,2,0,0">
+                                                <Line x:Name="Line" HorizontalAlignment="Left"
+                                                      Margin="10,0,0,0"
+                                                      Stretch="Fill" 
+                                                      Stroke="White" StrokeThickness="3" X1="0" X2="0" Y1="0" Y2="1"/>
+                                                <TextBlock FontFamily="{StaticResource PhoneFontFamilySemiLight}"
+                                                        FontSize="{StaticResource PhoneFontSizeMediumLarge}"
+                                                        Foreground="White"
+                                                        Margin="15,0,0,0"
+                                                        TextWrapping="Wrap"
+                                                        Text="{Binding}" />
+                                            </StackPanel>
+                                        </StackPanel>
+                                    </DataTemplate>
+                                </toolkit:ExpanderView.HeaderTemplate>
+                            </toolkit:ExpanderView>
+
                         </Grid>
-                    </Grid>
-                </ScrollViewer>
+                    </ScrollViewer>
             </phone:PivotItem>
 
         </phone:Pivot>

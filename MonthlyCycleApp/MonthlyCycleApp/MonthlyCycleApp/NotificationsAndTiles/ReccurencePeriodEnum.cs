@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.Serialization;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Data;
@@ -9,20 +10,23 @@ namespace MonthlyCycleApp.NotificationsAndTiles
 {
     public enum RecurencePeriodType
     {
-        Yearly = 0,
-        SixMonths = 1,
-        ThreeMonths=2,
-        Monthly = 3,
-        OneTime = 4,
-
+        None = 0,
+        Yearly = 1,
+        SixMonths = 2,
+        ThreeMonths=3,
+        Monthly = 4,
     }
 
+    [DataContract]
     public class RecurencePeriod
     {
+        [DataMember]
         public string ReccurenceName { get; set; }
 
+        [DataMember]
         public RecurencePeriodType ReccurenceType { get; set; }
 
+        [DataMember]
         public int ReccurenceValue { get; set; }
 
         public RecurencePeriod(RecurencePeriodType type, string name, int value)

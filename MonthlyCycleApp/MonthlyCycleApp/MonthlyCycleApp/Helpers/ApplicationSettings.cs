@@ -19,6 +19,8 @@ namespace MonthlyCycleApp.Helpers
         public const string MENSTRUATION_ALARM_TIME = "menstruationalarmtime";
         public const string IS_OVULATION_ALARM_ON = "isovulationalarmon";
         public const string OVULATION_ALARM_TIME = "ovuilationalarmtime";
+        public const string GYNE_CHECK_REMINDER_RECURENCE_TYPE = "gynereminderrectype";
+        public const string BREAST_CHECK_REMINDER_RECURENCE_TYPE = "breastreminderrectype";
 
         public const string IS_PASSWORD_PROTECTED = "ispasswordprotected";
         public const string NEED_LOGIN = "needtologin";

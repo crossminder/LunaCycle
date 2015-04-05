@@ -4,6 +4,7 @@
     <AssemblyPart x:Name="Microsoft.Expression.Controls" Source="Microsoft.Expression.Controls.dll" />
     <AssemblyPart x:Name="Microsoft.Phone.Controls" Source="Microsoft.Phone.Controls.dll" />
     <AssemblyPart x:Name="Microsoft.Phone.Controls.Toolkit" Source="Microsoft.Phone.Controls.Toolkit.dll" />
+    <AssemblyPart x:Name="Sparrow.Chart.WP8.45" Source="Sparrow.Chart.WP8.45.dll" />
     <AssemblyPart x:Name="WPControls" Source="WPControls.dll" />
     <AssemblyPart x:Name="Microsoft.Expression.Drawing" Source="Microsoft.Expression.Drawing.dll" />
   </Deployment.Parts>

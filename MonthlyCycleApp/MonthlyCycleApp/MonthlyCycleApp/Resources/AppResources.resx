@@ -348,11 +348,8 @@
   <data name="Monthly" xml:space="preserve">
     <value>Monthly</value>
   </data>
-  <data name="OneTime" xml:space="preserve">
-    <value>One time</value>
-  </data>
   <data name="OvulationReminderContent" xml:space="preserve">
-    <value>Luna estimates your fertility will be at its peak tomorrow</value>
+    <value>Luna estimates your fertility period will start tomorrow.</value>
   </data>
   <data name="OvulationReminderName" xml:space="preserve">
     <value>Ovulation reminder</value>
@@ -364,12 +361,33 @@
     <value>Pill Alarm by Luna</value>
   </data>
   <data name="SixMonths" xml:space="preserve">
-    <value>6 months</value>
+    <value>Every 6 months</value>
   </data>
   <data name="ThreeMonths" xml:space="preserve">
-    <value>3 months</value>
+    <value>Every 3 months</value>
   </data>
   <data name="Yearly" xml:space="preserve">
     <value>Anually</value>
+  </data>
+  <data name="None" xml:space="preserve">
+    <value>Never</value>
+  </data>
+  <data name="FertilityDay" xml:space="preserve">
+    <value>- Fertility day</value>
+  </data>
+  <data name="Legend" xml:space="preserve">
+    <value>Legend</value>
+  </data>
+  <data name="MenstruationDay" xml:space="preserve">
+    <value>- Menstruation day</value>
+  </data>
+  <data name="MenstruationEndReminderContent" xml:space="preserve">
+    <value>Luna says your period ended yesterday.Is it true?</value>
+  </data>
+  <data name="MenstruationStartReminderContent" xml:space="preserve">
+    <value>Luna says your period just started yesterday.Is it true?</value>
+  </data>
+  <data name="OvulationDay" xml:space="preserve">
+    <value>- Ovulation day</value>
   </data>
 </root>

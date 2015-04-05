@@ -28,6 +28,29 @@ namespace MonthlyCycleApp.ViewModels
                 handler(this, new PropertyChangedEventArgs(propertyName));
             }
         }
+
+        private void OnGyneCheckPropertyChanged(String propertyName)
+        {
+            PropertyChangedEventHandler handler = PropertyChanged;
+            if (null != handler)
+            {
+                var toRemove = GyneCheckReminderPeriod;
+                GyneCheckPeriods= Extensions.RecurencePeriodToList().Where(x => x.ReccurenceName != toRemove.ReccurenceName).ToList();
+                handler(this, new PropertyChangedEventArgs(propertyName));
+            }
+        }
+
+        private void OnBreastCheckPropertyChanged(String propertyName)
+        {
+            PropertyChangedEventHandler handler = PropertyChanged;
+            if (null != handler)
+            {
+                var toRemove = BreastCheckReminderPeriod;
+                BreastCheckPeriods = Extensions.RecurencePeriodToList().Where(x => x.ReccurenceName != toRemove.ReccurenceName).ToList();
+                handler(this, new PropertyChangedEventArgs(propertyName));
+            }
+        }
+
         #endregion
 
         #region Properties
@@ -88,7 +111,7 @@ namespace MonthlyCycleApp.ViewModels
 
         public List<DayOfWeek> DaysOfWeek = new List<DayOfWeek>() { DayOfWeek.Sunday, DayOfWeek.Monday, DayOfWeek.Tuesday, DayOfWeek.Wednesday, DayOfWeek.Thursday, DayOfWeek.Friday, DayOfWeek.Saturday };
 
-
+        public ObservableCollection<StatisticsModel> StatisticsCollection { get; set; }
         #endregion
 
         #region Initial Settings
@@ -129,15 +152,7 @@ namespace MonthlyCycleApp.ViewModels
                     ShowMensOvulAlarmOption = !value;
                     if (value)
                     {
-                          //period.PeriodEndDay.AddDays(1),
-                          //  period.CycleEndDay,
-
-                        //var current = Calendar.CurrentPeriod;
-                        //DateTime begin = TakePillHour;
-
                         //add reminder
-                   
-
                         RemindersManager.AddPillAlarm(Calendar.CurrentPeriod);
 
                         //remove reminders
@@ -174,7 +189,6 @@ namespace MonthlyCycleApp.ViewModels
 
         }
 
-
         private DateTime? takePillHour;
         public DateTime TakePillHour
         {
@@ -209,6 +223,23 @@ namespace MonthlyCycleApp.ViewModels
                 if (value != isMenstruationAllarmOn)
                 {
                     isMenstruationAllarmOn = value;
+
+                    if (value)
+                    {
+                        //add reminder
+                        if (Calendar.CurrentPeriod.PeriodStartDay > DateTime.Today)
+                            RemindersManager.AddMenstruationReminder(Calendar.CurrentPeriod.PeriodStartDay);
+                        else
+                            RemindersManager.AddMenstruationReminder(NextPeriod.PeriodStartDay);
+
+                        //remove reminders
+                        RemindersManager.RemoveAlarmOrReminder(AppResources.PillAlarmName);
+                    }
+                    else
+                    {
+                        //remove reminders
+                        RemindersManager.RemoveAlarmOrReminder(AppResources.MenstruationReminderName);
+                    }
                     ApplicationSettings.SetProperty(ApplicationSettings.IS_MENSTRUATION_ALARM_ON, isMenstruationAllarmOn);
                     NotifyPropertyChanged("IsMenstruationAllarmOn");
                 }
@@ -245,6 +276,22 @@ namespace MonthlyCycleApp.ViewModels
                 if (value != isOvulationAllarmOn)
                 {
                     isOvulationAllarmOn = value;
+                    if (value)
+                    {
+                        //add reminder
+                        if (Calendar.CurrentPeriod.PeriodStartDay > DateTime.Today)
+                            RemindersManager.AddOvulationReminder(Calendar.CurrentPeriod.FertilityStartDay);
+                        else
+                            RemindersManager.AddOvulationReminder(NextPeriod.FertilityStartDay);
+
+                        //remove reminders
+                        RemindersManager.RemoveAlarmOrReminder(AppResources.PillAlarmName);
+                    }
+                    else
+                    {
+                        //remove reminders
+                        RemindersManager.RemoveAlarmOrReminder(AppResources.OvulationReminderName);
+                    }
                     ApplicationSettings.SetProperty(ApplicationSettings.IS_OVULATION_ALARM_ON, isOvulationAllarmOn);
                     NotifyPropertyChanged("IsOvulationAllarmOn");
                 }
@@ -268,6 +315,99 @@ namespace MonthlyCycleApp.ViewModels
                 }
             }
         }
+
+        private RecurencePeriod gyneCheckReminderPeriod;
+        public RecurencePeriod GyneCheckReminderPeriod
+        {
+            get
+            {
+                return gyneCheckReminderPeriod != null ?
+                    gyneCheckReminderPeriod :
+                    ApplicationSettings.GetProperty<RecurencePeriod>(ApplicationSettings.GYNE_CHECK_REMINDER_RECURENCE_TYPE);
+            }
+            set
+            {
+                if (value != gyneCheckReminderPeriod)
+                {
+                    gyneCheckReminderPeriod = value;
+
+                    RemindersManager.AddGyneReminder(DateTime.Now, value);
+
+                    ApplicationSettings.SetProperty(ApplicationSettings.GYNE_CHECK_REMINDER_RECURENCE_TYPE, gyneCheckReminderPeriod);
+                    OnGyneCheckPropertyChanged("GyneCheckReminderPeriod");
+                }
+            }
+        }
+
+        private RecurencePeriod breastCheckReminderPeriod;
+        public RecurencePeriod BreastCheckReminderPeriod
+        {
+            get
+            {
+                return breastCheckReminderPeriod != null ?
+                    breastCheckReminderPeriod :
+                    ApplicationSettings.GetProperty<RecurencePeriod>(ApplicationSettings.BREAST_CHECK_REMINDER_RECURENCE_TYPE);
+            }
+            set
+            {
+                if ( value != breastCheckReminderPeriod)
+                {
+                    breastCheckReminderPeriod = value;
+
+                    RemindersManager.AddBreastReminder(DateTime.Now, value);
+
+                    ApplicationSettings.SetProperty(ApplicationSettings.BREAST_CHECK_REMINDER_RECURENCE_TYPE, breastCheckReminderPeriod);
+                    OnBreastCheckPropertyChanged("BreastCheckReminderPeriod");
+                }
+            }
+        }
+
+
+        private List<RecurencePeriod> gyneCheckPeriods;
+        public List<RecurencePeriod> GyneCheckPeriods
+        {
+            get
+            {
+                var currentSetting = GyneCheckReminderPeriod;
+                if (currentSetting == null)
+                    return Extensions.RecurencePeriodToList();
+                if(gyneCheckPeriods == null)
+                    return Extensions.RecurencePeriodToList().Where(x => x.ReccurenceName != currentSetting.ReccurenceName).ToList();
+                return gyneCheckPeriods;
+            }
+            set
+            {
+                if (gyneCheckPeriods != value)
+                {
+                    gyneCheckPeriods = value;
+                    NotifyPropertyChanged("GyneCheckPeriods");
+                }
+            }
+
+        }
+
+        private List<RecurencePeriod> breastCheckPeriods;
+        public List<RecurencePeriod> BreastCheckPeriods
+        {
+            get
+            {
+                var currentSetting = BreastCheckReminderPeriod;
+                if (currentSetting == null)
+                    return Extensions.RecurencePeriodToList();
+                if (breastCheckPeriods == null)
+                    return Extensions.RecurencePeriodToList().Where(x => x.ReccurenceName != currentSetting.ReccurenceName).ToList();
+                return breastCheckPeriods;
+            }
+            set
+            {
+                if (breastCheckPeriods != value)
+                {
+                    breastCheckPeriods = value;
+                    NotifyPropertyChanged("BreastCheckPeriods");
+                }
+            }
+        }
+
 
         private bool? isPasswordProtected;
         public bool IsPasswordProtected
@@ -606,8 +746,9 @@ namespace MonthlyCycleApp.ViewModels
 
         public MainViewModel()
         {
-            
         }
+
+       
 
         #region Dialog methods
 

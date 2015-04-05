@@ -83,7 +83,7 @@ namespace WPControls.Helpers
                 if (cycle.Includes(date))
                     return PeriodDayTypeEnum.CycleDay;
 
-                if (date.Equals(periodMonth.OvulationPeakDay))
+                if (date.Equals(periodMonth.OvulationDay))
                     return PeriodDayTypeEnum.OvulationDay;
                 DateRange fertility = new DateRange(periodMonth.FertilityStartDay, periodMonth.FertilityStartDay.AddDays(periodMonth.FertilityDuration - 1));
                 if (fertility.Includes(date))

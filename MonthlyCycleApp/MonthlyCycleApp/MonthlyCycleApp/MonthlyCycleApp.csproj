@@ -118,6 +118,7 @@
       <DependentUpon>MainPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Model\Enums.cs" />
+    <Compile Include="Model\StatisticModel.cs" />
     <Compile Include="NotificationsAndTiles\ReccurencePeriodEnum.cs" />
     <Compile Include="NotificationsAndTiles\RemindersManager.cs" />
     <Compile Include="NotificationsAndTiles\FlipTile.cs" />
@@ -183,6 +184,9 @@
     <Content Include="Assets\Icons\stop.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="Assets\Images\CycleDay.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="Assets\Images\date-shadow-highlight.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
@@ -191,6 +195,12 @@
     </Content>
     <Content Include="Assets\Images\drop-shadow.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Images\FertilityDay.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Images\OvulationDay.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Assets\Images\womb.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
@@ -290,6 +300,7 @@
     <EmbeddedResource Include="Resources\AppResources.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>AppResources.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
@@ -303,6 +314,10 @@
     <Reference Include="Microsoft.Phone.Controls, Version=8.0.0.0, Culture=neutral, PublicKeyToken=24eec0d8c86cda1e, processorArchitecture=MSIL" />
     <Reference Include="Microsoft.Phone.Controls.Toolkit">
       <HintPath>..\packages\WPtoolkit.4.2013.08.16\lib\wp8\Microsoft.Phone.Controls.Toolkit.dll</HintPath>
+    </Reference>
+    <Reference Include="Sparrow.Chart.WP8.45, Version=13.1.0.113, Culture=neutral, PublicKeyToken=50f33fb8697e9a92, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Sparrow.Chart.WP8.13.1.0.113\lib\windowsphone8\Sparrow.Chart.WP8.45.dll</HintPath>
     </Reference>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\$(TargetFrameworkIdentifier)\$(TargetFrameworkVersion)\Microsoft.$(TargetFrameworkIdentifier).$(TargetFrameworkVersion).Overrides.targets" />

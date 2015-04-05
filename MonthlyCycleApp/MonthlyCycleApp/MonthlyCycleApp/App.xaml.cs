@@ -12,6 +12,8 @@ using MonthlyCycleApp.Resources;
 using MonthlyCycleApp.ViewModels;
 using Monthly.Helpers;
 using MonthlyCycleApp.NotificationsAndTiles;
+using System.Windows.Controls;
+using System.Windows.Media;
 
 namespace MonthlyCycleApp
 {
@@ -228,6 +230,47 @@ namespace MonthlyCycleApp
         }
 
         #endregion
+
+        private void ExpandedItem_Tap(object sender, System.Windows.Input.GestureEventArgs e)
+        {
+            ExpanderView expanderView = GetParent(sender as ListBoxItem) as ExpanderView;
+            var header = (sender as ListBoxItem).DataContext;
+
+            if (header != null)
+            {
+                if (expanderView.Name == "expanderGyne" )
+                    //&& header != App.MainViewModel.GyneCheckReminderPeriod)
+                {
+                    App.MainViewModel.GyneCheckReminderPeriod = (sender as ListBoxItem).DataContext as RecurencePeriod;
+                    var selected = (e.OriginalSource as TextBlock);
+                    if (selected != null)
+                        expanderView.Header = selected.Text;
+                    expanderView.IsExpanded = false;
+                    (expanderView.Parent as Grid).RowDefinitions[6].Height = new GridLength(80);
+                }
+                else
+                    if (expanderView.Name == "expanderBreast")
+                        //&& header != App.MainViewModel.BreastCheckReminderPeriod)
+                    {
+                        App.MainViewModel.BreastCheckReminderPeriod = (sender as ListBoxItem).DataContext as RecurencePeriod;
+                        var selected = (e.OriginalSource as TextBlock);
+                        if (selected != null)
+                            expanderView.Header = selected.Text;
+                        expanderView.IsExpanded = false;
+                        (expanderView.Parent as Grid).RowDefinitions[7].Height = new GridLength(80);
+                    }
+            }
+        }
+
+        public DependencyObject GetParent(DependencyObject control)
+        {
+            return VisualTreeHelper.GetParent(
+                                    VisualTreeHelper.GetParent(
+                                    VisualTreeHelper.GetParent(
+                                    VisualTreeHelper.GetParent(
+                                    VisualTreeHelper.GetParent(
+                                    VisualTreeHelper.GetParent(control))))));
+        }
 
         // Initialize the app's font and flow direction as defined in its localized resource strings.
         //

@@ -3,8 +3,9 @@
   <DefaultLanguage xmlns="" code="en-US" />
   <AppExtra xmlns="" AppPlatformVersion="8.0">
     <Extra Name="Tiles" />
+    <Extra Name="SDOptOut" />
   </AppExtra>
-  <App xmlns="" ProductID="{a155b4ff-4b3c-4c2d-bb39-349b9f058745}" Title="MonthlyCycleApp" RuntimeType="Silverlight" Version="1.0.0.0" Genre="apps.normal" Author="MonthlyCycleApp author" Description="Sample description" Publisher="MonthlyCycleApp" PublisherID="{db64b4f3-71d1-49f5-a797-ebd680343a47}">
+  <App xmlns="" ProductID="{a166b4ff-4b3c-4c2d-bb39-349b9f058746}" Title="LunaApp" RuntimeType="Silverlight" Version="1.0.0.0" Genre="apps.normal" Author="LunaApp author" Description="Luna is a menstrual and fertility calendar for women. " Publisher="LunaApp" PublisherID="{db64b4f3-71d1-49f5-a797-ebd680343a47}">
     <IconPath IsRelative="true" IsResource="false">Assets\ApplicationIcon.png</IconPath>
     <Capabilities>
       <Capability Name="ID_CAP_NETWORKING" />

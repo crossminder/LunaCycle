@@ -286,6 +286,15 @@ namespace MonthlyCycleApp.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to - Fertility day.
+        /// </summary>
+        public static string FertilityDay {
+            get {
+                return ResourceManager.GetString("FertilityDay", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Based on a 12 months average. Improves prediction based on input..
         /// </summary>
         public static string FertilityForecastExplanationAdvanced {
@@ -349,11 +358,38 @@ namespace MonthlyCycleApp.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Legend.
+        /// </summary>
+        public static string Legend {
+            get {
+                return ResourceManager.GetString("Legend", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Menstruation reminder.
         /// </summary>
         public static string MenstruationAllarmText {
             get {
                 return ResourceManager.GetString("MenstruationAllarmText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to - Menstruation day.
+        /// </summary>
+        public static string MenstruationDay {
+            get {
+                return ResourceManager.GetString("MenstruationDay", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Luna says your period ended yesterday.Is it true?.
+        /// </summary>
+        public static string MenstruationEndReminderContent {
+            get {
+                return ResourceManager.GetString("MenstruationEndReminderContent", resourceCulture);
             }
         }
         
@@ -376,6 +412,15 @@ namespace MonthlyCycleApp.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Luna says your period just started yesterday.Is it true?.
+        /// </summary>
+        public static string MenstruationStartReminderContent {
+            get {
+                return ResourceManager.GetString("MenstruationStartReminderContent", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Monthly.
         /// </summary>
         public static string Monthly {
@@ -390,6 +435,15 @@ namespace MonthlyCycleApp.Resources {
         public static string NewPinText {
             get {
                 return ResourceManager.GetString("NewPinText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Never.
+        /// </summary>
+        public static string None {
+            get {
+                return ResourceManager.GetString("None", resourceCulture);
             }
         }
         
@@ -430,15 +484,6 @@ namespace MonthlyCycleApp.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to One time.
-        /// </summary>
-        public static string OneTime {
-            get {
-                return ResourceManager.GetString("OneTime", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to This start date is overlapping another existing cycle period. Do you want to modify existing period?.
         /// </summary>
         public static string OverlapExistingPeriodValidation {
@@ -457,7 +502,16 @@ namespace MonthlyCycleApp.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Luna estimates your fertility will be at its peak tomorrow.
+        ///   Looks up a localized string similar to - Ovulation day.
+        /// </summary>
+        public static string OvulationDay {
+            get {
+                return ResourceManager.GetString("OvulationDay", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Luna estimates your fertility period will start tomorrow..
         /// </summary>
         public static string OvulationReminderContent {
             get {
@@ -745,7 +799,7 @@ namespace MonthlyCycleApp.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to 6 months.
+        ///   Looks up a localized string similar to Every 6 months.
         /// </summary>
         public static string SixMonths {
             get {
@@ -799,7 +853,7 @@ namespace MonthlyCycleApp.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to 3 months.
+        ///   Looks up a localized string similar to Every 3 months.
         /// </summary>
         public static string ThreeMonths {
             get {

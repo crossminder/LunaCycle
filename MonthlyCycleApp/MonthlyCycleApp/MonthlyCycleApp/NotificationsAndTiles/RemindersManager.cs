@@ -14,46 +14,63 @@ namespace MonthlyCycleApp.NotificationsAndTiles
 
         public static Uri appUri = new Uri(AppResources.ApplicationInitialUri, UriKind.Relative);
 
-        public static void AddMenstruationReminder(DateTime beginTime, DateTime endTime)
+        public static void AddMenstruationReminder(DateTime start)
         {
             AddOrReplaceReminder(
                 AppResources.MenstruationReminderName,
                 AppResources.ApplicationTitle,
                 AppResources.MenstruationReminderContent,
-                beginTime,
-                endTime,
+                start.AddDays(-1),
+                start,
                 RecurrenceInterval.None,
                 appUri);
+
+            AddOrReplaceReminder(
+               AppResources.MenstruationReminderName,
+               AppResources.ApplicationTitle,
+               AppResources.MenstruationReminderContent,
+               start.AddDays(-1),
+               start,
+               RecurrenceInterval.None,
+               appUri);
         }
 
-        public static void AddOvulationReminder(DateTime beginTime, DateTime endTime)
+        public static void AddOvulationReminder(DateTime start)
         {
             AddOrReplaceReminder(
                  AppResources.OvulationReminderName,
                  AppResources.ApplicationTitle,
                  AppResources.OvulationReminderContent,
-                 beginTime,
-                 endTime,
+                 start.AddDays(-1),
+                 start,
                  RecurrenceInterval.None,
                  appUri);
         }
 
         public static void AddGyneReminder(DateTime beginTime, RecurencePeriod recPeriod)
         {
+            AddMedicalCheckReminder(beginTime, recPeriod, AppResources.GyneControlReminderName, AppResources.GyneControlReminderContent);
+        }
+
+        private static void AddMedicalCheckReminder(DateTime beginTime, RecurencePeriod recPeriod, string reminderName,string reminderContent)
+        {
             RecurrenceInterval interval = RecurrenceInterval.None;
             DateTime expirationTime = DateTime.MaxValue;
+            bool needsToBeRemoved = false;
 
             switch (recPeriod.ReccurenceType)
             {
                 case RecurencePeriodType.Yearly:
                     {
                         interval = RecurrenceInterval.Yearly;
+                        beginTime = beginTime.AddYears(1);
                         break;
                     }
                 case RecurencePeriodType.SixMonths:
                     {
                         expirationTime = beginTime.AddMonths(6);
                         interval = RecurrenceInterval.None;
+                        beginTime = beginTime.AddMonths(6);
                         break;
                     }
 
@@ -61,41 +78,37 @@ namespace MonthlyCycleApp.NotificationsAndTiles
                     {
                         interval = RecurrenceInterval.None;
                         expirationTime = beginTime.AddMonths(3);
+                        beginTime = beginTime.AddMonths(3);
                         break;
                     }
                 case RecurencePeriodType.Monthly:
                     {
                         interval = RecurrenceInterval.Monthly;
+                        beginTime = beginTime.AddMonths(1);
                         break;
-                    }
-                case RecurencePeriodType.OneTime:
+                    }          
+                case RecurencePeriodType.None:
                     {
-                        interval = RecurrenceInterval.None;
-                        expirationTime = beginTime.AddDays(1);
+                        needsToBeRemoved = true;
                         break;
                     }
             }
-
-            AddOrReplaceReminder(
-                                AppResources.GyneControlReminderName,
-                                AppResources.ApplicationTitle,
-                                string.Format(AppResources.GyneControlReminderContent, interval),
-                                beginTime,
-                                expirationTime,
-                                interval,
-                                appUri);
+            if (needsToBeRemoved)
+                RemoveAlarmOrReminder(reminderName);
+            else
+                AddOrReplaceReminder(
+                        reminderName,
+                        AppResources.ApplicationTitle,
+                        string.Format(reminderContent, interval.ToString().ToLower()),
+                        beginTime,
+                        expirationTime,
+                        interval,
+                        appUri);
         }
 
-        public static void AddBreastReminder(DateTime beginTime, DateTime endTime, RecurrenceInterval interval)
+        public static void AddBreastReminder(DateTime beginTime, RecurencePeriod recPeriod)
         {
-            AddOrReplaceReminder(
-                 AppResources.OvulationReminderName,
-                 AppResources.ApplicationTitle,
-                 string.Format(AppResources.BreastControlReminderContent, interval),
-                 beginTime,
-                 endTime,
-                 RecurrenceInterval.Yearly,
-                 appUri);
+            AddMedicalCheckReminder(beginTime, recPeriod, AppResources.BreastControlReminderName, AppResources.BreastControlReminderContent);
         }
 
         public static void AddPillAlarm(PeriodMonth period)
@@ -107,8 +120,8 @@ namespace MonthlyCycleApp.NotificationsAndTiles
                 period.CycleEndDay,
                 RecurrenceInterval.Daily,
                 new Uri("/Reminder/Reminder01.wav", UriKind.Relative));
-
         }
+    
         public static void AddPillAlarm(DateTime beginTime, DateTime endTime)
         {
             AddOrReplaceAlarm(
@@ -166,8 +179,8 @@ namespace MonthlyCycleApp.NotificationsAndTiles
              if (action == null) 
                  // Register the reminder with the system.
                  ScheduledActionService.Add(reminder);
-             else
-                 ScheduledActionService.Replace(reminder);
+          //   else
+          //       ScheduledActionService.Replace(reminder);
         }
 
         public static void AddOrReplaceAlarm(

@@ -17,6 +17,8 @@ using WPControls.Models;
 using MonthlyCycleApp.Helpers;
 using WPControls.Helpers;
 using MonthlyCycleApp.NotificationsAndTiles;
+using Microsoft.Phone.Tasks;
+using System.Collections.ObjectModel;
 
 
 namespace MonthlyCycleApp
@@ -32,8 +34,7 @@ namespace MonthlyCycleApp
             DataContext = App.MainViewModel;
             Loaded += MainPage_Loaded;
             App.MainViewModel.Return = false;
-
-         
+                  
         }
 
         void MainPage_Loaded(object sender, RoutedEventArgs e)
@@ -42,10 +43,40 @@ namespace MonthlyCycleApp
 
             Cal.PeriodCalendarProperty = null;
             Cal.PeriodCalendarProperty = App.MainViewModel.Calendar;
-          
-          //  startingWeekDayList.ItemsSource = App.MainViewModel.DaysOfWeek;
+
+            //spChart is the chart name
+            //spChart.Visibility = Visibility.Visible;
+            App.MainViewModel.StatisticsCollection = GenerateStatisticDatasDynamic();
+            //spChart.DataContext = GenerateStatisticDatasDynamic();
+
+           
+        }
+        public static ObservableCollection<StatisticsModel> GenerateStatisticDatas()
+        {
+            ObservableCollection<StatisticsModel> data = new ObservableCollection<StatisticsModel>();
+            data.Add(new StatisticsModel("Data 0", 1));
+            data.Add(new StatisticsModel("Data 1", 2));
+            data.Add(new StatisticsModel("Data 2", 3));
+            data.Add(new StatisticsModel("Data 3", 4));
+            return data;
+
         }
 
+        public static ObservableCollection<StatisticsModel> GenerateStatisticDatasDynamic()
+        {
+            var periods = App.MainViewModel.Calendar.PastPeriods;
+            ObservableCollection<StatisticsModel> data = new ObservableCollection<StatisticsModel>();
+            foreach (PeriodMonth per in periods)
+            {
+                DateTime startDate = per.PeriodStartDay;
+                //startDate.ToString("MMM", CultureInfo.InvariantCulture)
+                data.Add(new StatisticsModel(string.Format("{0} {1}", startDate.Month, startDate.Year), per.CycleDuration));
+            }
+
+           
+            return data;
+
+        }
         #region Navigation
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
@@ -60,6 +91,26 @@ namespace MonthlyCycleApp
                 }
             }
 
+
+            if (App.MainViewModel.GyneCheckReminderPeriod != null)
+            {
+                expanderGyne.Header = App.MainViewModel.GyneCheckReminderPeriod.ReccurenceName;
+            }
+            else
+            {
+                App.MainViewModel.GyneCheckReminderPeriod = App.MainViewModel.GyneCheckPeriods.GetPeriod(RecurencePeriodType.None);
+                expanderGyne.Header = App.MainViewModel.GyneCheckReminderPeriod.ReccurenceName;
+            }
+
+            if (App.MainViewModel.BreastCheckReminderPeriod != null)
+            {
+                expanderBreast.Header = App.MainViewModel.BreastCheckReminderPeriod.ReccurenceName;
+            }
+            else
+            {
+                App.MainViewModel.BreastCheckReminderPeriod = App.MainViewModel.BreastCheckPeriods.GetPeriod(RecurencePeriodType.None);
+                expanderBreast.Header = App.MainViewModel.BreastCheckReminderPeriod.ReccurenceName;
+            }
         }
 
         protected override void OnNavigatedFrom(NavigationEventArgs e)
@@ -71,11 +122,6 @@ namespace MonthlyCycleApp
         #endregion
 
         #region Events
-
-        private void startingPageList_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-
-        }
 
         private void toggleBtnPillAllarm_CheckedUnchecked(object sender, RoutedEventArgs e)
         {
@@ -357,5 +403,64 @@ namespace MonthlyCycleApp
             outToTimePicker = false;
         }
 
+        private void expander_Tap(object sender, System.Windows.Input.GestureEventArgs e)
+        {
+            int row = -1;
+            Grid gridContainer = new Grid();
+            if ((sender as ExpanderView).Name == "expanderGyne")
+            {
+                gridContainer = expanderGyne.Parent as Grid;
+                row = 6;
+            }
+            else
+                if ((sender as ExpanderView).Name == "expanderBreast")
+                {
+                    gridContainer = expanderBreast.Parent as Grid;
+                    row = 7;
+                }
+
+            var height = gridContainer.RowDefinitions[row].Height;
+            if (height == new GridLength(80))
+                gridContainer.RowDefinitions[row].Height = new GridLength(200);
+            else
+                gridContainer.RowDefinitions[row].Height = new GridLength(80);
+        }
+
+        private void btnRate_Click(object sender, RoutedEventArgs e)
+        {
+            MarketplaceReviewTask marketplaceReviewTask = new MarketplaceReviewTask();
+
+            marketplaceReviewTask.Show();
+        }
+
+        private void ShareByEmail(object sender, System.Windows.Input.GestureEventArgs e)
+        {
+            string subject = string.Empty;
+            string body = string.Empty; //accepts HTML
+        
+            EmailComposeTask mailMessage = new EmailComposeTask()
+            {
+                Subject = subject,
+                Body = body,
+            };
+
+            mailMessage.Show();
+        }
+
+        private void CreateCharts()
+        { 
+
+        //Sparrow.Chart.WP8
+        }
+
+        private void btnShare_Click(object sender, RoutedEventArgs e)
+        {
+            ShareLinkTask mailMessage = new ShareLinkTask()
+           {
+               Title = "",
+               Message = "",
+               LinkUri = new Uri("")
+           };
+        }
     }
 }
