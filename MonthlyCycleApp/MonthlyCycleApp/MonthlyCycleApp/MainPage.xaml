@@ -116,69 +116,6 @@
 
             </phone:PivotItem>
 
-            <!--Statistics-->
-            <phone:PivotItem>
-                <ScrollViewer Margin="0,80,0,0">
-                    <Grid ScrollViewer.VerticalScrollBarVisibility="Auto">
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="80"/>
-                            <RowDefinition Height="80"/>
-                            <RowDefinition Height="300"/>
-                        </Grid.RowDefinitions>
-                            <TextBlock FontFamily="{StaticResource PhoneFontFamilySemiLight}"
-                                Grid.Row="0"
-                                FontSize="{StaticResource PhoneFontSizeExtraLarge}"
-                                Foreground="{StaticResource PinkColor}"
-                                TextWrapping="Wrap"
-                                Text="{Binding Path=LocalizedResources.StatisticsHeader, Source={StaticResource LocalizedStrings}}" />
-                            <TextBlock FontFamily="{StaticResource PhoneFontFamilySemiLight}"
-                                Grid.Row="1"
-                                Style="{StaticResource settingsTBlLarge}"
-                                VerticalAlignment="Top"
-                                TextWrapping="Wrap"
-                                Text="{Binding Path=LocalizedResources.StatisticsHeader, Source={StaticResource LocalizedStrings}}" />
-
-                            <!--<sparrow:SparrowChart x:Name="spChart"  
-                                                  Grid.Row="2"
-
-                                                  Visibility="Collapsed">
-                              
-                                <sparrow:SparrowChart.XAxis>
-                                    <sparrow:CategoryXAxis Header="Months"/>
-                                </sparrow:SparrowChart.XAxis>
-                                <sparrow:SparrowChart.YAxis>
-                                    <sparrow:LinearYAxis Header="Cycles"/>
-                                </sparrow:SparrowChart.YAxis>
-                                <sparrow:ColumnSeries PointsSource="{Binding}" XPath="X" YPath="Y"/>
-                            </sparrow:SparrowChart>-->
-                            <!--<sparrow:SparrowChart 
-                                Grid.Row="2">
-                                <sparrow:SparrowChart.XAxis>
-                                    <sparrow:LinearXAxis/>
-                                </sparrow:SparrowChart.XAxis>
-                                <sparrow:SparrowChart.YAxis>
-                                    <sparrow:LinearYAxis>
-                                    </sparrow:LinearYAxis>
-                                </sparrow:SparrowChart.YAxis>
-                               
-                                   
-                                 
-                                <sparrow:LineSeries Foreground="Red">
-                                    <sparrow:LineSeries.Points>
-                                        <sparrow:DoublePoint Data="0" Value="0"/>
-                                        <sparrow:DoublePoint Data="1" Value="28"/>
-                                        <sparrow:DoublePoint Data="2" Value="30"/>
-                                        <sparrow:DoublePoint Data="3" Value="29"/>
-                                    </sparrow:LineSeries.Points>
-                                </sparrow:LineSeries>
-                            </sparrow:SparrowChart>-->
-                        </Grid>
-                    
-                    
-                </ScrollViewer>
-
-            </phone:PivotItem>
-
             <!--About-->
             <phone:PivotItem>
                 <Grid Margin="0,80,0,0" >
