@@ -238,8 +238,8 @@ namespace MonthlyCycleApp
 
             if (header != null)
             {
-                if (expanderView.Name == "expanderGyne" )
-                    //&& header != App.MainViewModel.GyneCheckReminderPeriod)
+                if (expanderView.Name == "expanderGyne")
+                //&& header != App.MainViewModel.GyneCheckReminderPeriod)
                 {
                     App.MainViewModel.GyneCheckReminderPeriod = (sender as ListBoxItem).DataContext as RecurencePeriod;
                     var selected = (e.OriginalSource as TextBlock);
@@ -250,7 +250,7 @@ namespace MonthlyCycleApp
                 }
                 else
                     if (expanderView.Name == "expanderBreast")
-                        //&& header != App.MainViewModel.BreastCheckReminderPeriod)
+                    //&& header != App.MainViewModel.BreastCheckReminderPeriod)
                     {
                         App.MainViewModel.BreastCheckReminderPeriod = (sender as ListBoxItem).DataContext as RecurencePeriod;
                         var selected = (e.OriginalSource as TextBlock);
@@ -259,6 +259,12 @@ namespace MonthlyCycleApp
                         expanderView.IsExpanded = false;
                         (expanderView.Parent as Grid).RowDefinitions[7].Height = new GridLength(80);
                     }
+                    else
+                        if (expanderView.Name == "expanderFeatures")
+                            expanderView.IsExpanded = false;
+                        else
+                            if (expanderView.Name == "expanderPermissions")
+                                expanderView.IsExpanded = false;
             }
         }
 

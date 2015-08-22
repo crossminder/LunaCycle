@@ -117,6 +117,7 @@
     <Compile Include="MainPage.xaml.cs">
       <DependentUpon>MainPage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Model\AboutFeatures.cs" />
     <Compile Include="Model\Enums.cs" />
     <Compile Include="Model\StatisticModel.cs" />
     <Compile Include="NotificationsAndTiles\ReccurencePeriodEnum.cs" />

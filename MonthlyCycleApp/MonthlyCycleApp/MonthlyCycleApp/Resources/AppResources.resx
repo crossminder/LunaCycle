@@ -220,16 +220,30 @@
     <value>Fertility forecast</value>
   </data>
   <data name="AboutContent1" xml:space="preserve">
-    <value>1Luna is a menstrual and fertility app for women. It features a calendar mode.2Luna is a menstrual and fertility app for women. It features a calendar mode.3Luna is a menstrual and fertility app for women. It features a calendar mode.4Luna is a menstrual and fertility app for women. It features a calendar mode.5Luna is a menstrual and fertility app for women. It features a calendar mode.6Luna is a menstrual and fertility app for women. It features a calendar mode.7Luna is a menstrual and fertility app for women. It features a calendar mode.</value>
+    <value>Luna is a menstrual calendar for women.</value>
   </data>
   <data name="AboutContent2" xml:space="preserve">
-    <value>8Luna is a menstrual and fertility app for women. It features a calendar mode.Luna is a menstrual and fertility app for women. It features a calendar mode.9Luna is a menstrual and fertility app for women. It features a calendar mode.10Luna is a menstrual and fertility app for women. It features a calendar mode.11Luna is a menstrual and fertility app for women. It features a calendar mode.12Luna is a menstrual and fertility app for women. It features a calendar mode.13Luna is a menstrual and fertility app for women. It features a calendar mode.14Luna is a menstrual and fertility app for women. It features a calendar mode.Luna is a menstrual and fertility app for women. It features a calendar mode.</value>
+    <value>It provides an estimated forecast of period as well as an aproximative ovulation and fertility forecast, allowing you to keep track of your periods and giving you the possibility of a 3-month forecast.</value>
   </data>
   <data name="AboutContent3" xml:space="preserve">
-    <value>15Luna is a menstrual and fertility app for women. It features a calendar mode.16Luna is a menstrual and fertility app for women. It features a calendar mode.17Luna is a menstrual and fertility app for women. It features a calendar mode.18Luna is a menstrual and fertility app for women. It features a calendar mode.19Luna is a menstrual and fertility app for women. It features a calendar mode.20Luna is a menstrual and fertility app for women. It features a calendar mode.21Luna is a menstrual and fertility app for women. It features a calendar mode.Luna is a menstrual and fertility app for women. It features a calendar mode.</value>
+    <value>Alarms and reminders:
+- Menstruation reminder
+- Ovulation reminder
+- Contraceptive pill reminder
+- Gynecological check reminder
+- Breast check reminder
+Notifications:
+- Beginning and end of period
+Calendar
+- past periods
+
+- estimated ovulation
+- estimated future periods
+- share data with your physician by email</value>
   </data>
   <data name="AboutContent4" xml:space="preserve">
-    <value>22Luna is a menstrual and fertility app for women. It features a calendar mode.23Luna is a menstrual and fertility app for women. It features a calendar mode.24Luna is a menstrual and fertility app for women. It features a calendar mode.25Luna is a menstrual and fertility app for women. It features a calendar mode.26Luna is a menstrual and fertility app for women. It features a calendar mode.27Luna is a menstrual and fertility app for women. It features a calendar mode.28Luna is a menstrual and fertility app for women. It features a calendar mode.29Luna is a menstrual and fertility app for women. It features a calendar mode.</value>
+    <value>- Device Identity (provides access to device-specific information such as a unique device ID, or the manufacturer or model name. )
+- User Identity (gives an app the ability to use an anonymous Microsoft account to identify the user. )</value>
   </data>
   <data name="AboutHeader" xml:space="preserve">
     <value>About</value>
@@ -337,7 +351,7 @@
     <value>Luna says your {0} medical check is approaching.</value>
   </data>
   <data name="GyneControlReminderName" xml:space="preserve">
-    <value>Gyne control reminder</value>
+    <value>Gynecological check reminder</value>
   </data>
   <data name="MenstruationReminderContent" xml:space="preserve">
     <value>Luna estimates your mestruation will begin tomorrow.</value>
@@ -389,5 +403,11 @@
   </data>
   <data name="OvulationDay" xml:space="preserve">
     <value>- Ovulation day</value>
+  </data>
+  <data name="RateItButtonContent" xml:space="preserve">
+    <value>Give us your opinion!</value>
+  </data>
+  <data name="ShareItButtonContent" xml:space="preserve">
+    <value>Spread the word!</value>
   </data>
 </root>

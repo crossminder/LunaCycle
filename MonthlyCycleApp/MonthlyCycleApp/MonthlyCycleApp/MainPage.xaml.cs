@@ -450,17 +450,42 @@ namespace MonthlyCycleApp
         private void CreateCharts()
         { 
 
-        //Sparrow.Chart.WP8
         }
 
         private void btnShare_Click(object sender, RoutedEventArgs e)
         {
-            ShareLinkTask mailMessage = new ShareLinkTask()
+            ShareLinkTask shareMessage = new ShareLinkTask()
            {
-               Title = "",
-               Message = "",
-               LinkUri = new Uri("")
+               Title = "Check this cool new app!",
+               Message = "Luna is a menstrual app",
+               LinkUri = new Uri("http://google.com")
            };
+            shareMessage.Show();
+        }
+
+        private void expandFeaturesPermissions_Tap(object sender, System.Windows.Input.GestureEventArgs e)
+        {
+            int row = -1;
+            Grid gridContainer = new Grid();
+            if ((sender as ExpanderView).Name == "expanderFeatures")
+            {
+                gridContainer = expanderFeatures.Parent as Grid;
+                row = 1;
+            }
+            else
+                if ((sender as ExpanderView).Name == "expanderPermissions")
+                {
+                    gridContainer = expanderPermissions.Parent as Grid;
+                    row = 2;
+                }
+
+            var height = gridContainer.RowDefinitions[row].Height;
+            if (height == new GridLength(40))
+                gridContainer.RowDefinitions[row].Height = new GridLength();
+            else
+                gridContainer.RowDefinitions[row].Height = new GridLength(40);
+
+            gridContainer.UpdateLayout();
         }
     }
 }

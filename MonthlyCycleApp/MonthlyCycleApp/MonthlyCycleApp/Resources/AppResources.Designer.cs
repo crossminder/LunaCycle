@@ -61,7 +61,7 @@ namespace MonthlyCycleApp.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to 1Luna is a menstrual and fertility app for women. It features a calendar mode.2Luna is a menstrual and fertility app for women. It features a calendar mode.3Luna is a menstrual and fertility app for women. It features a calendar mode.4Luna is a menstrual and fertility app for women. It features a calendar mode.5Luna is a menstrual and fertility app for women. It features a calendar mode.6Luna is a menstrual and fertility app for women. It features a calendar mode.7Luna is a menstrual and fertility app for w [rest of string was truncated]&quot;;.
+        ///   Looks up a localized string similar to Luna is a menstrual calendar for women..
         /// </summary>
         public static string AboutContent1 {
             get {
@@ -70,7 +70,7 @@ namespace MonthlyCycleApp.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to 8Luna is a menstrual and fertility app for women. It features a calendar mode.Luna is a menstrual and fertility app for women. It features a calendar mode.9Luna is a menstrual and fertility app for women. It features a calendar mode.10Luna is a menstrual and fertility app for women. It features a calendar mode.11Luna is a menstrual and fertility app for women. It features a calendar mode.12Luna is a menstrual and fertility app for women. It features a calendar mode.13Luna is a menstrual and fertility app fo [rest of string was truncated]&quot;;.
+        ///   Looks up a localized string similar to It provides an estimated forecast of period as well as an aproximative ovulation and fertility forecast, allowing you to keep track of your periods and giving you the possibility of a 3-month forecast..
         /// </summary>
         public static string AboutContent2 {
             get {
@@ -79,7 +79,20 @@ namespace MonthlyCycleApp.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to 15Luna is a menstrual and fertility app for women. It features a calendar mode.16Luna is a menstrual and fertility app for women. It features a calendar mode.17Luna is a menstrual and fertility app for women. It features a calendar mode.18Luna is a menstrual and fertility app for women. It features a calendar mode.19Luna is a menstrual and fertility app for women. It features a calendar mode.20Luna is a menstrual and fertility app for women. It features a calendar mode.21Luna is a menstrual and fertility ap [rest of string was truncated]&quot;;.
+        ///   Looks up a localized string similar to Alarms and reminders:
+        ///- Menstruation reminder
+        ///- Ovulation reminder
+        ///- Contraceptive pill reminder
+        ///- Gynecological check reminder
+        ///- Breast check reminder
+        ///Notifications:
+        ///- Beginning and end of period
+        ///Calendar
+        ///- past periods
+        ///
+        ///- estimated ovulation
+        ///- estimated future periods
+        ///- share data with your physician by email.
         /// </summary>
         public static string AboutContent3 {
             get {
@@ -88,7 +101,8 @@ namespace MonthlyCycleApp.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to 22Luna is a menstrual and fertility app for women. It features a calendar mode.23Luna is a menstrual and fertility app for women. It features a calendar mode.24Luna is a menstrual and fertility app for women. It features a calendar mode.25Luna is a menstrual and fertility app for women. It features a calendar mode.26Luna is a menstrual and fertility app for women. It features a calendar mode.27Luna is a menstrual and fertility app for women. It features a calendar mode.28Luna is a menstrual and fertility ap [rest of string was truncated]&quot;;.
+        ///   Looks up a localized string similar to - Device Identity (provides access to device-specific information such as a unique device ID, or the manufacturer or model name. )
+        ///- User Identity (gives an app the ability to use an anonymous Microsoft account to identify the user. ).
         /// </summary>
         public static string AboutContent4 {
             get {
@@ -331,7 +345,7 @@ namespace MonthlyCycleApp.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Gyne control reminder.
+        ///   Looks up a localized string similar to Gynecological check reminder.
         /// </summary>
         public static string GyneControlReminderName {
             get {
@@ -709,6 +723,15 @@ namespace MonthlyCycleApp.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Give us your opinion!.
+        /// </summary>
+        public static string RateItButtonContent {
+            get {
+                return ResourceManager.GetString("RateItButtonContent", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Replace.
         /// </summary>
         public static string ReplaceButton {
@@ -795,6 +818,15 @@ namespace MonthlyCycleApp.Resources {
         public static string SetupStartDateInFutureValidation {
             get {
                 return ResourceManager.GetString("SetupStartDateInFutureValidation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Spread the word!.
+        /// </summary>
+        public static string ShareItButtonContent {
+            get {
+                return ResourceManager.GetString("ShareItButtonContent", resourceCulture);
             }
         }
         

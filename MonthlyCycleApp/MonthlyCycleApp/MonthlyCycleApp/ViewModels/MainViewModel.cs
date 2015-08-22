@@ -408,6 +408,49 @@ namespace MonthlyCycleApp.ViewModels
             }
         }
 
+        private List<AboutFeaturePermission> features;
+        public List<AboutFeaturePermission> Features
+        {
+            get
+            {
+                if (features == null)
+                    features = new List<AboutFeaturePermission>();
+                string resources = AppResources.AboutContent3;
+                string[] featuresResources = resources.Split(new string[] { "\r\n" }, StringSplitOptions.None);
+
+                foreach (string item in featuresResources)
+                {
+                    if (!string.IsNullOrWhiteSpace(item))
+                    {
+                        features.Add(new AboutFeaturePermission() { Text = item });
+                    }
+                }
+
+                return features;
+            }
+        }
+
+        private List<AboutFeaturePermission> permissions;
+        public List<AboutFeaturePermission> Permissions
+        {
+            get
+            {
+                if (permissions == null)
+                    permissions = new List<AboutFeaturePermission>();
+                string resources = AppResources.AboutContent4;
+                string[] permissionsResources = resources.Split(new string[] { "\r\n" }, StringSplitOptions.None);
+
+                foreach (string item in permissionsResources)
+                {
+                    if (!string.IsNullOrWhiteSpace(item))
+                    {
+                        permissions.Add(new AboutFeaturePermission() { Text = item });
+                    }
+                }
+
+                return permissions;
+            }
+        }
 
         private bool? isPasswordProtected;
         public bool IsPasswordProtected

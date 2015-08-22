@@ -73,13 +73,18 @@
                                 ColorConverter="{StaticResource ColorConverter}"
                                 EnableGestures="False"
                     />
-                    <TextBlock Margin="10"
+                    <TextBlock Margin="35,0,0,0"
                                Text="{Binding Path=LocalizedResources.Legend, Source={StaticResource LocalizedStrings}}" 
                                Style="{StaticResource settingsTBlTitle}"
                                Foreground="{StaticResource PinkColor}"
                                VerticalAlignment="Center"
-                               Grid.Row="1" />
-                    <Grid Grid.Row="2" Margin="10,0,10,10">
+                               Grid.Row="1"
+                               Opacity="0.75"/>
+                    <Grid 
+                          Opacity="0.75"
+                          Grid.Row="2"
+                        Width="410"
+                          HorizontalAlignment="Center">
                         <Grid.RowDefinitions>
                             <RowDefinition Height="50" />
                             <RowDefinition Height="50" />
@@ -132,39 +137,84 @@
                         Text="{Binding Path=LocalizedResources.AboutHeader, Source={StaticResource LocalizedStrings}}" />
 
                     <ScrollViewer Grid.Row="1">
-                            <StackPanel>
-                                <RichTextBox
-                        ScrollViewer.VerticalScrollBarVisibility="Auto"
-                        CharacterSpacing="1"
-                        VerticalAlignment="Top" 
-                        VerticalContentAlignment="Top" 
-                        HorizontalContentAlignment="Stretch"
-                             FontSize="{StaticResource PhoneFontSizeMediumLarge}"
-                                 Foreground="{StaticResource PhoneSubtleBrush}"                       
+                            <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="40"/>
+                                <RowDefinition Height="40"/>
+                                <RowDefinition Height="80"/>
+                                <RowDefinition Height="80"/>
+
+                                <RowDefinition Height="80"/>
+                            </Grid.RowDefinitions>
+                            <RichTextBox                  
+                                Grid.Row="0"
+                                ScrollViewer.VerticalScrollBarVisibility="Auto"
+                                CharacterSpacing="1"
+                                VerticalAlignment="Top" 
+                                VerticalContentAlignment="Top" 
+                                HorizontalContentAlignment="Stretch"
+                                FontStretch="Expanded"
+                                FontSize="{StaticResource PhoneFontSizeMediumLarge}"
+                                Foreground="{StaticResource PhoneSubtleBrush}"                       
                                 LineStackingStrategy="MaxHeight">
                             <RichTextBox.Blocks>
                                 <Paragraph x:Name="p1">
-                                    <Run Text="{Binding Path=LocalizedResources.AboutContent1, Source={StaticResource LocalizedStrings}}"/>
+                                    <Run FontStretch="SemiExpanded" Text="{Binding Path=LocalizedResources.AboutContent1, Source={StaticResource LocalizedStrings}}"/>
                                 </Paragraph>
-                                <Paragraph x:Name="p2">
-                                    <Run Text="{Binding Path=LocalizedResources.AboutContent2, Source={StaticResource LocalizedStrings}}"/>
-                                </Paragraph>
-                                <Paragraph x:Name="p3">
-                                    <Run Text="{Binding Path=LocalizedResources.AboutContent3, Source={StaticResource LocalizedStrings}}"/>
-                                </Paragraph>
-                                        <Paragraph x:Name="p4">
-                                            <Run Text="{Binding Path=LocalizedResources.AboutContent4, Source={StaticResource LocalizedStrings}}"/>
-                                        </Paragraph>
-                                    </RichTextBox.Blocks>
+                                    <Paragraph x:Name="p2">
+                                        <Run FontStretch="SemiExpanded" Text="{Binding Path=LocalizedResources.AboutContent2, Source={StaticResource LocalizedStrings}}"/>
+                                    </Paragraph>
+                            </RichTextBox.Blocks>
                         </RichTextBox>
-                                <Button x:Name="btnRate" 
-                                        Content="Rate it!" 
+
+                            <toolkit:ExpanderView x:Name="expanderFeatures"
+                                                Grid.Row="1" 
+                                                Header=""
+                                                Margin="12,0,0,0"
+                                                ItemsSource="{Binding Features}"
+                                                Style="{StaticResource expanderViewStyleAbout}"
+                                                Tap="expandFeaturesPermissions_Tap">
+                                <toolkit:ExpanderView.HeaderTemplate>
+                                    <DataTemplate>
+                                        
+                                        <TextBlock FontFamily="{StaticResource PhoneFontFamilySemiLight}"
+                                                    FontSize="{StaticResource PhoneFontSizeMediumLarge}"
+                                                    Foreground="{StaticResource PinkColor}"
+                                                    TextWrapping="Wrap"
+                                                    Text="Features"  
+                                                    TextDecorations="Underline"/>
+                                    </DataTemplate>
+                                </toolkit:ExpanderView.HeaderTemplate>
+                            </toolkit:ExpanderView>
+                            <toolkit:ExpanderView x:Name="expanderPermissions"
+                                                Grid.Row="2" 
+                                                Header=""
+                                                Margin="12,0,0,0"
+                                                ItemsSource="{Binding Permissions}"
+                                                Style="{StaticResource expanderViewStyleAbout}"
+                                                Tap="expandFeaturesPermissions_Tap">
+                                <toolkit:ExpanderView.HeaderTemplate>
+                                    <DataTemplate>
+                                        <TextBlock FontFamily="{StaticResource PhoneFontFamilySemiLight}"
+                                                    FontSize="{StaticResource PhoneFontSizeMediumLarge}"
+                                                    Foreground="{StaticResource PinkColor}"
+                                                    TextWrapping="Wrap"
+                                                    Text="Permissions"  
+                                                    TextDecorations="Underline"/>
+                                    </DataTemplate>
+                                </toolkit:ExpanderView.HeaderTemplate>
+                            </toolkit:ExpanderView>
+                            <Button x:Name="btnRate" 
+                                    Grid.Row="3"
+                                        Content="{Binding Path=LocalizedResources.RateItButtonContent, Source={StaticResource LocalizedStrings}}" 
                                         Click="btnRate_Click" />
                                 <Button x:Name="btnShare" 
-                                        Content="Share it!" 
+                                          Grid.Row="4"
+                                        Content="{Binding Path=LocalizedResources.ShareItButtonContent, Source={StaticResource LocalizedStrings}}" 
                                         Click="btnShare_Click" />
                                 <Line Height="120"/>
-                            </StackPanel>
+                            </Grid>
                     </ScrollViewer>
                     
                 </Grid>
@@ -283,6 +333,7 @@
                                       Loaded="toggleBtnPillAllarm_CheckedUnchecked"
                                       IsEnabled="{Binding ShowMensOvulAlarmOption}"
                                       />
+                          
                             <TextBlock x:Name="toggleBtnOvulationAllarmExplanation" 
                                 Grid.Row="4"
                                 Style="{StaticResource settingsTBlExplanation}"
@@ -309,7 +360,7 @@
                                                 />
                             </Grid>
 
-                            <!--Gyne reminder Name="Gynecological check reminder" -->
+                            <!--Gyne reminder -->
                             <toolkit:ExpanderView x:Name="expanderGyne"
                                                 Grid.Row="6" 
                                                 Grid.ColumnSpan="2" 
@@ -325,7 +376,7 @@
                                                     FontSize="{StaticResource PhoneFontSizeMediumLarge}"
                                                     Foreground="{StaticResource PinkColor}"
                                                     TextWrapping="Wrap"
-                                                    Text="Gynecological check reminder" />
+                                                    Text="{Binding Path=LocalizedResources.GyneControlReminderName, Source={StaticResource LocalizedStrings}}" />
                                             <StackPanel Orientation="Horizontal" Margin="10,2,0,0">
                                                 <Line x:Name="Line" HorizontalAlignment="Left"
                                                       Margin="10,0,0,0"
@@ -343,8 +394,7 @@
                                 </toolkit:ExpanderView.HeaderTemplate>
                             </toolkit:ExpanderView>
 
-
-                            <!--breast reminder-->
+                            <!--Breast reminder-->
                             <toolkit:ExpanderView x:Name="expanderBreast"
                                                 Grid.Row="7" 
                                                 Grid.ColumnSpan="2" 
@@ -356,12 +406,11 @@
                                 <toolkit:ExpanderView.HeaderTemplate>
                                     <DataTemplate>
                                         <StackPanel Orientation="Vertical">
-                                            <TextBlock FontFamily="{StaticResource PhoneFontFamilySemiLight}"
+                                        <TextBlock FontFamily="{StaticResource PhoneFontFamilySemiLight}"
                                                     FontSize="{StaticResource PhoneFontSizeMediumLarge}"
                                                     Foreground="{StaticResource PinkColor}"
-                                                    TextWrapping="Wrap"
-                                                    Text="Breast check reminder" />
-                                            <StackPanel Orientation="Horizontal" Margin="10,2,0,0">
+                                        Text="{Binding Path=LocalizedResources.BreastControlReminderName, Source={StaticResource LocalizedStrings}}" />
+                                        <StackPanel Orientation="Horizontal" Margin="10,2,0,0">
                                                 <Line x:Name="Line" HorizontalAlignment="Left"
                                                       Margin="10,0,0,0"
                                                       Stretch="Fill" 
